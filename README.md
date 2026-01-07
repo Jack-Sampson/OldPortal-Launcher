@@ -247,7 +247,7 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 ### Development Guidelines
 
-1. Follow the existing code style (see [CLAUDE.md](CLAUDE.md))
+1. Follow the existing code style 
 2. Use MVVM pattern for UI code
 3. Add XML documentation comments for public APIs
 4. Test with multiple server types before submitting
