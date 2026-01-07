@@ -84,7 +84,7 @@ Browse hundreds of AC emulator servers with:
 Securely store your account credentials:
 - **DPAPI Encryption**: Windows Data Protection API for secure storage
 - **Multi-Account**: Save credentials for multiple servers
-- **Quick Launch**: One-click login with saved credentials
+- **Launch**: Login with saved credentials
 - **Import/Export**: Backup and restore your credentials
 
 ### Server Management
@@ -297,7 +297,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - ✅ World browsing and search
 - ✅ Credential management with DPAPI encryption
 - ✅ Decal integration (optional)
-- ✅ Favorites and recent servers
+- ✅ Favorite servers
 - ✅ Custom installation directory
 - ✅ InnoSetup installer with dynamic versioning
 - ✅ Advanced multi-client support (native hook or Decal Dual Log)
@@ -307,7 +307,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - ✅ Easy account reordering with ↑↓ buttons
 - ✅ Custom launch delays per account
 - ✅ Launch history tracking
-- ✅ System tray icon with context menu
 - ✅ Smart launch priority system (Decal > Native Hook > Standard)
 
 ### Future Plans
