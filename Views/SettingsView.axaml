@@ -229,6 +229,48 @@
                                            Margin="28,0,0,0"/>
                             </StackPanel>
 
+                            <!-- Decal Dual Log Warning (visible when both Decal and Multi-Client are enabled) -->
+                            <Border Background="#33FFA500"
+                                    BorderBrush="#FFFFA500"
+                                    BorderThickness="2"
+                                    CornerRadius="8"
+                                    Padding="16"
+                                    IsVisible="{Binding ShowDecalDualLogWarning}">
+                                <StackPanel Spacing="12">
+                                    <TextBlock Text="⚠️ Important: Decal Dual Log Required"
+                                               FontSize="15"
+                                               FontWeight="Bold"
+                                               Foreground="#FFFFA500"/>
+                                    <TextBlock TextWrapping="Wrap"
+                                               Foreground="{DynamicResource SystemBaseHighColor}"
+                                               FontSize="13">
+                                        When using Decal with multi-client, you must enable Dual Log in Decal for multi-client to work properly:
+                                    </TextBlock>
+                                    <StackPanel Spacing="4"
+                                                Margin="12,0,0,0">
+                                        <TextBlock Text="1. Open Decal"
+                                                   Foreground="{DynamicResource SystemBaseHighColor}"
+                                                   FontSize="12"/>
+                                        <TextBlock Text="2. Click the 'Options' button"
+                                                   Foreground="{DynamicResource SystemBaseHighColor}"
+                                                   FontSize="12"/>
+                                        <TextBlock Text="3. Check the 'Dual Log' checkbox"
+                                                   Foreground="{DynamicResource SystemBaseHighColor}"
+                                                   FontSize="12"/>
+                                        <TextBlock Text="4. Click 'OK' to save"
+                                                   Foreground="{DynamicResource SystemBaseHighColor}"
+                                                   FontSize="12"/>
+                                    </StackPanel>
+                                    <TextBlock TextWrapping="Wrap"
+                                               Foreground="{DynamicResource SystemBaseMediumColor}"
+                                               FontStyle="Italic"
+                                               FontSize="11"
+                                               Margin="0,4,0,0">
+                                        Without Dual Log enabled, only one client instance will be able to launch at a time.
+                                    </TextBlock>
+                                </StackPanel>
+                            </Border>
+
                             <!-- Multi-Client Options (only visible when enabled) -->
                             <StackPanel Spacing="20"
                                         IsVisible="{Binding EnableMultiClient}">
@@ -589,29 +631,6 @@
                            TextWrapping="Wrap"
                            FontSize="14"
                            IsVisible="{Binding SuccessMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
-
-                <!-- Save Button -->
-                <Button Content="💾 Save Settings"
-                        Command="{Binding SaveSettingsCommand}"
-                        HorizontalAlignment="Stretch"
-                        HorizontalContentAlignment="Center"
-                        Padding="0,16"
-                        FontSize="16"
-                        FontWeight="SemiBold"
-                        Background="{DynamicResource SystemAccentColorDark1}"
-                        Foreground="{DynamicResource SystemBaseHighColor}"
-                        BorderThickness="0"
-                        CornerRadius="8"
-                        Margin="0,8,0,0">
-                    <Button.Styles>
-                        <Style Selector="Button:pointerover">
-                            <Setter Property="Background" Value="#4361EE"/>
-                        </Style>
-                        <Style Selector="Button:pressed">
-                            <Setter Property="Background" Value="#240046"/>
-                        </Style>
-                    </Button.Styles>
-                </Button>
             </StackPanel>
         </ScrollViewer>
     </Grid>

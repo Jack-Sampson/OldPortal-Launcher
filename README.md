@@ -2,7 +2,7 @@
 
 A modern, cross-platform launcher for Asheron's Call emulator servers via the OldPortal.com platform.
 
-![Version](https://img.shields.io/badge/version-1.0.91-blue)
+![Version](https://img.shields.io/badge/version-1.0.92-blue)
 ![.NET](https://img.shields.io/badge/.NET-9.0-purple)
 ![Platform](https://img.shields.io/badge/platform-Windows-lightgrey)
 ![License](https://img.shields.io/badge/license-MIT-green)
@@ -101,17 +101,20 @@ Optional support for the Decal plugin framework:
 - **Auto-Detection**: Automatically detects Decal installation
 - **Per-Launch Toggle**: Choose to enable/disable Decal per server
 - **Injection**: Seamless DLL injection for plugin support
+- **Multi-Client Compatible**: Works with multi-client when Dual Log is enabled in Decal
 
 ### Multi-Client Support
 
 Launch multiple game instances simultaneously with powerful management features:
-- **No Decal Required**: Native hook DLL using Reloaded.Hooks library for mutex bypass
+- **Flexible Launch Methods**: Choose between native hook (no Decal) or Decal's Dual Log feature
+- **Decal Integration**: When both Decal and Multi-Client are enabled, leverages Decal's built-in Dual Log
 - **Automatic Configuration**: Settings save automatically when closing the multi-client dialog
 - **Per-World Memory**: Each world remembers its own account order and launch delays
 - **Easy Reordering**: Simple ↑↓ buttons to adjust launch order - no manual numbering
 - **Custom Delays**: Set individual delays between account launches (0-60 seconds)
 - **Smart Merging**: New accounts automatically append to saved configurations
 - **File Sharing Fix**: Automatic UserPreferences.ini configuration for proper file sharing
+- **Clear Guidance**: In-app warnings and instructions when Dual Log setup is required
 
 ## 🏗️ Architecture
 
@@ -182,9 +185,9 @@ dotnet build -c Release
 Version is managed in **one place**: `OPLauncher.csproj`
 
 ```xml
-<Version>1.0.91</Version>
-<AssemblyVersion>1.0.91.0</AssemblyVersion>
-<FileVersion>1.0.91.0</FileVersion>
+<Version>1.0.92</Version>
+<AssemblyVersion>1.0.92.0</AssemblyVersion>
+<FileVersion>1.0.92.0</FileVersion>
 ```
 
 The installer dynamically reads the version from the built executable, so no manual updates needed in `installer.iss`.
@@ -292,19 +295,22 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 🗺️ Roadmap
 
-### Current Version (1.0.91)
+### Current Version (1.0.92)
 - ✅ World browsing and search
 - ✅ Credential management with DPAPI encryption
 - ✅ Decal integration (optional)
 - ✅ Favorites and recent servers
 - ✅ Custom installation directory
 - ✅ InnoSetup installer with dynamic versioning
-- ✅ Advanced multi-client support (no Decal required)
+- ✅ Advanced multi-client support (native hook or Decal Dual Log)
+- ✅ Decal + Multi-Client integration with Dual Log support
+- ✅ Auto-save settings (no manual save button required)
 - ✅ Multi-client configuration persistence per world
 - ✅ Easy account reordering with ↑↓ buttons
 - ✅ Custom launch delays per account
 - ✅ Launch history tracking
 - ✅ System tray icon with context menu
+- ✅ Smart launch priority system (Decal > Native Hook > Standard)
 
 ### Future Plans
 - 🔄 Plugin manager

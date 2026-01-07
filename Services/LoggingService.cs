@@ -35,73 +35,73 @@ public class LoggingService
     /// <summary>
     /// Log verbose/trace level message.
     /// </summary>
-    public void Verbose(string messageTemplate, params object[] propertyValues)
+    public void Verbose(string messageTemplate, params object[]? propertyValues)
     {
-        _logger.Verbose(messageTemplate, propertyValues);
+        _logger.Verbose(messageTemplate, propertyValues ?? Array.Empty<object>());
     }
 
     /// <summary>
     /// Log debug level message.
     /// </summary>
-    public void Debug(string messageTemplate, params object[] propertyValues)
+    public void Debug(string messageTemplate, params object[]? propertyValues)
     {
-        _logger.Debug(messageTemplate, propertyValues);
+        _logger.Debug(messageTemplate, propertyValues ?? Array.Empty<object>());
     }
 
     /// <summary>
     /// Log information level message.
     /// </summary>
-    public void Information(string messageTemplate, params object[] propertyValues)
+    public void Information(string messageTemplate, params object[]? propertyValues)
     {
-        _logger.Information(messageTemplate, propertyValues);
+        _logger.Information(messageTemplate, propertyValues ?? Array.Empty<object>());
     }
 
     /// <summary>
     /// Log warning level message.
     /// </summary>
-    public void Warning(string messageTemplate, params object[] propertyValues)
+    public void Warning(string messageTemplate, params object[]? propertyValues)
     {
-        _logger.Warning(messageTemplate, propertyValues);
+        _logger.Warning(messageTemplate, propertyValues ?? Array.Empty<object>());
     }
 
     /// <summary>
     /// Log warning with exception.
     /// </summary>
-    public void Warning(Exception exception, string messageTemplate, params object[] propertyValues)
+    public void Warning(Exception exception, string messageTemplate, params object[]? propertyValues)
     {
-        _logger.Warning(exception, messageTemplate, propertyValues);
+        _logger.Warning(exception, messageTemplate, propertyValues ?? Array.Empty<object>());
     }
 
     /// <summary>
     /// Log error level message.
     /// </summary>
-    public void Error(string messageTemplate, params object[] propertyValues)
+    public void Error(string messageTemplate, params object[]? propertyValues)
     {
-        _logger.Error(messageTemplate, propertyValues);
+        _logger.Error(messageTemplate, propertyValues ?? Array.Empty<object>());
     }
 
     /// <summary>
     /// Log error with exception.
     /// </summary>
-    public void Error(Exception exception, string messageTemplate, params object[] propertyValues)
+    public void Error(Exception exception, string messageTemplate, params object[]? propertyValues)
     {
-        _logger.Error(exception, messageTemplate, propertyValues);
+        _logger.Error(exception, messageTemplate, propertyValues ?? Array.Empty<object>());
     }
 
     /// <summary>
     /// Log fatal level message.
     /// </summary>
-    public void Fatal(string messageTemplate, params object[] propertyValues)
+    public void Fatal(string messageTemplate, params object[]? propertyValues)
     {
-        _logger.Fatal(messageTemplate, propertyValues);
+        _logger.Fatal(messageTemplate, propertyValues ?? Array.Empty<object>());
     }
 
     /// <summary>
     /// Log fatal with exception.
     /// </summary>
-    public void Fatal(Exception exception, string messageTemplate, params object[] propertyValues)
+    public void Fatal(Exception exception, string messageTemplate, params object[]? propertyValues)
     {
-        _logger.Fatal(exception, messageTemplate, propertyValues);
+        _logger.Fatal(exception, messageTemplate, propertyValues ?? Array.Empty<object>());
     }
 
     /// <summary>

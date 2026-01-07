@@ -15,6 +15,59 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.0.92] - 2026-01-07
+
+### Added
+- **Auto-Save Settings**: Settings now automatically save when navigating away from the Settings view
+  - Removed manual "Save Settings" button for improved UX
+  - Silent auto-save on navigation with comprehensive logging
+  - Validation warnings logged but don't block navigation
+  - Users no longer need to manually click save
+
+- **Decal + Multi-Client Integration**: Full support for using Decal with multi-client functionality
+  - New launch priority system: Decal injection takes precedence over custom multi-client hook
+  - When both Decal and Multi-Client are enabled, launcher uses Decal's injection with Dual Log support
+  - Added prominent warning panel in Settings when both features are enabled
+  - Step-by-step instructions for enabling "Dual Log" in Decal Options
+  - Seamless integration leverages Decal's built-in multi-client capabilities
+
+### Changed
+- **Launch Priority System**: Restructured game launch logic for better Decal integration
+  - Priority 1: Decal injection (if enabled, handles multi-client via Dual Log)
+  - Priority 2: OPLauncher.Hook.dll (if multi-client enabled but Decal disabled)
+  - Priority 3: Standard launch (no injection)
+  - Enhanced logging shows which injection method is being used
+  - Decal's "Dual Log" feature now handles multi-client when both features are enabled
+
+- **Settings User Experience**: Improved settings workflow
+  - Settings auto-save when user navigates away from Settings view
+  - Cleaner interface without manual save button
+  - Real-time property change notifications for UI updates
+  - Better feedback for Decal + Multi-Client configuration
+
+### Technical
+- Added `ShowDecalDualLogWarning` computed property in `SettingsViewModel`
+  - Reactive property updates when UseDecal or EnableMultiClient changes
+  - Triggers UI warning panel visibility automatically
+- Updated `GameLaunchService.cs` with new launch decision tree
+  - Added `useDecalInjection` flag for tracking injection type
+  - Reorganized priority logic to check Decal first
+  - Multi-client hook only used when Decal is disabled
+- Enhanced `SettingsViewModel.OnNavigatedFrom()` lifecycle hook
+  - Calls new `SaveSettingsOnNavigateAway()` method
+  - Automatically configures UserPreferences.ini if needed
+  - Graceful error handling that doesn't block navigation
+- Updated Settings view XAML with conditional warning panel
+  - Orange-bordered info panel with warning icon
+  - Only visible when `ShowDecalDualLogWarning` is true
+  - Clear 4-step instructions for Decal configuration
+
+### Documentation
+- Updated CHANGELOG.md to reflect new version and features
+- Updated version to 1.0.92 in project file
+
+---
+
 ## [1.0.77] - 2026-01-04
 
 ### Added
@@ -184,6 +237,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 | Version | Release Date | Installer Type | Size | Key Feature |
 |---------|--------------|----------------|------|-------------|
+| 1.0.92  | 2026-01-07   | InnoSetup      | ~43 MB | Auto-save settings, Decal + Multi-Client |
+| 1.0.77  | 2026-01-04   | InnoSetup      | ~43 MB | Multi-client support |
 | 1.0.76  | 2026-01-03   | InnoSetup      | 46 MB | Custom install directory |
 | 1.0.75  | 2025-12-XX   | Velopack       | 62 MB | Onboarding optimization |
 | 1.0.70  | 2025-11-XX   | Velopack       | 62 MB | Initial stable release |

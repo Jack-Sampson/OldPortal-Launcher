@@ -156,6 +156,11 @@ public partial class SettingsViewModel : ViewModelBase
     private string? _userPreferencesStatusMessage;
 
     /// <summary>
+    /// Gets whether both Decal and Multi-Client are enabled, requiring user to enable Dual Log in Decal.
+    /// </summary>
+    public bool ShowDecalDualLogWarning => UseDecal && EnableMultiClient;
+
+    /// <summary>
     /// Available theme options (Dark and Light).
     /// </summary>
     public List<AppTheme> ThemeOptions { get; } = new()
@@ -209,6 +214,17 @@ public partial class SettingsViewModel : ViewModelBase
     }
 
     /// <summary>
+    /// Called when navigating away from the settings view.
+    /// Automatically saves all settings changes.
+    /// </summary>
+    public override void OnNavigatedFrom()
+    {
+        _logger.Debug("Navigating away from settings view - auto-saving changes");
+        SaveSettingsOnNavigateAway();
+        base.OnNavigatedFrom();
+    }
+
+    /// <summary>
     /// Called when the SelectedTheme property changes. Applies the new theme.
     /// </summary>
     partial void OnSelectedThemeChanged(AppTheme value)
@@ -240,6 +256,9 @@ public partial class SettingsViewModel : ViewModelBase
 
         // Save preference to config
         _configService.UpdateConfiguration(config => config.UseDecal = value);
+
+        // Notify that the Dual Log warning visibility may have changed
+        OnPropertyChanged(nameof(ShowDecalDualLogWarning));
     }
 
     /// <summary>
@@ -283,6 +302,78 @@ public partial class SettingsViewModel : ViewModelBase
 
         // Check UserPreferences.ini status
         CheckUserPreferences();
+    }
+
+    /// <summary>
+    /// Saves settings when navigating away from the settings view.
+    /// Validates the AC client path but allows navigation even if invalid.
+    /// Performs silent auto-save without UI feedback.
+    /// </summary>
+    private void SaveSettingsOnNavigateAway()
+    {
+        try
+        {
+            _logger.Information("Auto-saving settings on navigation away from settings view");
+
+            // Validate AC client path if provided - log warning but don't block save
+            if (!string.IsNullOrWhiteSpace(AcClientPath))
+            {
+                var (isValid, errorMessage) = _configService.ValidateAcClientPath(AcClientPath);
+                if (!isValid)
+                {
+                    _logger.Warning("AC client path validation failed during auto-save: {Error}", errorMessage);
+                    // Continue with save anyway - user will see validation message when they return
+                }
+            }
+
+            // Update configuration
+            var success = _configService.UpdateConfiguration(config =>
+            {
+                config.AcClientPath = string.IsNullOrWhiteSpace(AcClientPath) ? null : AcClientPath.Trim();
+                config.Theme = SelectedTheme;
+                config.AutoCheckUpdates = AutoCheckUpdates;
+                config.UseDecal = UseDecal;
+
+                // Multi-client settings
+                config.EnableMultiClient = EnableMultiClient;
+                config.AutoConfigureUniquePort = AutoConfigureUniquePort;
+                config.DefaultLaunchDelay = DefaultLaunchDelay;
+                config.MaxSimultaneousClients = MaxSimultaneousClients;
+            });
+
+            if (success)
+            {
+                // If multi-client is enabled and auto-configure is enabled, update UserPreferences.ini
+                if (EnableMultiClient && AutoConfigureUniquePort)
+                {
+                    _logger.Information("Auto-configuring UserPreferences.ini for multi-client support");
+
+                    if (!_userPreferencesManager.IsComputeUniquePortEnabled())
+                    {
+                        var result = _userPreferencesManager.EnableComputeUniquePort();
+                        if (result)
+                        {
+                            _logger.Information("UserPreferences.ini configured successfully");
+                        }
+                        else
+                        {
+                            _logger.Warning("Failed to configure UserPreferences.ini during auto-save");
+                        }
+                    }
+                }
+
+                _logger.Information("Settings auto-saved successfully on navigation away");
+            }
+            else
+            {
+                _logger.Error("Failed to auto-save settings on navigation away");
+            }
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex, "Error auto-saving settings on navigation away");
+            // Don't throw - allow navigation to proceed even if save fails
+        }
     }
 
     /// <summary>
@@ -356,15 +447,8 @@ public partial class SettingsViewModel : ViewModelBase
                 SuccessMessage = "Settings saved successfully!";
                 _logger.Information("Settings saved successfully");
 
-                // Apply theme change immediately if needed
-                // TODO: Trigger theme change in the app
-
-                // Navigate back to worlds screen after successful save
-                if (_mainWindow != null)
-                {
-                    await Task.Delay(500); // Brief delay to show success message
-                    _mainWindow.NavigateToWorldsCommand.Execute(null);
-                }
+                // Note: Settings now auto-save when navigating away from this view
+                // Manual save via this command (if triggered) no longer auto-navigates back
             }
             else
             {
@@ -933,6 +1017,9 @@ public partial class SettingsViewModel : ViewModelBase
 
         SuccessMessage = null;
         ErrorMessage = null;
+
+        // Notify that the Dual Log warning visibility may have changed
+        OnPropertyChanged(nameof(ShowDecalDualLogWarning));
     }
 
     /// <summary>

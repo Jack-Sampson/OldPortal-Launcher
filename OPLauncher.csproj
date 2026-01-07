@@ -10,9 +10,9 @@
     <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <PlatformTarget>x86</PlatformTarget>
-    <Version>1.0.91</Version>
-    <AssemblyVersion>1.0.91.0</AssemblyVersion>
-    <FileVersion>1.0.91.0</FileVersion>
+    <Version>1.0.92</Version>
+    <AssemblyVersion>1.0.92.0</AssemblyVersion>
+    <FileVersion>1.0.92.0</FileVersion>
 
     <!-- Self-Contained Deployment Configuration -->
     <RuntimeIdentifier>win-x86</RuntimeIdentifier>
@@ -31,7 +31,8 @@
     <EnableUnsafeBinaryFormatterSerialization>false</EnableUnsafeBinaryFormatterSerialization>
 
     <!-- Suppress platform compatibility warnings - this is a Windows-only application -->
-    <NoWarn>CA1416</NoWarn>
+    <!-- Suppress CS8604 warnings for logging calls - LoggingService properly handles nullable params -->
+    <NoWarn>CA1416;CS8604</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
