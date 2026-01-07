@@ -66,7 +66,6 @@ On first launch, you'll be guided through a setup wizard:
 
 1. **Welcome** - Introduction to OldPortal Launcher
 2. **AC Client Path** - Locate your `acclient.exe` installation
-3. **Account** - Create or log in to your OldPortal account
 4. **Decal** - Optionally install and configure Decal
 5. **Complete** - Start browsing worlds!
 
@@ -91,7 +90,6 @@ Securely store your account credentials:
 ### Server Management
 
 - **Favorites**: Star your favorite servers for quick access
-- **Recent Servers**: Automatically tracks your last played servers
 - **Manual Servers**: Add custom/private servers by IP and port
 - **Server Details**: View comprehensive server information and player counts
 
@@ -99,7 +97,7 @@ Securely store your account credentials:
 
 Optional support for the Decal plugin framework:
 - **Auto-Detection**: Automatically detects Decal installation
-- **Per-Launch Toggle**: Choose to enable/disable Decal per server
+- **Per-Launch Toggle**: Choose to enable/disable Decal
 - **Injection**: Seamless DLL injection for plugin support
 - **Multi-Client Compatible**: Works with multi-client when Dual Log is enabled in Decal
 
@@ -313,11 +311,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - ✅ Smart launch priority system (Decal > Native Hook > Standard)
 
 ### Future Plans
-- 🔄 Plugin manager
-- 🔄 Server ping/latency testing
-- 🔄 In-launcher news feed
-- 🔄 Theme customization
-- 🔄 macOS and Linux support (via Avalonia)
+- 🔄 Microsoft Trusted Signing
 
 ---
 
