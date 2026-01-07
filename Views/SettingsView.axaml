@@ -1,0 +1,618 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:OPLauncher.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="1024" d:DesignHeight="640"
+             x:Class="OPLauncher.Views.SettingsView"
+             x:DataType="vm:SettingsViewModel">
+
+    <Design.DataContext>
+        <vm:SettingsViewModel/>
+    </Design.DataContext>
+
+    <Grid Background="{DynamicResource SystemAltHighColor}">
+        <ScrollViewer VerticalScrollBarVisibility="Auto"
+                      HorizontalScrollBarVisibility="Disabled"
+                      BringIntoViewOnFocusChange="False">
+            <StackPanel Spacing="32" Margin="32" MaxWidth="800">
+                <!-- Header with Back Button -->
+                <Grid ColumnDefinitions="Auto,*">
+                    <Button Grid.Column="0"
+                            Content="← Back"
+                            Command="{Binding GoBackCommand}"
+                            Padding="12,8"
+                            Background="Transparent"
+                            Foreground="#4361EE"
+                            BorderBrush="{DynamicResource SystemAccentColor}"
+                            BorderThickness="1"
+                            CornerRadius="6"
+                            FontSize="14"
+                            VerticalAlignment="Center"
+                            Margin="0,0,16,0">
+                        <Button.Styles>
+                            <Style Selector="Button:pointerover">
+                                <Setter Property="Background" Value="#240046"/>
+                                <Setter Property="BorderBrush" Value="#B5179E"/>
+                            </Style>
+                        </Button.Styles>
+                    </Button>
+
+                    <TextBlock Grid.Column="1"
+                               Text="⚙️ Settings"
+                               FontSize="32"
+                               FontWeight="Bold"
+                               Foreground="{DynamicResource HighlightYellow}"
+                               VerticalAlignment="Center"/>
+                </Grid>
+
+                <!-- Game Settings Section -->
+                <StackPanel Spacing="16">
+                    <TextBlock Text="🎮 Game"
+                               FontSize="22"
+                               FontWeight="SemiBold"
+                               Foreground="{DynamicResource HighlightYellow}"/>
+
+                    <Border Background="{DynamicResource SystemAltMediumColor}"
+                            BorderBrush="{DynamicResource SystemAccentColor}"
+                            BorderThickness="1"
+                            CornerRadius="8"
+                            Padding="24">
+                        <StackPanel Spacing="20">
+                            <!-- AC Client Path -->
+                            <StackPanel Spacing="8">
+                                <TextBlock Text="Asheron's Call Client Path"
+                                           Foreground="{DynamicResource SystemBaseHighColor}"
+                                           FontSize="14"
+                                           FontWeight="SemiBold"/>
+                                <Grid ColumnDefinitions="*, Auto">
+                                    <TextBox Grid.Column="0"
+                                             Text="{Binding AcClientPath}"
+                                             Watermark="C:\Path\To\acclient.exe"
+                                             Padding="12,10"
+                                             FontSize="13"
+                                             Background="{DynamicResource SystemAltHighColor}"
+                                             Foreground="{DynamicResource SystemBaseHighColor}"
+                                             BorderBrush="{DynamicResource SystemAccentColor}"
+                                             BorderThickness="1"
+                                             CornerRadius="6"
+                                             Margin="0,0,12,0"/>
+
+                                    <Button Grid.Column="1"
+                                            Content="Browse..."
+                                            Command="{Binding BrowseAcClientCommand}"
+                                            Padding="16,10"
+                                            Background="{DynamicResource SystemAccentColorDark1}"
+                                            Foreground="{DynamicResource SystemBaseHighColor}"
+                                            BorderThickness="0"
+                                            CornerRadius="6"
+                                            FontSize="13"/>
+                                </Grid>
+
+                                <!-- Validation Message -->
+                                <StackPanel Spacing="6">
+                                    <Button Content="Validate Path"
+                                            Command="{Binding ValidateAcClientPathCommand}"
+                                            Padding="12,8"
+                                            Background="Transparent"
+                                            Foreground="#4361EE"
+                                            BorderBrush="{DynamicResource SystemAccentColor}"
+                                            BorderThickness="1"
+                                            CornerRadius="4"
+                                            FontSize="12"
+                                            HorizontalAlignment="Left"/>
+
+                                    <TextBlock Text="{Binding AcClientValidationMessage}"
+                                               FontSize="12"
+                                               IsVisible="{Binding AcClientValidationMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+                                </StackPanel>
+                            </StackPanel>
+
+                            <!-- Help Section -->
+                            <StackPanel Spacing="8">
+                                <TextBlock Text="Need assistance setting up the game client?"
+                                           Foreground="{DynamicResource SystemBaseMediumColor}"
+                                           FontSize="13"/>
+                                <Button Content="Need Help?"
+                                        Command="{Binding OpenGettingStartedCommand}"
+                                        Padding="16,10"
+                                        Background="{DynamicResource SystemAccentColorDark1}"
+                                        Foreground="{DynamicResource SystemBaseHighColor}"
+                                        BorderThickness="0"
+                                        CornerRadius="6"
+                                        FontSize="13"
+                                        HorizontalAlignment="Left"/>
+                            </StackPanel>
+
+                            <!-- Decal Section -->
+                            <StackPanel Spacing="8">
+                                <TextBlock Text="Decal Plugin Support"
+                                           Foreground="{DynamicResource SystemBaseHighColor}"
+                                           FontSize="14"
+                                           FontWeight="SemiBold"/>
+                                <CheckBox Content="Use Decal when launching game"
+                                          IsChecked="{Binding UseDecal}"
+                                          Foreground="{DynamicResource SystemBaseHighColor}"
+                                          FontSize="13"/>
+
+                                <!-- Decal Path Display -->
+                                <TextBox Text="{Binding DecalPath}"
+                                         Watermark="Decal not detected"
+                                         Padding="12,10"
+                                         FontSize="13"
+                                         Background="{DynamicResource SystemAltHighColor}"
+                                         Foreground="{DynamicResource SystemBaseHighColor}"
+                                         BorderBrush="{DynamicResource SystemAccentColor}"
+                                         BorderThickness="1"
+                                         CornerRadius="6"
+                                         IsReadOnly="True"
+                                         IsVisible="{Binding DecalPath, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
+                                         Margin="0,8,0,0"/>
+
+                                <!-- Validation Button and Message -->
+                                <StackPanel Spacing="6">
+                                    <Button Content="Detect Decal"
+                                            Command="{Binding ValidateDecalInstallationCommand}"
+                                            Padding="12,8"
+                                            Background="Transparent"
+                                            Foreground="#4361EE"
+                                            BorderBrush="{DynamicResource SystemAccentColor}"
+                                            BorderThickness="1"
+                                            CornerRadius="4"
+                                            FontSize="12"
+                                            HorizontalAlignment="Left"/>
+
+                                    <TextBlock Text="{Binding DecalValidationMessage}"
+                                               FontSize="12"
+                                               IsVisible="{Binding DecalValidationMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+                                </StackPanel>
+
+                                <Button Content="Need Decal?"
+                                        Command="{Binding OpenDecalWebsiteCommand}"
+                                        Padding="16,10"
+                                        Background="{DynamicResource SystemAccentColorDark1}"
+                                        Foreground="{DynamicResource SystemBaseHighColor}"
+                                        BorderThickness="0"
+                                        CornerRadius="6"
+                                        FontSize="13"
+                                        HorizontalAlignment="Left"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+
+                <!-- Multi-Client Settings Section -->
+                <StackPanel Spacing="16">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0"
+                                   Text="🔀 Multi-Client Support"
+                                   FontSize="22"
+                                   FontWeight="SemiBold"
+                                   Foreground="{DynamicResource HighlightYellow}"/>
+                        <Button Grid.Column="1"
+                                Content="❓ Help"
+                                Command="{Binding OpenMultiClientHelpCommand}"
+                                ToolTip.Tip="Open multi-client help documentation"
+                                Background="Transparent"
+                                BorderThickness="0"
+                                FontSize="14"
+                                Foreground="{DynamicResource SystemAccentColor}"/>
+                    </Grid>
+
+                    <Border Background="{DynamicResource SystemAltMediumColor}"
+                            BorderBrush="{DynamicResource SystemAccentColor}"
+                            BorderThickness="1"
+                            CornerRadius="8"
+                            Padding="24">
+                        <StackPanel Spacing="20">
+                            <!-- Description -->
+                            <TextBlock TextWrapping="Wrap"
+                                       Foreground="{DynamicResource SystemBaseMediumHighColor}"
+                                       FontSize="14">
+                                Multi-client support allows you to run multiple Asheron's Call clients simultaneously, bypassing the single-instance restriction.
+                            </TextBlock>
+
+                            <!-- Enable Multi-Client Toggle -->
+                            <StackPanel Spacing="8">
+                                <CheckBox Content="Enable multi-client support"
+                                          IsChecked="{Binding EnableMultiClient}"
+                                          Foreground="{DynamicResource SystemBaseHighColor}"
+                                          FontSize="14"
+                                          FontWeight="SemiBold"/>
+                                <TextBlock Text="Allows launching multiple game clients at once"
+                                           Foreground="{DynamicResource SystemBaseMediumColor}"
+                                           FontSize="12"
+                                           Margin="28,0,0,0"/>
+                            </StackPanel>
+
+                            <!-- Multi-Client Options (only visible when enabled) -->
+                            <StackPanel Spacing="20"
+                                        IsVisible="{Binding EnableMultiClient}">
+
+                                <!-- Auto-Configure UserPreferences.ini -->
+                                <StackPanel Spacing="8">
+                                    <CheckBox Content="Automatically configure UserPreferences.ini"
+                                              IsChecked="{Binding AutoConfigureUniquePort}"
+                                              Foreground="{DynamicResource SystemBaseHighColor}"
+                                              FontSize="13"/>
+                                    <TextBlock Text="Sets ComputeUniquePort=True automatically (recommended)"
+                                               TextWrapping="Wrap"
+                                               Foreground="{DynamicResource SystemBaseMediumColor}"
+                                               FontSize="11"
+                                               Margin="28,0,0,0"/>
+                                </StackPanel>
+
+                                <!-- Launch Delay Slider -->
+                                <StackPanel Spacing="8">
+                                    <TextBlock Text="Default Launch Delay"
+                                               Foreground="{DynamicResource SystemBaseHighColor}"
+                                               FontSize="13"
+                                               FontWeight="SemiBold"/>
+                                    <Grid ColumnDefinitions="*,Auto">
+                                        <Slider Grid.Column="0"
+                                                Minimum="0"
+                                                Maximum="30"
+                                                TickFrequency="1"
+                                                IsSnapToTickEnabled="True"
+                                                Value="{Binding DefaultLaunchDelay}"
+                                                Margin="0,0,16,0"/>
+                                        <TextBlock Grid.Column="1"
+                                                   Text="{Binding DefaultLaunchDelay, StringFormat='{}{0} seconds'}"
+                                                   Foreground="{DynamicResource SystemBaseHighColor}"
+                                                   FontSize="13"
+                                                   FontWeight="SemiBold"
+                                                   VerticalAlignment="Center"
+                                                   MinWidth="90"
+                                                   TextAlignment="Right"/>
+                                    </Grid>
+                                    <TextBlock Text="Delay between sequential client launches (0 = simultaneous)"
+                                               Foreground="{DynamicResource SystemBaseMediumColor}"
+                                               FontSize="11"
+                                               Margin="0,0,0,0"/>
+                                </StackPanel>
+
+                                <!-- Max Simultaneous Clients Slider -->
+                                <StackPanel Spacing="8">
+                                    <TextBlock Text="Maximum Simultaneous Clients"
+                                               Foreground="{DynamicResource SystemBaseHighColor}"
+                                               FontSize="13"
+                                               FontWeight="SemiBold"/>
+                                    <Grid ColumnDefinitions="*,Auto">
+                                        <Slider Grid.Column="0"
+                                                Minimum="1"
+                                                Maximum="50"
+                                                TickFrequency="1"
+                                                IsSnapToTickEnabled="True"
+                                                Value="{Binding MaxSimultaneousClients}"
+                                                Margin="0,0,16,0"/>
+                                        <TextBlock Grid.Column="1"
+                                                   Text="{Binding MaxSimultaneousClients, StringFormat='{}{0} clients'}"
+                                                   Foreground="{DynamicResource SystemBaseHighColor}"
+                                                   FontSize="13"
+                                                   FontWeight="SemiBold"
+                                                   VerticalAlignment="Center"
+                                                   MinWidth="90"
+                                                   TextAlignment="Right"/>
+                                    </Grid>
+                                    <TextBlock Text="Maximum number of game clients that can be launched"
+                                               Foreground="{DynamicResource SystemBaseMediumColor}"
+                                               FontSize="11"
+                                               Margin="0,0,0,0"/>
+                                </StackPanel>
+
+                                <!-- Divider -->
+                                <Border Height="1"
+                                        Background="{DynamicResource SystemAccentColor}"
+                                        Opacity="0.3"/>
+
+                                <!-- UserPreferences.ini Management -->
+                                <StackPanel Spacing="12">
+                                    <TextBlock Text="UserPreferences.ini Configuration"
+                                               Foreground="{DynamicResource SystemBaseHighColor}"
+                                               FontSize="13"
+                                               FontWeight="SemiBold"/>
+
+                                    <TextBlock TextWrapping="Wrap"
+                                               Foreground="{DynamicResource SystemBaseMediumColor}"
+                                               FontSize="12">
+                                        For multi-client to work, ComputeUniquePort must be enabled in your UserPreferences.ini file.
+                                    </TextBlock>
+
+                                    <!-- Status Message -->
+                                    <TextBlock Text="{Binding UserPreferencesStatusMessage}"
+                                               TextWrapping="Wrap"
+                                               FontSize="12"
+                                               Margin="0,0,0,0"
+                                               IsVisible="{Binding UserPreferencesStatusMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+
+                                    <!-- Action Buttons -->
+                                    <StackPanel Orientation="Horizontal" Spacing="12">
+                                        <Button Content="Check Status"
+                                                Command="{Binding CheckUserPreferencesCommand}"
+                                                Padding="12,8"
+                                                Background="Transparent"
+                                                Foreground="#4361EE"
+                                                BorderBrush="{DynamicResource SystemAccentColor}"
+                                                BorderThickness="1"
+                                                CornerRadius="4"
+                                                FontSize="12"/>
+
+                                        <Button Content="Configure Now"
+                                                Command="{Binding EnableUniquePortCommand}"
+                                                Padding="12,8"
+                                                Background="{DynamicResource SystemAccentColorDark1}"
+                                                Foreground="{DynamicResource SystemBaseHighColor}"
+                                                BorderThickness="0"
+                                                CornerRadius="4"
+                                                FontSize="12"/>
+
+                                        <Button Content="Open File Location"
+                                                Command="{Binding OpenUserPreferencesLocationCommand}"
+                                                Padding="12,8"
+                                                Background="Transparent"
+                                                Foreground="{DynamicResource SystemBaseHighColor}"
+                                                BorderBrush="{DynamicResource SystemAccentColor}"
+                                                BorderThickness="1"
+                                                CornerRadius="4"
+                                                FontSize="12"/>
+                                    </StackPanel>
+                                </StackPanel>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+
+                <!-- Appearance Settings Section -->
+                <StackPanel Spacing="16">
+                    <TextBlock Text="🎨 Appearance"
+                               FontSize="22"
+                               FontWeight="SemiBold"
+                               Foreground="{DynamicResource HighlightYellow}"/>
+
+                    <Border Background="{DynamicResource SystemAltMediumColor}"
+                            BorderBrush="{DynamicResource SystemAccentColor}"
+                            BorderThickness="1"
+                            CornerRadius="8"
+                            Padding="24">
+                        <StackPanel Spacing="16">
+                            <!-- Theme Selector -->
+                            <StackPanel Spacing="8">
+                                <TextBlock Text="Theme"
+                                           Foreground="{DynamicResource SystemBaseHighColor}"
+                                           FontSize="14"
+                                           FontWeight="SemiBold"/>
+                                <ComboBox SelectedItem="{Binding SelectedTheme}"
+                                          ItemsSource="{Binding ThemeOptions}"
+                                          PlaceholderText="Select theme"
+                                          MinWidth="200"
+                                          Padding="12,10"
+                                          Background="{DynamicResource SystemAltHighColor}"
+                                          Foreground="{DynamicResource SystemBaseHighColor}"
+                                          BorderBrush="{DynamicResource SystemAccentColor}"
+                                          BorderThickness="1"
+                                          CornerRadius="6"
+                                          HorizontalAlignment="Left"/>
+                                <TextBlock Text="Theme changes apply immediately"
+                                           Foreground="{DynamicResource SystemBaseMediumColor}"
+                                           FontSize="11"
+                                           Margin="4,0,0,0"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+
+                <!-- Updates Settings Section -->
+                <StackPanel Spacing="16">
+                    <TextBlock Text="🔄 Updates"
+                               FontSize="22"
+                               FontWeight="SemiBold"
+                               Foreground="{DynamicResource HighlightYellow}"/>
+
+                    <Border Background="{DynamicResource SystemAltMediumColor}"
+                            BorderBrush="{DynamicResource SystemAccentColor}"
+                            BorderThickness="1"
+                            CornerRadius="8"
+                            Padding="24">
+                        <StackPanel Spacing="20">
+                            <!-- Manual Update Instructions -->
+                            <TextBlock TextWrapping="Wrap"
+                                       Foreground="{DynamicResource SystemBaseMediumHighColor}"
+                                       FontSize="14">
+                                Download the latest launcher version from the OldPortal downloads page. Check manually for new releases.
+                            </TextBlock>
+
+                            <!-- Open Downloads Page Button -->
+                            <StackPanel Spacing="12">
+                                <Button Content="📥 View Downloads Page"
+                                        Command="{Binding OpenDownloadsPageCommand}"
+                                        Padding="16,10"
+                                        Background="{DynamicResource SystemAccentColorDark1}"
+                                        Foreground="{DynamicResource SystemBaseHighColor}"
+                                        BorderThickness="0"
+                                        CornerRadius="6"
+                                        FontSize="13"
+                                        HorizontalAlignment="Left"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+
+                <!-- About Section -->
+                <StackPanel Spacing="16">
+                    <TextBlock Text="ℹ️ About"
+                               FontSize="22"
+                               FontWeight="SemiBold"
+                               Foreground="{DynamicResource HighlightYellow}"/>
+
+                    <Border Background="{DynamicResource SystemAltMediumColor}"
+                            BorderBrush="{DynamicResource SystemAccentColor}"
+                            BorderThickness="1"
+                            CornerRadius="8"
+                            Padding="24">
+                        <StackPanel Spacing="20">
+                            <!-- Version Info -->
+                            <StackPanel Spacing="4">
+                                <TextBlock Text="Launcher Version"
+                                           Foreground="{DynamicResource SystemBaseMediumColor}"
+                                           FontSize="12"/>
+                                <TextBlock Text="{Binding LauncherVersion}"
+                                           Foreground="{DynamicResource SystemBaseHighColor}"
+                                           FontSize="16"
+                                           FontWeight="SemiBold"/>
+                            </StackPanel>
+
+                            <!-- Action Buttons -->
+                            <StackPanel Spacing="12">
+                                <Button Content="📁 View Logs"
+                                        Command="{Binding ViewLogsCommand}"
+                                        Padding="14,10"
+                                        Background="Transparent"
+                                        Foreground="{DynamicResource SystemBaseHighColor}"
+                                        BorderBrush="{DynamicResource SystemAccentColor}"
+                                        BorderThickness="1"
+                                        CornerRadius="6"
+                                        FontSize="13"
+                                        HorizontalAlignment="Left"
+                                        MinWidth="180">
+                                    <Button.Styles>
+                                        <Style Selector="Button:pointerover">
+                                            <Setter Property="BorderBrush" Value="#B5179E"/>
+                                        </Style>
+                                    </Button.Styles>
+                                </Button>
+
+                                <StackPanel Spacing="8">
+                                    <Button Content="🗑️ Clear Cache"
+                                            Command="{Binding ClearCacheCommand}"
+                                            Padding="14,10"
+                                            Background="Transparent"
+                                            Foreground="{DynamicResource SystemBaseHighColor}"
+                                            BorderBrush="{DynamicResource SystemAccentColor}"
+                                            BorderThickness="1"
+                                            CornerRadius="6"
+                                            FontSize="13"
+                                            HorizontalAlignment="Left"
+                                            MinWidth="180">
+                                        <Button.Styles>
+                                            <Style Selector="Button:pointerover">
+                                                <Setter Property="BorderBrush" Value="#B5179E"/>
+                                            </Style>
+                                        </Button.Styles>
+                                    </Button>
+
+                                    <!-- Clear Cache Status -->
+                                    <TextBlock Text="{Binding CacheStatusMessage}"
+                                               Foreground="{DynamicResource SuccessGreen}"
+                                               FontSize="12"
+                                               Margin="4,0,0,0"
+                                               IsVisible="{Binding CacheStatusMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+                                </StackPanel>
+                            </StackPanel>
+
+                            <!-- Copyright -->
+                            <TextBlock TextWrapping="Wrap"
+                                       Foreground="#707070"
+                                       FontSize="11"
+                                       Margin="0,12,0,0">
+                                <Run Text="© 2025 OldPortal.com"/>
+                                <LineBreak/>
+                                <Run Text="A community launcher for Asheron's Call Emulator servers"/>
+                            </TextBlock>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+
+                <!-- First-Run Setup Section -->
+                <StackPanel Spacing="16">
+                    <TextBlock Text="🚀 First-Run Setup"
+                               FontSize="22"
+                               FontWeight="SemiBold"
+                               Foreground="{DynamicResource HighlightYellow}"/>
+
+                    <Border Background="{DynamicResource SystemAltMediumColor}"
+                            BorderBrush="{DynamicResource SystemAccentColor}"
+                            BorderThickness="1"
+                            CornerRadius="8"
+                            Padding="24">
+                        <StackPanel Spacing="16">
+                            <TextBlock TextWrapping="Wrap"
+                                       Foreground="{DynamicResource SystemBaseMediumHighColor}"
+                                       FontSize="14">
+                                Need to reinstall components or run the setup wizard again? Use the button below to restart the onboarding process.
+                            </TextBlock>
+
+                            <Button Content="🔄 Re-run Setup Wizard"
+                                    Command="{Binding RerunOnboardingCommand}"
+                                    HorizontalAlignment="Left"
+                                    Padding="20,12"
+                                    FontSize="14"
+                                    FontWeight="SemiBold"
+                                    Background="Transparent"
+                                    Foreground="#FF6B35"
+                                    BorderBrush="#FF6B35"
+                                    BorderThickness="2"
+                                    CornerRadius="6">
+                                <Button.Styles>
+                                    <Style Selector="Button:pointerover">
+                                        <Setter Property="Background" Value="#FF6B35"/>
+                                        <Setter Property="Foreground" Value="White"/>
+                                    </Style>
+                                    <Style Selector="Button:pressed">
+                                        <Setter Property="Background" Value="#E85D2C"/>
+                                        <Setter Property="Foreground" Value="White"/>
+                                    </Style>
+                                </Button.Styles>
+                            </Button>
+
+                            <TextBlock Text="⚠️ This will reset the onboarding wizard and show the setup dialog on next restart."
+                                       TextWrapping="Wrap"
+                                       Foreground="#FFB400"
+                                       FontSize="12"
+                                       FontStyle="Italic"/>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+
+                <!-- Error/Success Messages -->
+                <TextBlock Text="{Binding ErrorMessage}"
+                           Foreground="#FF4444"
+                           TextWrapping="Wrap"
+                           FontSize="14"
+                           IsVisible="{Binding ErrorMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+
+                <TextBlock Text="{Binding SuccessMessage}"
+                           Foreground="{DynamicResource SuccessGreen}"
+                           TextWrapping="Wrap"
+                           FontSize="14"
+                           IsVisible="{Binding SuccessMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+
+                <!-- Save Button -->
+                <Button Content="💾 Save Settings"
+                        Command="{Binding SaveSettingsCommand}"
+                        HorizontalAlignment="Stretch"
+                        HorizontalContentAlignment="Center"
+                        Padding="0,16"
+                        FontSize="16"
+                        FontWeight="SemiBold"
+                        Background="{DynamicResource SystemAccentColorDark1}"
+                        Foreground="{DynamicResource SystemBaseHighColor}"
+                        BorderThickness="0"
+                        CornerRadius="8"
+                        Margin="0,8,0,0">
+                    <Button.Styles>
+                        <Style Selector="Button:pointerover">
+                            <Setter Property="Background" Value="#4361EE"/>
+                        </Style>
+                        <Style Selector="Button:pressed">
+                            <Setter Property="Background" Value="#240046"/>
+                        </Style>
+                    </Button.Styles>
+                </Button>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

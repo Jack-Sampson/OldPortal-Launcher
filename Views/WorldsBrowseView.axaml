@@ -1,0 +1,434 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:OPLauncher.ViewModels"
+             xmlns:controls="using:OPLauncher.Controls"
+             mc:Ignorable="d" d:DesignWidth="1024" d:DesignHeight="640"
+             x:Class="OPLauncher.Views.WorldsBrowseView"
+             x:DataType="vm:WorldsBrowseViewModel">
+
+    <Design.DataContext>
+        <vm:WorldsBrowseViewModel/>
+    </Design.DataContext>
+
+    <!-- Keyboard Shortcuts for Browse View -->
+    <UserControl.KeyBindings>
+        <!-- F5: Refresh server list -->
+        <KeyBinding Gesture="F5" Command="{Binding RefreshWorldsCommand}"/>
+
+        <!-- Ctrl+R: Refresh server list (alternative) -->
+        <KeyBinding Gesture="Ctrl+R" Command="{Binding RefreshWorldsCommand}"/>
+    </UserControl.KeyBindings>
+
+    <Grid Background="{DynamicResource SystemAltHighColor}">
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <StackPanel Spacing="32" Margin="32">
+
+                <!-- ========================================== -->
+                <!-- SECTION 1: FEATURED WORLD (Hero Card) -->
+                <!-- ========================================== -->
+                <StackPanel Spacing="12" x:Name="FeaturedSection" IsVisible="{Binding FeaturedWorld, Converter={x:Static ObjectConverters.IsNotNull}}">
+                    <TextBlock Text="🌟 Featured World"
+                               FontSize="24"
+                               FontWeight="SemiBold"
+                               Foreground="{DynamicResource HighlightYellow}"/>
+
+                    <TextBlock Text="Daily rotating featured server"
+                               FontSize="14"
+                               Foreground="{DynamicResource SystemBaseMediumColor}"
+                               Margin="0,-8,0,0"/>
+
+                    <!-- Hero Card (Large Featured Server) -->
+                    <Border Background="{DynamicResource BackgroundSecondaryBrush}"
+                            BorderBrush="{DynamicResource PrimaryBrush}"
+                            BorderThickness="2"
+                            CornerRadius="12"
+                            ClipToBounds="True"
+                            Height="300"
+                            Cursor="Hand">
+                        <Border.Styles>
+                            <Style Selector="Border:pointerover">
+                                <Setter Property="BorderBrush" Value="{DynamicResource HighlightYellow}" />
+                            </Style>
+                        </Border.Styles>
+
+                        <Grid>
+                            <!-- Main Card Button (for navigation) -->
+                            <Button Command="{Binding ShowWorldDetailsCommand}"
+                                    CommandParameter="{Binding FeaturedWorld}"
+                                    Background="Transparent"
+                                    BorderThickness="0"
+                                    Padding="0"
+                                    HorizontalContentAlignment="Stretch"
+                                    VerticalContentAlignment="Stretch"
+                                    Cursor="Hand">
+                                <Grid RowDefinitions="*,Auto">
+                                <!-- Server Banner Image (from API or fallback) -->
+                                <Image Grid.Row="0"
+                                       Source="{Binding FeaturedWorldBannerUrl, Converter={StaticResource ImageUriConverter}}"
+                                       Stretch="UniformToFill"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"/>
+
+                                <!-- Overlay Gradient -->
+                                <Border Grid.Row="0" VerticalAlignment="Bottom" Height="150">
+                                    <Border.Background>
+                                        <LinearGradientBrush StartPoint="0%,0%" EndPoint="0%,100%">
+                                            <GradientStop Color="#00000000" Offset="0"/>
+                                            <GradientStop Color="#DD000000" Offset="1"/>
+                                        </LinearGradientBrush>
+                                    </Border.Background>
+                                </Border>
+
+                                <!-- Server Info Overlay -->
+                                <StackPanel Grid.Row="0" VerticalAlignment="Bottom" Spacing="8" Margin="24">
+                                    <TextBlock Text="{Binding FeaturedWorld.Name}"
+                                               FontSize="32"
+                                               FontWeight="Bold"
+                                               Foreground="White"
+                                               TextWrapping="Wrap"/>
+
+                                    <TextBlock Text="{Binding FeaturedWorld.Description, Converter={StaticResource DescriptionCleanupConverter}}"
+                                               FontSize="16"
+                                               Foreground="#DDDDDD"
+                                               TextWrapping="Wrap"
+                                               MaxLines="2"
+                                               TextTrimming="CharacterEllipsis"/>
+
+                                    <StackPanel Orientation="Horizontal" Spacing="16">
+                                        <Border Background="{DynamicResource PrimaryBrush}"
+                                                Padding="12,6"
+                                                CornerRadius="6">
+                                            <TextBlock Text="{Binding FeaturedWorld.PlayerCount, StringFormat='{}{0} Players'}"
+                                                       FontWeight="SemiBold"
+                                                       Foreground="White"/>
+                                        </Border>
+                                        <Border Background="{DynamicResource BackgroundTertiaryBrush}"
+                                                Padding="12,6"
+                                                CornerRadius="6">
+                                            <TextBlock Text="{Binding FeaturedWorld.EffectiveRuleSet}"
+                                                       FontWeight="SemiBold"
+                                                       Foreground="{DynamicResource TextPrimaryBrush}"/>
+                                        </Border>
+                                        <Border Background="{DynamicResource SuccessGreen}"
+                                                Padding="12,6"
+                                                CornerRadius="6"
+                                                IsVisible="{Binding FeaturedWorld.IsOnline}">
+                                            <TextBlock Text="ONLINE"
+                                                       FontWeight="SemiBold"
+                                                       Foreground="White"/>
+                                        </Border>
+                                    </StackPanel>
+                                </StackPanel>
+                            </Grid>
+                        </Button>
+
+                        <!-- Favorite Star - Top Left (overlays the card) -->
+                        <Button Command="{Binding ToggleFeaturedWorldFavoriteCommand}"
+                                Background="Transparent"
+                                BorderThickness="0"
+                                Width="48"
+                                Height="48"
+                                Padding="0"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Top"
+                                Margin="16"
+                                ZIndex="1">
+                            <TextBlock Text="{Binding IsFeaturedWorldFavorite, Converter={StaticResource FavoriteStarConverter}}"
+                                       FontSize="28"
+                                       VerticalAlignment="Center"
+                                       HorizontalAlignment="Center" />
+                        </Button>
+                    </Grid>
+                    </Border>
+                </StackPanel>
+
+                <!-- ========================================== -->
+                <!-- SECTION 2: RECENT SERVERS (Last 3) -->
+                <!-- ========================================== -->
+                <StackPanel Spacing="12" x:Name="RecentSection" IsVisible="{Binding RecentServers.Count}">
+                    <TextBlock Text="🕒 Recent Servers"
+                               FontSize="24"
+                               FontWeight="SemiBold"
+                               Foreground="{DynamicResource SystemBaseHighColor}"/>
+
+                    <TextBlock Text="Last 3 servers you played"
+                               FontSize="14"
+                               Foreground="{DynamicResource SystemBaseMediumColor}"
+                               Margin="0,-8,0,0"/>
+
+                    <ItemsControl ItemsSource="{Binding RecentServers}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel Orientation="Horizontal"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Button Command="{Binding PlayCommand}"
+                                        Background="Transparent"
+                                        BorderThickness="0"
+                                        Padding="0"
+                                        Margin="0,0,24,0"
+                                        Cursor="Hand">
+                                    <controls:ServerCard />
+                                </Button>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+
+                <!-- ========================================== -->
+                <!-- SECTION 3: FAVORITES -->
+                <!-- ========================================== -->
+                <StackPanel Spacing="12" x:Name="FavoritesSection" IsVisible="{Binding FavoriteServers.Count}">
+                    <TextBlock Text="⭐ Favorites"
+                               FontSize="24"
+                               FontWeight="SemiBold"
+                               Foreground="{DynamicResource SystemBaseHighColor}"/>
+
+                    <TextBlock Text="Your favorited worlds"
+                               FontSize="14"
+                               Foreground="{DynamicResource SystemBaseMediumColor}"
+                               Margin="0,-8,0,0"/>
+
+                    <ItemsControl ItemsSource="{Binding FavoriteServers}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel Orientation="Horizontal"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Button Command="{Binding PlayCommand}"
+                                        Background="Transparent"
+                                        BorderThickness="0"
+                                        Padding="0"
+                                        Margin="0,0,24,24"
+                                        Cursor="Hand">
+                                    <controls:ServerCard />
+                                </Button>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+
+                <!-- ========================================== -->
+                <!-- SECTION 4: ALL WORLDS -->
+                <!-- ========================================== -->
+                <StackPanel Spacing="12" x:Name="AllWorldsSection">
+                    <Grid ColumnDefinitions="*,Auto">
+                        <TextBlock Grid.Column="0"
+                                   Text="🌐 All Worlds"
+                                   FontSize="24"
+                                   FontWeight="SemiBold"
+                                   Foreground="{DynamicResource SystemBaseHighColor}"
+                                   VerticalAlignment="Center"/>
+
+                        <TextBlock Grid.Column="1"
+                                   Text="{Binding AllOtherWorlds.Count, StringFormat='{}{0} servers'}"
+                                   FontSize="16"
+                                   Foreground="{DynamicResource SystemBaseMediumColor}"
+                                   VerticalAlignment="Center"/>
+                    </Grid>
+
+                    <TextBlock Text="Browse all available servers"
+                               FontSize="14"
+                               Foreground="{DynamicResource SystemBaseMediumColor}"
+                               Margin="0,-8,0,0"/>
+
+                    <!-- Search and Filter Controls -->
+                    <Grid ColumnDefinitions="*,Auto,Auto,Auto,Auto,Auto" Margin="0,8,0,0">
+                        <!-- Search Box -->
+                        <TextBox x:Name="SearchTextBox"
+                                 Grid.Column="0"
+                                 Text="{Binding SearchText}"
+                                 Watermark="Search worlds by name or description..."
+                                 Height="48"
+                                 Padding="14,12"
+                                 FontSize="14"
+                                 Background="{DynamicResource SystemAltMediumColor}"
+                                 Foreground="{DynamicResource SystemBaseHighColor}"
+                                 BorderBrush="{DynamicResource SystemAccentColor}"
+                                 BorderThickness="1"
+                                 CornerRadius="6"
+                                 Margin="0,0,16,0"/>
+
+                        <!-- Online Only Checkbox -->
+                        <CheckBox Grid.Column="1"
+                                  IsChecked="{Binding ShowOnlineOnly}"
+                                  Content="Online Only"
+                                  FontSize="14"
+                                  Foreground="{DynamicResource SystemBaseHighColor}"
+                                  VerticalAlignment="Center"
+                                  Margin="0,0,16,0"/>
+
+                        <!-- Filter Dropdown -->
+                        <ComboBox Grid.Column="2"
+                                  ItemsSource="{Binding RuleSetFilters}"
+                                  SelectedItem="{Binding SelectedRuleSetFilter}"
+                                  PlaceholderText="Filter by RuleSet"
+                                  MinWidth="180"
+                                  Height="48"
+                                  Padding="14,12"
+                                  FontSize="14"
+                                  Background="{DynamicResource SystemAltMediumColor}"
+                                  Foreground="{DynamicResource SystemBaseHighColor}"
+                                  BorderBrush="{DynamicResource SystemAccentColor}"
+                                  BorderThickness="1"
+                                  CornerRadius="6"
+                                  Margin="0,0,16,0">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding DisplayName}"/>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+
+                        <!-- Sort Option Dropdown -->
+                        <ComboBox Grid.Column="3"
+                                  ItemsSource="{Binding SortOptions}"
+                                  PlaceholderText="Sort By"
+                                  MinWidth="160"
+                                  Height="48"
+                                  Padding="14,12"
+                                  FontSize="14"
+                                  Background="{DynamicResource SystemAltMediumColor}"
+                                  Foreground="{DynamicResource SystemBaseHighColor}"
+                                  BorderBrush="{DynamicResource SystemAccentColor}"
+                                  BorderThickness="1"
+                                  CornerRadius="6"
+                                  Margin="0,0,16,0">
+                            <ComboBox.SelectedValue>
+                                <Binding Path="SelectedSortOption" Mode="TwoWay"/>
+                            </ComboBox.SelectedValue>
+                            <ComboBox.SelectedValueBinding>
+                                <Binding Path="Value"/>
+                            </ComboBox.SelectedValueBinding>
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding DisplayName}"/>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+
+                        <!-- Sort Direction Dropdown -->
+                        <ComboBox Grid.Column="4"
+                                  ItemsSource="{Binding SortDirections}"
+                                  PlaceholderText="Direction"
+                                  MinWidth="140"
+                                  Height="48"
+                                  Padding="14,12"
+                                  FontSize="14"
+                                  Background="{DynamicResource SystemAltMediumColor}"
+                                  Foreground="{DynamicResource SystemBaseHighColor}"
+                                  BorderBrush="{DynamicResource SystemAccentColor}"
+                                  BorderThickness="1"
+                                  CornerRadius="6">
+                            <ComboBox.SelectedValue>
+                                <Binding Path="SelectedSortDirection" Mode="TwoWay"/>
+                            </ComboBox.SelectedValue>
+                            <ComboBox.SelectedValueBinding>
+                                <Binding Path="Value"/>
+                            </ComboBox.SelectedValueBinding>
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding DisplayName}"/>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+
+                        <!-- Refresh Button and Last Updated Indicator -->
+                        <StackPanel Grid.Column="5"
+                                    Orientation="Horizontal"
+                                    Spacing="12"
+                                    VerticalAlignment="Center"
+                                    Margin="16,0,0,0">
+                            <!-- Refresh Button -->
+                            <Button Command="{Binding RefreshWorldsCommand}"
+                                    Content="🔄"
+                                    Width="48"
+                                    Height="48"
+                                    FontSize="20"
+                                    Background="{DynamicResource SystemAltMediumColor}"
+                                    BorderBrush="{DynamicResource SystemAccentColor}"
+                                    BorderThickness="1"
+                                    CornerRadius="6"
+                                    ToolTip.Tip="Refresh server list (F5 or Ctrl+R)"/>
+
+                            <!-- Last Updated Text -->
+                            <TextBlock Text="{Binding LastUpdateText}"
+                                       FontSize="12"
+                                       Foreground="{DynamicResource SystemBaseMediumColor}"
+                                       VerticalAlignment="Center"
+                                       IsVisible="{Binding ShowLastUpdateText}"/>
+                        </StackPanel>
+                    </Grid>
+
+                    <!-- All Worlds Grid -->
+                    <ItemsControl ItemsSource="{Binding AllOtherWorlds}" Margin="0,16,0,0">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel Orientation="Horizontal"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Button Command="{Binding PlayCommand}"
+                                        Background="Transparent"
+                                        BorderThickness="0"
+                                        Padding="0"
+                                        Margin="0,0,24,24"
+                                        Cursor="Hand">
+                                    <controls:ServerCard />
+                                </Button>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+
+                    <!-- Empty State for All Worlds -->
+                    <Border Background="{DynamicResource SystemAltMediumColor}"
+                            BorderBrush="{DynamicResource SystemBaseMediumColor}"
+                            BorderThickness="1"
+                            CornerRadius="8"
+                            Padding="48"
+                            IsVisible="{Binding !AllOtherWorlds.Count}">
+                        <StackPanel Spacing="16" HorizontalAlignment="Center">
+                            <TextBlock Text="🔍"
+                                       FontSize="64"
+                                       HorizontalAlignment="Center"
+                                       Opacity="0.5"/>
+                            <TextBlock Text="No worlds found"
+                                       FontSize="20"
+                                       FontWeight="SemiBold"
+                                       Foreground="{DynamicResource SystemBaseHighColor}"
+                                       HorizontalAlignment="Center"/>
+                            <TextBlock Text="Try adjusting your search or filters"
+                                       FontSize="14"
+                                       Foreground="{DynamicResource SystemBaseMediumColor}"
+                                       HorizontalAlignment="Center"/>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+
+                <!-- Loading Indicator -->
+                <Border Background="{DynamicResource SystemAltMediumColor}"
+                        BorderBrush="{DynamicResource SystemAccentColor}"
+                        BorderThickness="1"
+                        CornerRadius="8"
+                        Padding="32"
+                        IsVisible="{Binding IsLoading}">
+                    <StackPanel Spacing="16" HorizontalAlignment="Center">
+                        <TextBlock Text="Loading worlds..."
+                                   FontSize="18"
+                                   FontWeight="SemiBold"
+                                   Foreground="{DynamicResource SystemBaseHighColor}"
+                                   HorizontalAlignment="Center"/>
+                    </StackPanel>
+                </Border>
+
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

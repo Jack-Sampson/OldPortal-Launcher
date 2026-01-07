@@ -1,0 +1,478 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:OPLauncher.ViewModels"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="900" d:DesignHeight="800"
+             x:Class="OPLauncher.Views.GeneralHelpView"
+             x:DataType="vm:GeneralHelpViewModel">
+
+  <Design.DataContext>
+    <vm:GeneralHelpViewModel/>
+  </Design.DataContext>
+
+  <ScrollViewer VerticalScrollBarVisibility="Auto"
+                HorizontalScrollBarVisibility="Disabled">
+    <StackPanel Spacing="20" MaxWidth="900" Margin="20">
+
+      <!-- Header -->
+      <TextBlock Text="OldPortal Launcher Help"
+                 FontSize="28"
+                 FontWeight="Bold"
+                 Foreground="{DynamicResource SystemAccentColor}"/>
+
+      <TextBlock Text="Your gateway to the worlds of Dereth"
+                 FontSize="14"
+                 Foreground="{DynamicResource SystemBaseMediumColor}"
+                 Margin="0,-15,0,0"/>
+
+      <!-- Quick Navigation -->
+      <Border Background="{DynamicResource SystemAltMediumColor}"
+              BorderBrush="{DynamicResource SystemAccentColor}"
+              BorderThickness="1"
+              CornerRadius="6"
+              Padding="15">
+        <StackPanel Spacing="8">
+          <TextBlock Text="Quick Navigation" FontWeight="Bold" FontSize="16"/>
+          <TextBlock TextWrapping="Wrap" Foreground="{DynamicResource SystemBaseMediumColor}">
+            <Run Text="• Getting Started"/><LineBreak/>
+            <Run Text="• Browse Worlds"/><LineBreak/>
+            <Run Text="• Launch a Server"/><LineBreak/>
+            <Run Text="• Manage Credentials"/><LineBreak/>
+            <Run Text="• Multi-Client (see dedicated help)"/><LineBreak/>
+            <Run Text="• Settings"/><LineBreak/>
+            <Run Text="• Troubleshooting"/><LineBreak/>
+            <Run Text="• Log Files"/><LineBreak/>
+            <Run Text="• Support"/>
+          </TextBlock>
+        </StackPanel>
+      </Border>
+
+      <!-- Getting Started -->
+      <StackPanel Spacing="10">
+        <TextBlock Text="Getting Started"
+                   FontSize="22"
+                   FontWeight="Bold"
+                   Foreground="{DynamicResource SystemAccentColor}"/>
+
+        <TextBlock TextWrapping="Wrap">
+          <Run Text="OldPortal Launcher is your unified gateway to browse and connect to Asheron's Call emulator servers through the OldPortal.com platform."/>
+        </TextBlock>
+
+        <TextBlock Text="First-Time Setup:" FontWeight="Bold" Margin="0,10,0,0"/>
+        <TextBlock TextWrapping="Wrap">
+          <Run Text="1. "/><Run FontWeight="Bold" Text="Install the Launcher"/><Run Text=" - Run the OPLauncher-Setup.exe installer. The launcher will install to your chosen directory and can run without administrator privileges."/><LineBreak/><LineBreak/>
+          <Run Text="2. "/><Run FontWeight="Bold" Text="Configure Your AC Install"/><Run Text=" - Go to Settings and set your 'Asheron's Call Install Path' to the folder containing acclient.exe (example: C:\Games\Asheron's Call)."/><LineBreak/><LineBreak/>
+          <Run Text="3. "/><Run FontWeight="Bold" Text="Browse Worlds"/><Run Text=" - Click 'Browse Worlds' to see all available servers. The launcher will cache server data for faster loading."/><LineBreak/><LineBreak/>
+          <Run Text="4. "/><Run FontWeight="Bold" Text="Launch Your First Server"/><Run Text=" - Click on any server to see details, then click the play button to launch!"/>
+        </TextBlock>
+      </StackPanel>
+
+      <!-- Browse Worlds -->
+      <StackPanel Spacing="10">
+        <TextBlock Text="Browse Worlds"
+                   FontSize="22"
+                   FontWeight="Bold"
+                   Foreground="{DynamicResource SystemAccentColor}"/>
+
+        <TextBlock TextWrapping="Wrap">
+          <Run Text="The Browse Worlds view displays all available Asheron's Call servers from OldPortal.com."/>
+        </TextBlock>
+
+        <TextBlock Text="Features:" FontWeight="Bold" Margin="0,10,0,0"/>
+        <TextBlock TextWrapping="Wrap">
+          <Run Text="• "/><Run FontWeight="Bold" Text="Search"/><Run Text=" - Use the search box to filter servers by name or description."/><LineBreak/><LineBreak/>
+          <Run Text="• "/><Run FontWeight="Bold" Text="Filter by Category"/><Run Text=" - Click category buttons (All, Favorites, PVE, PVP, Custom, etc.) to narrow results."/><LineBreak/><LineBreak/>
+          <Run Text="• "/><Run FontWeight="Bold" Text="Server Status"/><Run Text=" - Green 'Online' badge = server is running. Offline servers show in gray."/><LineBreak/><LineBreak/>
+          <Run Text="• "/><Run FontWeight="Bold" Text="Favorites"/><Run Text=" - Click the heart icon on any server to add it to your favorites for quick access."/><LineBreak/><LineBreak/>
+          <Run Text="• "/><Run FontWeight="Bold" Text="Refresh"/><Run Text=" - Click the refresh button (🔄) or press F5 to manually reload the server list."/><LineBreak/><LineBreak/>
+          <Run Text="• "/><Run FontWeight="Bold" Text="Performance"/><Run Text=" - Server data is cached in memory for instant navigation. The cache only refreshes when you restart the launcher or click the refresh button."/>
+        </TextBlock>
+
+        <TextBlock Text="Offline Mode:" FontWeight="Bold" Margin="0,10,0,0"/>
+        <TextBlock TextWrapping="Wrap">
+          <Run Text="If OldPortal.com is unavailable, the launcher will use cached server data from your last successful connection. A banner will appear at the top indicating offline mode."/>
+        </TextBlock>
+      </StackPanel>
+
+      <!-- Launch a Server -->
+      <StackPanel Spacing="10">
+        <TextBlock Text="Launch a Server"
+                   FontSize="22"
+                   FontWeight="Bold"
+                   Foreground="{DynamicResource SystemAccentColor}"/>
+
+        <TextBlock TextWrapping="Wrap">
+          <Run Text="Click on any server in Browse Worlds to see the server detail page."/>
+        </TextBlock>
+
+        <TextBlock Text="Launch Options:" FontWeight="Bold" Margin="0,10,0,0"/>
+        <TextBlock TextWrapping="Wrap">
+          <Run Text="• "/><Run FontWeight="Bold" Text="Quick Launch"/><Run Text=" - Click the '▶️ Play' button to launch with default settings (no saved credentials)."/><LineBreak/><LineBreak/>
+          <Run Text="• "/><Run FontWeight="Bold" Text="Launch with Saved Credentials"/><Run Text=" - If you have saved credentials, select one from the dropdown and click '▶️ Launch with [Username]'."/><LineBreak/><LineBreak/>
+          <Run Text="• "/><Run FontWeight="Bold" Text="Multi-Client Launch"/><Run Text=" - If multi-client is enabled and you have 2+ credentials saved, a '🚀 Multi-Client Launch' button will appear. See the dedicated Multi-Client Help for details."/>
+        </TextBlock>
+
+        <TextBlock Text="Server Details:" FontWeight="Bold" Margin="0,10,0,0"/>
+        <TextBlock TextWrapping="Wrap">
+          <Run Text="The detail page shows:"/><LineBreak/>
+          <Run Text="• Server description and rules"/><LineBreak/>
+          <Run Text="• Recent news updates"/><LineBreak/>
+          <Run Text="• Connection information (host, port, EMU version)"/><LineBreak/>
+          <Run Text="• Links to view the server on OldPortal.com or share with friends"/>
+        </TextBlock>
+
+        <TextBlock Text="What Happens When You Launch:" FontWeight="Bold" Margin="0,10,0,0"/>
+        <TextBlock TextWrapping="Wrap">
+          <Run Text="1. The launcher writes connection details to your UserPreferences.ini file."/><LineBreak/>
+          <Run Text="2. If you selected saved credentials, the launcher injects the username/password."/><LineBreak/>
+          <Run Text="3. The Asheron's Call client (acclient.exe) starts and connects automatically."/><LineBreak/>
+          <Run Text="4. A 'Launched!' notification appears when the client is running."/>
+        </TextBlock>
+      </StackPanel>
+
+      <!-- Manage Credentials -->
+      <StackPanel Spacing="10">
+        <TextBlock Text="Manage Credentials"
+                   FontSize="22"
+                   FontWeight="Bold"
+                   Foreground="{DynamicResource SystemAccentColor}"/>
+
+        <TextBlock TextWrapping="Wrap">
+          <Run Text="You can save account credentials for each server to enable quick launching and multi-client support."/>
+        </TextBlock>
+
+        <TextBlock Text="Adding Credentials:" FontWeight="Bold" Margin="0,10,0,0"/>
+        <TextBlock TextWrapping="Wrap">
+          <Run Text="1. Navigate to any server's detail page."/><LineBreak/>
+          <Run Text="2. Enter your account username and password in the form."/><LineBreak/>
+          <Run Text="3. Click '💾 Save Credential' to store it."/><LineBreak/>
+          <Run Text="4. Your credentials are encrypted using Windows Data Protection API (DPAPI) and stored locally - they are never sent to OldPortal.com."/>
+        </TextBlock>
+
+        <TextBlock Text="Managing Saved Credentials:" FontWeight="Bold" Margin="0,10,0,0"/>
+        <TextBlock TextWrapping="Wrap">
+          <Run Text="• "/><Run FontWeight="Bold" Text="Edit"/><Run Text=" - Click the edit icon (✏️) next to a credential to modify the password."/><LineBreak/><LineBreak/>
+          <Run Text="• "/><Run FontWeight="Bold" Text="Delete"/><Run Text=" - Click the trash icon (🗑️) to permanently remove a credential."/><LineBreak/><LineBreak/>
+          <Run Text="• "/><Run FontWeight="Bold" Text="Set Primary"/><Run Text=" - Your most recently saved credential becomes the default for quick launching."/>
+        </TextBlock>
+
+        <TextBlock Text="Security:" FontWeight="Bold" Margin="0,10,0,0"/>
+        <TextBlock TextWrapping="Wrap">
+          <Run Text="All credentials are encrypted using DPAPI with CurrentUser scope. This means:"/><LineBreak/>
+          <Run Text="• Only your Windows user account can decrypt them"/><LineBreak/>
+          <Run Text="• They cannot be copied to another computer or user account"/><LineBreak/>
+          <Run Text="• They are stored in a local LiteDB database (not in the cloud)"/>
+        </TextBlock>
+      </StackPanel>
+
+      <!-- Multi-Client -->
+      <StackPanel Spacing="10">
+        <TextBlock Text="Multi-Client"
+                   FontSize="22"
+                   FontWeight="Bold"
+                   Foreground="{DynamicResource SystemAccentColor}"/>
+
+        <TextBlock TextWrapping="Wrap">
+          <Run Text="OldPortal Launcher supports launching multiple Asheron's Call clients simultaneously - perfect for multi-boxing or running multiple accounts at once."/>
+        </TextBlock>
+
+        <Border Background="{DynamicResource SystemAltMediumColor}"
+                BorderBrush="{DynamicResource SystemAccentColor}"
+                BorderThickness="2"
+                CornerRadius="6"
+                Padding="15"
+                Margin="0,10,0,0">
+          <StackPanel Spacing="10">
+            <TextBlock Text="📚 Dedicated Help Available" FontWeight="Bold" FontSize="16"/>
+            <TextBlock TextWrapping="Wrap">
+              Multi-client has its own comprehensive help page with setup instructions, troubleshooting, and FAQ.
+            </TextBlock>
+            <Button Content="Open Multi-Client Help"
+                    Command="{Binding OpenMultiClientHelpCommand}"
+                    HorizontalAlignment="Left"
+                    Padding="12,6"/>
+          </StackPanel>
+        </Border>
+
+        <TextBlock Text="Quick Overview:" FontWeight="Bold" Margin="0,10,0,0"/>
+        <TextBlock TextWrapping="Wrap">
+          <Run Text="1. Go to Settings and enable 'Enable Multi-Client Support'"/><LineBreak/>
+          <Run Text="2. Click 'Auto-Configure UserPreferences.ini' to apply required settings"/><LineBreak/>
+          <Run Text="3. Save 2 or more credentials for a server"/><LineBreak/>
+          <Run Text="4. The '🚀 Multi-Client Launch' button will appear on that server's detail page"/>
+        </TextBlock>
+      </StackPanel>
+
+      <!-- Settings -->
+      <StackPanel Spacing="10">
+        <TextBlock Text="Settings"
+                   FontSize="22"
+                   FontWeight="Bold"
+                   Foreground="{DynamicResource SystemAccentColor}"/>
+
+        <TextBlock TextWrapping="Wrap">
+          <Run Text="Access Settings from the main navigation menu to configure the launcher."/>
+        </TextBlock>
+
+        <TextBlock Text="Available Settings:" FontWeight="Bold" Margin="0,10,0,0"/>
+
+        <StackPanel Spacing="15">
+          <!-- AC Install Path -->
+          <StackPanel Spacing="5">
+            <TextBlock Text="Asheron's Call Install Path" FontWeight="Bold"/>
+            <TextBlock TextWrapping="Wrap" Foreground="{DynamicResource SystemBaseMediumColor}">
+              The folder containing acclient.exe. The launcher needs this to start the game client. You can browse to select the folder or paste the path directly.
+            </TextBlock>
+            <TextBlock TextWrapping="Wrap" FontStyle="Italic" FontSize="12" Foreground="{DynamicResource SystemBaseMediumColor}">
+              Example: C:\Games\Asheron's Call
+            </TextBlock>
+          </StackPanel>
+
+          <!-- Multi-Client Support -->
+          <StackPanel Spacing="5">
+            <TextBlock Text="Enable Multi-Client Support" FontWeight="Bold"/>
+            <TextBlock TextWrapping="Wrap" Foreground="{DynamicResource SystemBaseMediumColor}">
+              When enabled, you can launch multiple AC clients simultaneously. This modifies your UserPreferences.ini file to allow multiple instances. Click 'Auto-Configure UserPreferences.ini' to apply required settings automatically.
+            </TextBlock>
+          </StackPanel>
+
+          <!-- Close Launcher -->
+          <StackPanel Spacing="5">
+            <TextBlock Text="Close Launcher After Starting Game" FontWeight="Bold"/>
+            <TextBlock TextWrapping="Wrap" Foreground="{DynamicResource SystemBaseMediumColor}">
+              When enabled, the launcher will automatically close after successfully launching the game client. Useful if you want to minimize system resources while playing.
+            </TextBlock>
+          </StackPanel>
+
+          <!-- Decal -->
+          <StackPanel Spacing="5">
+            <TextBlock Text="Enable Decal Support" FontWeight="Bold"/>
+            <TextBlock TextWrapping="Wrap" Foreground="{DynamicResource SystemBaseMediumColor}">
+              Launches the Asheron's Call client with Decal plugin support enabled. If Decal is configured to inject automatically, it will load when the client starts. Note: Decal requires the launcher to run as administrator.
+            </TextBlock>
+          </StackPanel>
+        </StackPanel>
+
+        <TextBlock Text="UserPreferences.ini Location:" FontWeight="Bold" Margin="0,10,0,0"/>
+        <TextBlock TextWrapping="Wrap" Foreground="{DynamicResource SystemBaseMediumColor}">
+          <Run Text="The launcher automatically detects your UserPreferences.ini file from your AC install path. Multi-client settings are written to this file when you click 'Auto-Configure UserPreferences.ini'."/>
+        </TextBlock>
+      </StackPanel>
+
+      <!-- Troubleshooting -->
+      <StackPanel Spacing="10">
+        <TextBlock Text="Troubleshooting"
+                   FontSize="22"
+                   FontWeight="Bold"
+                   Foreground="{DynamicResource SystemAccentColor}"/>
+
+        <TextBlock Text="Common Issues and Solutions:" FontWeight="Bold"/>
+
+        <StackPanel Spacing="15">
+          <!-- Issue 1 -->
+          <StackPanel Spacing="5">
+            <TextBlock Text="❌ 'Failed to launch game: acclient.exe not found'" FontWeight="Bold" Foreground="#D32F2F"/>
+            <TextBlock TextWrapping="Wrap">
+              <Run Text="Solution:"/><LineBreak/>
+              <Run Text="1. Go to Settings"/><LineBreak/>
+              <Run Text="2. Set your 'Asheron's Call Install Path' to the folder containing acclient.exe"/><LineBreak/>
+              <Run Text="3. Make sure you have a valid Asheron's Call client installed (the launcher does not include the game files)"/>
+            </TextBlock>
+          </StackPanel>
+
+          <!-- Issue 2 -->
+          <StackPanel Spacing="5">
+            <TextBlock Text="❌ 'Connection failed' or 'Server not responding'" FontWeight="Bold" Foreground="#D32F2F"/>
+            <TextBlock TextWrapping="Wrap">
+              <Run Text="Solution:"/><LineBreak/>
+              <Run Text="1. Check that the server shows 'Online' status in Browse Worlds"/><LineBreak/>
+              <Run Text="2. Verify your firewall is not blocking acclient.exe"/><LineBreak/>
+              <Run Text="3. Try refreshing the server list (🔄 button) to get updated connection info"/><LineBreak/>
+              <Run Text="4. Some servers may be temporarily down for maintenance"/>
+            </TextBlock>
+          </StackPanel>
+
+          <!-- Issue 3 -->
+          <StackPanel Spacing="5">
+            <TextBlock Text="❌ Multi-client launch button not appearing" FontWeight="Bold" Foreground="#D32F2F"/>
+            <TextBlock TextWrapping="Wrap">
+              <Run Text="Solution:"/><LineBreak/>
+              <Run Text="1. Enable 'Enable Multi-Client Support' in Settings"/><LineBreak/>
+              <Run Text="2. Click 'Auto-Configure UserPreferences.ini' in Settings"/><LineBreak/>
+              <Run Text="3. Save at least 2 credentials for the server you want to multi-box"/><LineBreak/>
+              <Run Text="4. Restart the launcher if the button still doesn't appear"/>
+            </TextBlock>
+          </StackPanel>
+
+          <!-- Issue 4 -->
+          <StackPanel Spacing="5">
+            <TextBlock Text="❌ Decal not loading" FontWeight="Bold" Foreground="#D32F2F"/>
+            <TextBlock TextWrapping="Wrap">
+              <Run Text="Solution:"/><LineBreak/>
+              <Run Text="1. Make sure 'Enable Decal Support' is checked in Settings"/><LineBreak/>
+              <Run Text="2. Right-click the launcher and select 'Run as administrator' - Decal requires admin privileges"/><LineBreak/>
+              <Run Text="3. Verify Decal is installed and configured to inject automatically"/><LineBreak/>
+              <Run Text="4. Check Decal's own documentation for injection troubleshooting"/>
+            </TextBlock>
+          </StackPanel>
+
+          <!-- Issue 5 -->
+          <StackPanel Spacing="5">
+            <TextBlock Text="❌ 'Login failed' or incorrect credentials" FontWeight="Bold" Foreground="#D32F2F"/>
+            <TextBlock TextWrapping="Wrap">
+              <Run Text="Solution:"/><LineBreak/>
+              <Run Text="1. Verify your username and password are correct for that specific server"/><LineBreak/>
+              <Run Text="2. Account credentials are server-specific - you need to create an account on each server"/><LineBreak/>
+              <Run Text="3. If you saved credentials from an old password, edit or delete the saved credential and add a new one"/><LineBreak/>
+              <Run Text="4. Some servers require account creation through their website or Discord"/>
+            </TextBlock>
+          </StackPanel>
+
+          <!-- Issue 6 -->
+          <StackPanel Spacing="5">
+            <TextBlock Text="❌ Launcher won't start or crashes immediately" FontWeight="Bold" Foreground="#D32F2F"/>
+            <TextBlock TextWrapping="Wrap">
+              <Run Text="Solution:"/><LineBreak/>
+              <Run Text="1. Check the log files (see 'Log Files' section below) for error details"/><LineBreak/>
+              <Run Text="2. Make sure you have .NET 9.0 runtime installed (the launcher is self-contained, but some dependencies may be missing)"/><LineBreak/>
+              <Run Text="3. Try reinstalling the launcher from oldportal.com/downloads"/><LineBreak/>
+              <Run Text="4. If issues persist, ask for help on Discord (see 'Support' section below)"/>
+            </TextBlock>
+          </StackPanel>
+
+          <!-- Issue 7 -->
+          <StackPanel Spacing="5">
+            <TextBlock Text="❌ 'Offline mode' banner showing when internet is working" FontWeight="Bold" Foreground="#D32F2F"/>
+            <TextBlock TextWrapping="Wrap">
+              <Run Text="Solution:"/><LineBreak/>
+              <Run Text="1. OldPortal.com may be temporarily down for maintenance"/><LineBreak/>
+              <Run Text="2. Check your firewall is not blocking the launcher from accessing oldportal.com"/><LineBreak/>
+              <Run Text="3. Click the refresh button (🔄) to retry connecting to the API"/><LineBreak/>
+              <Run Text="4. You can still launch servers using cached data, but server information may be outdated"/>
+            </TextBlock>
+          </StackPanel>
+        </StackPanel>
+      </StackPanel>
+
+      <!-- Log Files -->
+      <StackPanel Spacing="10">
+        <TextBlock Text="Log Files"
+                   FontSize="22"
+                   FontWeight="Bold"
+                   Foreground="{DynamicResource SystemAccentColor}"/>
+
+        <TextBlock TextWrapping="Wrap">
+          <Run Text="The launcher automatically creates detailed log files to help diagnose issues."/>
+        </TextBlock>
+
+        <TextBlock Text="Log Location:" FontWeight="Bold" Margin="0,10,0,0"/>
+        <TextBlock TextWrapping="Wrap" Foreground="{DynamicResource SystemBaseMediumColor}">
+          <Run FontFamily="Consolas" Text="%LOCALAPPDATA%\OldPortal\launcher\logs\"/><LineBreak/><LineBreak/>
+          <Run Text="(Example: C:\Users\YourName\AppData\Local\OldPortal\launcher\logs\)"/>
+        </TextBlock>
+
+        <TextBlock Text="Log Retention:" FontWeight="Bold" Margin="0,10,0,0"/>
+        <TextBlock TextWrapping="Wrap">
+          <Run Text="Log files are kept for 30 days, then automatically deleted. Each log file is named with a date stamp (e.g., "/>
+          <Run FontFamily="Consolas" Text="launcher-20260104.log"/>
+          <Run Text=")."/>
+        </TextBlock>
+
+        <TextBlock Text="What's Logged:" FontWeight="Bold" Margin="0,10,0,0"/>
+        <TextBlock TextWrapping="Wrap">
+          <Run Text="• Launcher startup and initialization"/><LineBreak/>
+          <Run Text="• API calls to OldPortal.com (but NOT your credentials)"/><LineBreak/>
+          <Run Text="• Server launches and connection attempts"/><LineBreak/>
+          <Run Text="• Errors and warnings"/><LineBreak/>
+          <Run Text="• File operations (writing UserPreferences.ini, etc.)"/>
+        </TextBlock>
+
+        <TextBlock Text="Privacy Note:" FontWeight="Bold" Margin="0,10,0,0"/>
+        <TextBlock TextWrapping="Wrap" Foreground="{DynamicResource SystemBaseMediumColor}">
+          <Run Text="Logs do NOT contain your account passwords, saved credentials, or any personally identifiable information. They are safe to share when requesting support."/>
+        </TextBlock>
+      </StackPanel>
+
+      <!-- Support -->
+      <StackPanel Spacing="10">
+        <TextBlock Text="Support"
+                   FontSize="22"
+                   FontWeight="Bold"
+                   Foreground="{DynamicResource SystemAccentColor}"/>
+
+        <TextBlock TextWrapping="Wrap">
+          <Run Text="Need help? Have questions? Join the OldPortal community!"/>
+        </TextBlock>
+
+        <Border Background="{DynamicResource SystemAltMediumColor}"
+                BorderBrush="{DynamicResource SystemAccentColor}"
+                BorderThickness="2"
+                CornerRadius="6"
+                Padding="15"
+                Margin="0,10,0,0">
+          <StackPanel Spacing="10">
+            <TextBlock Text="💬 Discord Community" FontWeight="Bold" FontSize="16"/>
+            <TextBlock TextWrapping="Wrap">
+              Join our Discord server for:
+            </TextBlock>
+            <TextBlock TextWrapping="Wrap" Margin="10,0,0,0">
+              <Run Text="• Live support and troubleshooting"/><LineBreak/>
+              <Run Text="• Server announcements and updates"/><LineBreak/>
+              <Run Text="• Community discussion"/><LineBreak/>
+              <Run Text="• Feature requests and feedback"/>
+            </TextBlock>
+            <Button Content="Join Discord Server"
+                    Command="{Binding OpenExternalLinkCommand}"
+                    CommandParameter="https://discord.gg/UKdy2b9zBe"
+                    HorizontalAlignment="Left"
+                    Padding="12,6"/>
+          </StackPanel>
+        </Border>
+
+        <TextBlock Text="Other Resources:" FontWeight="Bold" Margin="0,10,0,0"/>
+        <StackPanel Spacing="8">
+          <HyperlinkButton Content="OldPortal.com - Main Website"
+                          Command="{Binding OpenExternalLinkCommand}"
+                          CommandParameter="https://oldportal.com"
+                          Padding="0"/>
+          <HyperlinkButton Content="OldPortal.com/downloads - Download Latest Version"
+                          Command="{Binding OpenExternalLinkCommand}"
+                          CommandParameter="https://oldportal.com/downloads"
+                          Padding="0"/>
+        </StackPanel>
+
+        <TextBlock Text="Reporting Bugs:" FontWeight="Bold" Margin="0,10,0,0"/>
+        <TextBlock TextWrapping="Wrap">
+          <Run Text="If you encounter a bug, please report it on Discord with:"/><LineBreak/>
+          <Run Text="• A description of what you were doing"/><LineBreak/>
+          <Run Text="• Any error messages you saw"/><LineBreak/>
+          <Run Text="• Your log file from "/><Run FontFamily="Consolas" Text="%LOCALAPPDATA%\OldPortal\launcher\logs\"/><LineBreak/>
+          <Run Text="• Your launcher version (currently shown in Settings)"/>
+        </TextBlock>
+      </StackPanel>
+
+      <!-- Footer -->
+      <Border Background="{DynamicResource SystemAltMediumColor}"
+              BorderBrush="{DynamicResource SystemBaseMediumColor}"
+              BorderThickness="1"
+              CornerRadius="6"
+              Padding="15"
+              Margin="0,20,0,20">
+        <StackPanel Spacing="8">
+          <TextBlock Text="About OldPortal Launcher"
+                     FontWeight="Bold"
+                     FontSize="14"/>
+          <TextBlock TextWrapping="Wrap"
+                     FontSize="12"
+                     Foreground="{DynamicResource SystemBaseMediumColor}">
+            <Run Text="OldPortal Launcher is your gateway to the worlds of Dereth. Browse, launch, and manage Asheron's Call emulator servers through the OldPortal.com platform."/><LineBreak/><LineBreak/>
+            <Run Text="This launcher is open-source and community-driven. We welcome feedback, bug reports, and contributions!"/>
+          </TextBlock>
+        </StackPanel>
+      </Border>
+
+    </StackPanel>
+  </ScrollViewer>
+
+</UserControl>

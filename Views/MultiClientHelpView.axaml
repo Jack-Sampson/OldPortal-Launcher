@@ -1,0 +1,369 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:OPLauncher.ViewModels"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="600"
+             x:Class="OPLauncher.Views.MultiClientHelpView"
+             x:DataType="vm:MultiClientHelpViewModel">
+
+  <ScrollViewer>
+    <StackPanel Margin="20" Spacing="15">
+
+      <!-- Title -->
+      <TextBlock Text="Multi-Client Support - Help &amp; Documentation"
+                 FontSize="24"
+                 FontWeight="Bold"
+                 Margin="0,0,0,10"/>
+
+      <!-- Overview Section -->
+      <Expander Header="📖 Overview" IsExpanded="True">
+        <StackPanel Margin="10" Spacing="10">
+          <TextBlock Text="What is Multi-Client?" FontWeight="Bold" FontSize="14"/>
+          <TextBlock TextWrapping="Wrap">
+            Multi-client support allows you to launch multiple Asheron's Call clients simultaneously from a single installation. This is commonly used for:
+          </TextBlock>
+          <StackPanel Margin="20,0,0,0" Spacing="5">
+            <TextBlock Text="• Running multiple characters for trading, buffing, or item transfers"/>
+            <TextBlock Text="• Multi-boxing with bot armies using tools like VTank"/>
+            <TextBlock Text="• Testing character builds or running parallel quests"/>
+            <TextBlock Text="• Managing allegiances or fellowships across multiple accounts"/>
+          </StackPanel>
+
+          <TextBlock Text="System Requirements" FontWeight="Bold" FontSize="14" Margin="0,10,0,0"/>
+          <TextBlock TextWrapping="Wrap">
+            • Windows operating system
+            • Single AC installation (no multiple installs required)
+            • Configured UserPreferences.ini file (ComputeUniquePort=True)
+            • Sufficient RAM (AC uses ~200-500MB per client)
+            • Multi-client enabled in OldPortal Launcher settings
+          </TextBlock>
+
+          <TextBlock Text="Important Notes" FontWeight="Bold" FontSize="14" Margin="0,10,0,0"/>
+          <StackPanel Margin="20,0,0,0" Spacing="5">
+            <TextBlock Text="✓ NO Decal required - works with vanilla AC client" Foreground="Green"/>
+            <TextBlock Text="✓ NO multiple AC installs needed - uses your single installation" Foreground="Green"/>
+            <TextBlock Text="✓ Legal and safe - uses standard client with no modifications" Foreground="Green"/>
+            <TextBlock Text="⚠ Check server policies - some servers may restrict multi-boxing" Foreground="Orange"/>
+          </StackPanel>
+        </StackPanel>
+      </Expander>
+
+      <!-- Getting Started Section -->
+      <Expander Header="🚀 Getting Started">
+        <StackPanel Margin="10" Spacing="10">
+          <TextBlock Text="Step 1: Enable Multi-Client in Settings" FontWeight="Bold" FontSize="14"/>
+          <TextBlock TextWrapping="Wrap">
+            1. Navigate to Settings in the launcher
+            2. Find the "Multi-Client Settings" section
+            3. Check the "Enable multi-client support" checkbox
+            4. Configure optional settings (launch delay, max clients)
+            5. Click "Save Settings"
+          </TextBlock>
+
+          <TextBlock Text="Step 2: Configure UserPreferences.ini" FontWeight="Bold" FontSize="14" Margin="0,10,0,0"/>
+          <TextBlock TextWrapping="Wrap" FontWeight="Bold" Foreground="Orange">
+            ⚠ CRITICAL STEP - Required for multi-client to work!
+          </TextBlock>
+          <TextBlock TextWrapping="Wrap">
+            The launcher can automatically configure this for you:
+          </TextBlock>
+          <StackPanel Margin="20,5,0,0" Spacing="5">
+            <TextBlock Text="1. In Settings, check 'Auto-configure UserPreferences.ini when enabled'"/>
+            <TextBlock Text="2. Click 'Configure Now' button"/>
+            <TextBlock Text="3. The launcher will backup and update your UserPreferences.ini"/>
+          </StackPanel>
+          <TextBlock TextWrapping="Wrap" Margin="0,5,0,0">
+            Manual configuration (if needed):
+          </TextBlock>
+          <StackPanel Margin="20,5,0,0" Spacing="5">
+            <TextBlock Text="1. Click 'Open UserPreferences.ini Location' in Settings"/>
+            <TextBlock Text="2. Edit the file in a text editor"/>
+            <TextBlock Text="3. Find or add: ComputeUniquePort=True"/>
+            <TextBlock Text="4. Save the file and restart AC if it's running"/>
+          </StackPanel>
+          <Border Background="#333333" CornerRadius="4" Padding="10" Margin="0,5,0,0">
+            <TextBlock FontFamily="Consolas" Foreground="LightGreen">
+              [Options]
+              ComputeUniquePort=True
+            </TextBlock>
+          </Border>
+
+          <TextBlock Text="Step 3: Launch Your First Multi-Client Session" FontWeight="Bold" FontSize="14" Margin="0,10,0,0"/>
+          <TextBlock TextWrapping="Wrap">
+            1. Navigate to a server's detail page
+            2. Ensure you have 2+ saved credentials for that server
+            3. Click the "🚀 Multi-Client Launch" button
+            4. Select accounts, set delays, and click "Launch Selected"
+          </TextBlock>
+        </StackPanel>
+      </Expander>
+
+      <!-- Quick Launch Section -->
+      <Expander Header="⚡ Quick Launch">
+        <StackPanel Margin="10" Spacing="10">
+          <TextBlock Text="Using the Multi-Launch Dialog" FontWeight="Bold" FontSize="14"/>
+          <TextBlock TextWrapping="Wrap">
+            The quick launch dialog provides a fast way to launch multiple accounts without creating a saved batch group.
+          </TextBlock>
+
+          <TextBlock Text="Selecting Accounts" FontWeight="Bold" FontSize="14" Margin="0,10,0,0"/>
+          <StackPanel Margin="20,0,0,0" Spacing="5">
+            <TextBlock Text="• Check the boxes next to accounts you want to launch"/>
+            <TextBlock Text="• Use 'Select All' to quickly select all available accounts"/>
+            <TextBlock Text="• Use 'Select None' to deselect all"/>
+          </StackPanel>
+
+          <TextBlock Text="Setting Launch Delays" FontWeight="Bold" FontSize="14" Margin="0,10,0,0"/>
+          <TextBlock TextWrapping="Wrap">
+            Delays prevent system overload and ensure stable launches:
+          </TextBlock>
+          <StackPanel Margin="20,0,0,0" Spacing="5">
+            <TextBlock Text="• Recommended: 3-5 seconds for stability"/>
+            <TextBlock Text="• Fast launch: 0-2 seconds (requires good hardware)"/>
+            <TextBlock Text="• Conservative: 5-10 seconds (guaranteed stability)"/>
+            <TextBlock Text="• Each account can have a different delay"/>
+          </StackPanel>
+
+          <TextBlock Text="Sequential Launch" FontWeight="Bold" FontSize="14" Margin="0,10,0,0"/>
+          <TextBlock TextWrapping="Wrap">
+            The "Launch sequentially" option determines launch behavior:
+          </TextBlock>
+          <StackPanel Margin="20,0,0,0" Spacing="5">
+            <TextBlock Text="• Sequential (checked): Launches one account, waits for delay, then next"/>
+            <TextBlock Text="• Simultaneous (unchecked): Respects individual delays but launches in parallel"/>
+            <TextBlock Text="• Sequential is more stable for large batches"/>
+          </StackPanel>
+        </StackPanel>
+      </Expander>
+
+      <!-- Batch Groups Section -->
+      <Expander Header="📋 Batch Groups">
+        <StackPanel Margin="10" Spacing="10">
+          <TextBlock Text="What are Batch Groups?" FontWeight="Bold" FontSize="14"/>
+          <TextBlock TextWrapping="Wrap">
+            Batch groups are saved multi-client launch profiles for a specific server. They store your account selection, launch order, and delays so you can quickly re-launch the same configuration.
+          </TextBlock>
+
+          <TextBlock Text="Creating a Batch Group" FontWeight="Bold" FontSize="14" Margin="0,10,0,0"/>
+          <StackPanel Margin="20,0,0,0" Spacing="5">
+            <TextBlock Text="1. Navigate to a server's detail page"/>
+            <TextBlock Text="2. Ensure you have 2+ saved credentials"/>
+            <TextBlock Text="3. Click 'Show Batch Management'"/>
+            <TextBlock Text="4. Click 'New Batch'"/>
+            <TextBlock Text="5. Configure your batch and click 'Save'"/>
+          </StackPanel>
+
+          <TextBlock Text="Editing and Reordering" FontWeight="Bold" FontSize="14" Margin="0,10,0,0"/>
+          <TextBlock TextWrapping="Wrap">
+            Within the batch management section, you can:
+          </TextBlock>
+          <StackPanel Margin="20,0,0,0" Spacing="5">
+            <TextBlock Text="• Add or remove accounts from a batch"/>
+            <TextBlock Text="• Adjust launch delays for each account"/>
+            <TextBlock Text="• Reorder accounts by changing the 'Order' field"/>
+            <TextBlock Text="• Add notes to remember batch configurations"/>
+          </StackPanel>
+
+          <TextBlock Text="Favorites and Quick Launch" FontWeight="Bold" FontSize="14" Margin="0,10,0,0"/>
+          <TextBlock TextWrapping="Wrap">
+            Mark a batch as favorite (⭐) to quickly identify your preferred configuration. Only one batch per server can be marked as favorite.
+          </TextBlock>
+          <StackPanel Margin="20,0,0,0" Spacing="5">
+            <TextBlock Text="• Select a batch from the list"/>
+            <TextBlock Text="• Click 'Launch' to start that batch immediately"/>
+            <TextBlock Text="• The most recently used batch appears at the top"/>
+          </StackPanel>
+        </StackPanel>
+      </Expander>
+
+      <!-- Troubleshooting Section -->
+      <Expander Header="🔧 Troubleshooting">
+        <StackPanel Margin="10" Spacing="10">
+          <TextBlock Text="&quot;Only one client allowed&quot; Error" FontWeight="Bold" FontSize="14"/>
+          <StackPanel Margin="20,0,0,0" Spacing="5">
+            <TextBlock Text="Problem: AC shows an error preventing multiple instances" TextWrapping="Wrap"/>
+            <TextBlock Text="Solution: Check UserPreferences.ini configuration" FontWeight="Bold" Foreground="Orange"/>
+            <TextBlock Text="  1. Go to Settings → Multi-Client Settings" TextWrapping="Wrap"/>
+            <TextBlock Text="  2. Click 'Check Status' to verify configuration" TextWrapping="Wrap"/>
+            <TextBlock Text="  3. If not configured, click 'Configure Now'" TextWrapping="Wrap"/>
+            <TextBlock Text="  4. Restart any running AC clients" TextWrapping="Wrap"/>
+          </StackPanel>
+
+          <TextBlock Text="Clients Won't Launch" FontWeight="Bold" FontSize="14" Margin="0,10,0,0"/>
+          <StackPanel Margin="20,0,0,0" Spacing="5">
+            <TextBlock Text="Problem: Nothing happens when launching" TextWrapping="Wrap"/>
+            <TextBlock Text="Solutions:" FontWeight="Bold"/>
+            <TextBlock Text="  • Verify AC client path in Settings" TextWrapping="Wrap"/>
+            <TextBlock Text="  • Increase launch delays (try 5 seconds)" TextWrapping="Wrap"/>
+            <TextBlock Text="  • Check that credentials are still valid" TextWrapping="Wrap"/>
+            <TextBlock Text="  • Review launcher logs for errors" TextWrapping="Wrap"/>
+          </StackPanel>
+
+          <TextBlock Text="Port Conflicts" FontWeight="Bold" FontSize="14" Margin="0,10,0,0"/>
+          <StackPanel Margin="20,0,0,0" Spacing="5">
+            <TextBlock Text="Problem: Clients conflict or can't connect" TextWrapping="Wrap"/>
+            <TextBlock Text="Solution: Verify ComputeUniquePort=True" FontWeight="Bold" Foreground="Orange"/>
+            <TextBlock Text="  • This setting makes each client use a unique port" TextWrapping="Wrap"/>
+            <TextBlock Text="  • Without it, multiple clients will conflict" TextWrapping="Wrap"/>
+            <TextBlock Text="  • Use Settings → Configure Now to fix automatically" TextWrapping="Wrap"/>
+          </StackPanel>
+
+          <TextBlock Text="Performance Issues" FontWeight="Bold" FontSize="14" Margin="0,10,0,0"/>
+          <StackPanel Margin="20,0,0,0" Spacing="5">
+            <TextBlock Text="Problem: System slows down with many clients" TextWrapping="Wrap"/>
+            <TextBlock Text="Solutions:" FontWeight="Bold"/>
+            <TextBlock Text="  • Reduce number of simultaneous launches" TextWrapping="Wrap"/>
+            <TextBlock Text="  • Increase launch delays to 5-10 seconds" TextWrapping="Wrap"/>
+            <TextBlock Text="  • Set MaxSimultaneousClients limit in Settings" TextWrapping="Wrap"/>
+            <TextBlock Text="  • Close unnecessary background applications" TextWrapping="Wrap"/>
+            <TextBlock Text="  • Upgrade RAM if running 20+ clients regularly" TextWrapping="Wrap"/>
+          </StackPanel>
+
+          <TextBlock Text="Firewall Warnings" FontWeight="Bold" FontSize="14" Margin="0,10,0,0"/>
+          <StackPanel Margin="20,0,0,0" Spacing="5">
+            <TextBlock Text="Problem: Windows Firewall shows warnings" TextWrapping="Wrap"/>
+            <TextBlock Text="Expected Behavior:" FontWeight="Bold" Foreground="Green"/>
+            <TextBlock Text="  • Each AC client instance may trigger a firewall prompt" TextWrapping="Wrap"/>
+            <TextBlock Text="  • Allow access on private networks" TextWrapping="Wrap"/>
+            <TextBlock Text="  • This is normal and safe" TextWrapping="Wrap"/>
+          </StackPanel>
+        </StackPanel>
+      </Expander>
+
+      <!-- Tips & Best Practices Section -->
+      <Expander Header="💡 Tips &amp; Best Practices">
+        <StackPanel Margin="10" Spacing="10">
+          <TextBlock Text="Recommended Launch Delays" FontWeight="Bold" FontSize="14"/>
+          <StackPanel Margin="20,0,0,0" Spacing="5">
+            <TextBlock Text="• 3-5 seconds: Balanced stability for most systems"/>
+            <TextBlock Text="• 0 seconds: Simultaneous launch (requires good hardware)"/>
+            <TextBlock Text="• 5-10 seconds: Maximum stability for older systems"/>
+            <TextBlock Text="• Experiment to find what works best for your PC"/>
+          </StackPanel>
+
+          <TextBlock Text="How Many Clients Can I Run?" FontWeight="Bold" FontSize="14" Margin="0,10,0,0"/>
+          <TextBlock TextWrapping="Wrap">
+            There's no hard limit - it depends on your hardware and use case:
+          </TextBlock>
+          <StackPanel Margin="20,0,0,0" Spacing="5">
+            <TextBlock Text="• AC is lightweight (~200-500MB RAM per client)"/>
+            <TextBlock Text="• Most modern PCs can easily handle 10+ clients"/>
+            <TextBlock Text="• Bot armies with VTank: 20+ clients is common"/>
+            <TextBlock Text="• Your system will self-regulate - you'll know when it's too many"/>
+          </StackPanel>
+
+          <TextBlock Text="Window Management" FontWeight="Bold" FontSize="14" Margin="0,10,0,0"/>
+          <TextBlock TextWrapping="Wrap">
+            Managing multiple AC windows can be challenging. Consider these tools:
+          </TextBlock>
+          <StackPanel Margin="20,0,0,0" Spacing="5">
+            <TextBlock Text="• AltDrag: Move and resize windows easily"/>
+            <TextBlock Text="• WindowGrid: Snap windows to grid layouts"/>
+            <TextBlock Text="• Windows built-in: Win+Arrow keys for basic snapping"/>
+            <TextBlock Text="• Multiple monitors greatly improve multi-boxing experience"/>
+          </StackPanel>
+
+          <TextBlock Text="Bot Armies &amp; Automation" FontWeight="Bold" FontSize="14" Margin="0,10,0,0"/>
+          <StackPanel Margin="20,0,0,0" Spacing="5">
+            <TextBlock Text="• VTank and other tools can manage 20+ clients"/>
+            <TextBlock Text="• Useful for automated gameplay and bot armies"/>
+            <TextBlock Text="• Check server policies - some restrict automation"/>
+            <TextBlock Text="• Start small and scale up as you learn"/>
+          </StackPanel>
+
+          <TextBlock Text="Server Policies" FontWeight="Bold" FontSize="14" Margin="0,10,0,0"/>
+          <StackPanel Margin="20,0,0,0" Spacing="5">
+            <TextBlock Text="⚠ Important: Check each server's rules regarding multi-boxing" Foreground="Orange" TextWrapping="Wrap"/>
+            <TextBlock Text="  • Some servers restrict number of simultaneous clients" TextWrapping="Wrap"/>
+            <TextBlock Text="  • Some servers prohibit bot automation" TextWrapping="Wrap"/>
+            <TextBlock Text="  • Most servers allow multi-boxing for legitimate use" TextWrapping="Wrap"/>
+            <TextBlock Text="  • When in doubt, check with server admins" TextWrapping="Wrap"/>
+          </StackPanel>
+
+          <TextBlock Text="Network Considerations" FontWeight="Bold" FontSize="14" Margin="0,10,0,0"/>
+          <StackPanel Margin="20,0,0,0" Spacing="5">
+            <TextBlock Text="• 10+ clients = increased bandwidth usage"/>
+            <TextBlock Text="• May affect household internet during gameplay"/>
+            <TextBlock Text="• Generally not an issue for modern broadband"/>
+            <TextBlock Text="• Consider network quality for competitive gameplay"/>
+          </StackPanel>
+
+          <TextBlock Text="Credential Management" FontWeight="Bold" FontSize="14" Margin="0,10,0,0"/>
+          <StackPanel Margin="20,0,0,0" Spacing="5">
+            <TextBlock Text="• Save credentials for all accounts you want to multi-box"/>
+            <TextBlock Text="• Batch groups are server-specific"/>
+            <TextBlock Text="• Use descriptive names for easy identification"/>
+            <TextBlock Text="• Credentials are encrypted with Windows DPAPI"/>
+          </StackPanel>
+        </StackPanel>
+      </Expander>
+
+      <!-- FAQ Section -->
+      <Expander Header="❓ Frequently Asked Questions">
+        <StackPanel Margin="10" Spacing="10">
+          <StackPanel Spacing="5">
+            <TextBlock Text="Q: Do I need Decal to use multi-client?" FontWeight="Bold"/>
+            <TextBlock Text="A: NO! Multi-client works with the vanilla AC client without any modifications." Foreground="Green" TextWrapping="Wrap"/>
+          </StackPanel>
+
+          <StackPanel Spacing="5" Margin="0,10,0,0">
+            <TextBlock Text="Q: Do I need multiple AC installs?" FontWeight="Bold"/>
+            <TextBlock Text="A: NO! You only need your single AC installation. The launcher uses suspended process launching to bypass the single-instance restriction." Foreground="Green" TextWrapping="Wrap"/>
+          </StackPanel>
+
+          <StackPanel Spacing="5" Margin="0,10,0,0">
+            <TextBlock Text="Q: Can I launch clients on different servers?" FontWeight="Bold"/>
+            <TextBlock Text="A: YES! However, batch groups are server-specific. You'll need separate batches for each server." Foreground="Green" TextWrapping="Wrap"/>
+          </StackPanel>
+
+          <StackPanel Spacing="5" Margin="0,10,0,0">
+            <TextBlock Text="Q: Why can I only launch one client?" FontWeight="Bold"/>
+            <TextBlock Text="A: You need to configure UserPreferences.ini with ComputeUniquePort=True. Use Settings → Configure Now to fix this automatically." Foreground="Orange" TextWrapping="Wrap"/>
+          </StackPanel>
+
+          <StackPanel Spacing="5" Margin="0,10,0,0">
+            <TextBlock Text="Q: How many clients can I run simultaneously?" FontWeight="Bold"/>
+            <TextBlock Text="A: There's no hard limit. AC is lightweight (~200-500MB per client). Most modern PCs can handle 10+ easily. Bot armies commonly run 20+. Set MaxSimultaneousClients in Settings as a safety limit." TextWrapping="Wrap"/>
+          </StackPanel>
+
+          <StackPanel Spacing="5" Margin="0,10,0,0">
+            <TextBlock Text="Q: What are the recommended launch delays?" FontWeight="Bold"/>
+            <TextBlock Text="A: 3-5 seconds for balanced stability. 0 seconds for fast simultaneous launch (good hardware required). 5-10 seconds for maximum stability on older systems." TextWrapping="Wrap"/>
+          </StackPanel>
+
+          <StackPanel Spacing="5" Margin="0,10,0,0">
+            <TextBlock Text="Q: Can I use this with VTank or other bot tools?" FontWeight="Bold"/>
+            <TextBlock Text="A: YES! Multi-client is commonly used with VTank for bot armies (20+ clients). Check server policies regarding automation." Foreground="Green" TextWrapping="Wrap"/>
+          </StackPanel>
+
+          <StackPanel Spacing="5" Margin="0,10,0,0">
+            <TextBlock Text="Q: Does multi-client work with Decal?" FontWeight="Bold"/>
+            <TextBlock Text="A: Multi-client works with or without Decal. Decal is not required, but if you have it installed, it will work normally." TextWrapping="Wrap"/>
+          </StackPanel>
+
+          <StackPanel Spacing="5" Margin="0,10,0,0">
+            <TextBlock Text="Q: Where is UserPreferences.ini located?" FontWeight="Bold"/>
+            <TextBlock Text="A: Click 'Open UserPreferences.ini Location' in Settings → Multi-Client Settings. It's typically in your AC installation directory." TextWrapping="Wrap"/>
+          </StackPanel>
+
+          <StackPanel Spacing="5" Margin="0,10,0,0">
+            <TextBlock Text="Q: Can I save different batch configurations?" FontWeight="Bold"/>
+            <TextBlock Text="A: YES! Create multiple batch groups for different purposes (trading, questing, bot army, etc.). Each batch saves account selection, order, and delays." Foreground="Green" TextWrapping="Wrap"/>
+          </StackPanel>
+        </StackPanel>
+      </Expander>
+
+      <!-- Action Buttons -->
+      <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="10" Margin="0,20,0,0">
+        <Button Content="🔧 Test Configuration"
+                Command="{Binding TestConfigurationCommand}"
+                ToolTip.Tip="Test your UserPreferences.ini configuration"/>
+        <Button Content="📂 Open UserPreferences Folder"
+                Command="{Binding OpenUserPreferencesLocationCommand}"
+                ToolTip.Tip="Open the folder containing UserPreferences.ini"/>
+      </StackPanel>
+
+    </StackPanel>
+  </ScrollViewer>
+</UserControl>

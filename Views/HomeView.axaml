@@ -1,0 +1,207 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:OPLauncher.ViewModels"
+             xmlns:controls="using:OPLauncher.Controls"
+             mc:Ignorable="d" d:DesignWidth="1024" d:DesignHeight="800"
+             x:Class="OPLauncher.Views.HomeView"
+             x:DataType="vm:HomeViewModel">
+
+    <!-- TODO: [LAUNCH-112] Phase 2 Week 4 - HomeView -->
+    <!-- Component: Launcher -->
+    <!-- Module: UI Redesign - Home View & News Feed -->
+    <!-- Description: Home view with hero section, news feed, and recent servers -->
+
+    <Design.DataContext>
+        <vm:HomeViewModel/>
+    </Design.DataContext>
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Spacing="32">
+
+            <!-- ========================================== -->
+            <!-- HERO SECTION - FEATURED SERVER -->
+            <!-- ========================================== -->
+            <Border Background="{DynamicResource BackgroundTertiaryBrush}"
+                    CornerRadius="{DynamicResource RadiusLG}"
+                    ClipToBounds="True"
+                    Height="400"
+                    Margin="24,24,24,0"
+                    IsVisible="{Binding FeaturedServer, Converter={x:Static ObjectConverters.IsNotNull}}">
+                <Grid>
+                    <!-- Background Image (server banner or ruleset-based fallback) -->
+                    <Image Source="{Binding FeaturedServerBannerUrl, Converter={StaticResource ImageUriConverter}}"
+                           Stretch="UniformToFill"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           RenderOptions.BitmapInterpolationMode="HighQuality"
+                           Opacity="0.3" />
+
+                    <!-- Gradient Overlay -->
+                    <Border>
+                        <Border.Background>
+                            <LinearGradientBrush StartPoint="0%,0%" EndPoint="0%,100%">
+                                <GradientStop Color="#660D0D10" Offset="0"/>
+                                <GradientStop Color="#E60D0D10" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Border.Background>
+                    </Border>
+
+                    <!-- Favorite Star - Top Left -->
+                    <Button Command="{Binding ToggleFeaturedServerFavoriteCommand}"
+                            Background="Transparent"
+                            BorderThickness="0"
+                            Width="48"
+                            Height="48"
+                            Padding="0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Margin="16">
+                        <TextBlock Text="{Binding IsFeaturedServerFavorite, Converter={StaticResource FavoriteStarConverter}}"
+                                   FontSize="28"
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="Center" />
+                    </Button>
+
+                    <!-- Content -->
+                    <StackPanel VerticalAlignment="Center"
+                                HorizontalAlignment="Center"
+                                Spacing="16"
+                                Margin="48">
+                        <TextBlock Text="{Binding FeaturedServer.Name}"
+                                   FontFamily="{DynamicResource FontHeading}"
+                                   FontSize="48"
+                                   FontWeight="{DynamicResource FontWeightBold}"
+                                   Foreground="{DynamicResource TextPrimaryBrush}"
+                                   HorizontalAlignment="Center"
+                                   TextWrapping="Wrap"
+                                   TextAlignment="Center" />
+
+                        <TextBlock Text="{Binding FeaturedServer.Description, Converter={StaticResource DescriptionCleanupConverter}}"
+                                   FontFamily="{DynamicResource FontBody}"
+                                   FontSize="18"
+                                   Foreground="{DynamicResource TextSecondaryBrush}"
+                                   HorizontalAlignment="Center"
+                                   TextWrapping="Wrap"
+                                   TextAlignment="Center"
+                                   MaxWidth="600"
+                                   IsVisible="{Binding FeaturedServer.Description, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" />
+
+                        <!-- Player Count -->
+                        <StackPanel Orientation="Horizontal"
+                                    HorizontalAlignment="Center"
+                                    Spacing="8">
+                            <Border Width="16"
+                                    Height="16"
+                                    CornerRadius="8"
+                                    Background="{DynamicResource SuccessGreenBrush}"
+                                    VerticalAlignment="Center" />
+                            <TextBlock FontFamily="{DynamicResource FontBody}"
+                                       FontSize="20"
+                                       FontWeight="{DynamicResource FontWeightSemiBold}"
+                                       Foreground="{DynamicResource TextPrimaryBrush}"
+                                       VerticalAlignment="Center">
+                                <Run Text="{Binding FeaturedServer.PlayerCount}" />
+                                <Run Text=" Players Online" />
+                            </TextBlock>
+                        </StackPanel>
+
+                        <!-- Play Now Button -->
+                        <Button Command="{Binding PlayFeaturedServerCommand}"
+                                Padding="32,16"
+                                Background="{DynamicResource PrimaryBrush}"
+                                Foreground="{DynamicResource TextPrimaryBrush}"
+                                BorderThickness="0"
+                                CornerRadius="{DynamicResource RadiusMD}"
+                                HorizontalAlignment="Center"
+                                Margin="0,16,0,0">
+                            <TextBlock Text="PLAY NOW"
+                                       FontFamily="{DynamicResource FontBody}"
+                                       FontSize="18"
+                                       FontWeight="{DynamicResource FontWeightBold}" />
+                        </Button>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <!-- ========================================== -->
+            <!-- NEWS FEED -->
+            <!-- ========================================== -->
+            <StackPanel Margin="24,0">
+                <!-- Section Header -->
+                <Grid ColumnDefinitions="*,Auto" Margin="0,0,0,24">
+                    <TextBlock Grid.Column="0"
+                               Text="News &amp; Updates"
+                               FontFamily="{DynamicResource FontHeading}"
+                               FontSize="32"
+                               FontWeight="{DynamicResource FontWeightBold}"
+                               Foreground="{DynamicResource TextPrimaryBrush}" />
+
+                    <Button Grid.Column="1"
+                            Content="Browse All Servers"
+                            Command="{Binding BrowseAllServersCommand}"
+                            Padding="16,10"
+                            Background="{DynamicResource PrimaryBrush}"
+                            Foreground="{DynamicResource TextPrimaryBrush}"
+                            BorderThickness="0"
+                            CornerRadius="{DynamicResource RadiusMD}" />
+                </Grid>
+
+                <!-- News Grid (3 columns) -->
+                <ItemsControl ItemsSource="{Binding NewsItems}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel Orientation="Horizontal" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Button Command="{Binding $parent[ItemsControl].((vm:HomeViewModel)DataContext).OpenNewsUrlCommand}"
+                                    CommandParameter="{Binding}"
+                                    Background="Transparent"
+                                    BorderThickness="0"
+                                    Padding="0"
+                                    Margin="0,0,24,24"
+                                    Cursor="Hand">
+                                <controls:NewsCard />
+                            </Button>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </StackPanel>
+
+            <!-- ========================================== -->
+            <!-- EMPTY STATE (No Featured Server) -->
+            <!-- ========================================== -->
+            <StackPanel Spacing="16"
+                        HorizontalAlignment="Center"
+                        Margin="0,80"
+                        IsVisible="{Binding FeaturedServer, Converter={x:Static ObjectConverters.IsNull}}">
+                <TextBlock Text="🌍"
+                           FontSize="64"
+                           HorizontalAlignment="Center"
+                           Foreground="{DynamicResource SystemBaseMediumColor}"/>
+                <TextBlock Text="No servers online"
+                           FontSize="24"
+                           FontWeight="{DynamicResource FontWeightSemiBold}"
+                           Foreground="{DynamicResource TextPrimaryBrush}"
+                           HorizontalAlignment="Center"/>
+                <TextBlock Text="Check back later or browse all servers"
+                           FontSize="16"
+                           Foreground="{DynamicResource TextSecondaryBrush}"
+                           HorizontalAlignment="Center"/>
+                <Button Content="Browse All Servers"
+                        Command="{Binding BrowseAllServersCommand}"
+                        Padding="20,12"
+                        Background="{DynamicResource PrimaryBrush}"
+                        Foreground="{DynamicResource TextPrimaryBrush}"
+                        BorderThickness="0"
+                        CornerRadius="{DynamicResource RadiusMD}"
+                        HorizontalAlignment="Center"
+                        Margin="0,16,0,0" />
+            </StackPanel>
+
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

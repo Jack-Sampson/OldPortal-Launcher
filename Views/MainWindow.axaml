@@ -1,0 +1,233 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:OPLauncher.ViewModels"
+        xmlns:views="using:OPLauncher.Views"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="1200" d:DesignHeight="800"
+        x:Class="OPLauncher.Views.MainWindow"
+        x:DataType="vm:MainShellViewModel"
+        Icon="/Assets/oldportal-icon (256x256).ico"
+        Title="OldPortal Launcher"
+        Width="1220" Height="800"
+        MinWidth="1024" MinHeight="640"
+        WindowStartupLocation="CenterScreen">
+
+    <!-- TODO: [LAUNCH-105] Phase 1 Week 2 - Updated MainWindow to use MainShellView -->
+    <!-- Component: Launcher -->
+    <!-- Module: UI Redesign - Navigation Architecture -->
+    <!-- Description: Main window hosts MainShellView with sidebar navigation -->
+
+    <Design.DataContext>
+        <vm:MainShellViewModel/>
+    </Design.DataContext>
+
+    <!-- Global Keyboard Shortcuts -->
+    <Window.KeyBindings>
+        <!-- Ctrl+S: Open Settings -->
+        <KeyBinding Gesture="Ctrl+S" Command="{Binding NavigateToSettingsCommand}"/>
+
+        <!-- Escape: Go Back -->
+        <KeyBinding Gesture="Escape" Command="{Binding GoBackCommand}"/>
+
+        <!-- Ctrl+H: Navigate to Home -->
+        <KeyBinding Gesture="Ctrl+H" Command="{Binding NavigateToHomeCommand}"/>
+
+        <!-- Ctrl+B: Navigate to Browse Worlds -->
+        <KeyBinding Gesture="Ctrl+B" Command="{Binding NavigateToBrowseCommand}"/>
+
+        <!-- Ctrl+N: Navigate to News -->
+        <KeyBinding Gesture="Ctrl+N" Command="{Binding NavigateToNewsCommand}"/>
+    </Window.KeyBindings>
+
+    <!-- Grid for layering MainShell, Onboarding modal, and Update prompt -->
+    <Grid>
+        <!-- Layer 0: Main application shell -->
+        <views:MainShellView />
+
+        <!-- Layer 1: Onboarding modal overlay (shown on first run) -->
+        <views:OnboardingView DataContext="{Binding OnboardingViewModel}"
+                              IsVisible="{Binding $parent[Window].DataContext.ShowOnboarding}">
+            <views:OnboardingView.Transitions>
+                <Transitions>
+                    <DoubleTransition Property="Opacity" Duration="0:0:0.3"/>
+                </Transitions>
+            </views:OnboardingView.Transitions>
+        </views:OnboardingView>
+
+        <!-- Layer 2: Update prompt dialog -->
+        <Border Background="#B0000000"
+                IsVisible="{Binding ShowUpdatePrompt}">
+            <Border.Transitions>
+                <Transitions>
+                    <DoubleTransition Property="Opacity" Duration="0:0:0.3"/>
+                </Transitions>
+            </Border.Transitions>
+            <Border Background="{DynamicResource BackgroundPrimaryBrush}"
+                    BorderBrush="{DynamicResource PrimaryBrush}"
+                    BorderThickness="2"
+                    CornerRadius="12"
+                    Padding="32"
+                    MaxWidth="500"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    BoxShadow="0 8 32 0 #40000000">
+                <StackPanel Spacing="20">
+                    <!-- Header -->
+                    <StackPanel Spacing="8">
+                        <TextBlock Text="🔄 Update Available"
+                                   FontSize="24"
+                                   FontWeight="Bold"
+                                   Foreground="{DynamicResource PrimaryBrush}"
+                                   HorizontalAlignment="Center"/>
+                        <TextBlock TextWrapping="Wrap"
+                                   FontSize="14"
+                                   Foreground="{DynamicResource TextSecondaryBrush}"
+                                   HorizontalAlignment="Center">
+                            <Run Text="Version"/>
+                            <Run Text="{Binding AvailableUpdate.LatestVersion}" FontWeight="SemiBold" Foreground="{DynamicResource PrimaryBrush}"/>
+                            <Run Text="is now available!"/>
+                        </TextBlock>
+                    </StackPanel>
+
+                    <!-- Release Info -->
+                    <StackPanel Spacing="12">
+                        <TextBlock Text="What's New:"
+                                   FontSize="14"
+                                   FontWeight="SemiBold"
+                                   Foreground="{DynamicResource TextPrimaryBrush}"/>
+                        <ScrollViewer MaxHeight="200"
+                                      VerticalScrollBarVisibility="Auto"
+                                      HorizontalScrollBarVisibility="Disabled">
+                            <Border Padding="12"
+                                    Background="{DynamicResource BackgroundSecondaryBrush}"
+                                    CornerRadius="6">
+                                <TextBlock Text="{Binding AvailableUpdate.ReleaseNotes}"
+                                           TextWrapping="Wrap"
+                                           FontSize="13"
+                                           Foreground="{DynamicResource TextSecondaryBrush}"/>
+                            </Border>
+                        </ScrollViewer>
+
+                        <!-- File size and release date -->
+                        <StackPanel Orientation="Horizontal"
+                                    Spacing="16"
+                                    HorizontalAlignment="Center">
+                            <TextBlock FontSize="12"
+                                       Foreground="{DynamicResource TextMutedBrush}">
+                                <Run Text="📦"/>
+                                <Run Text="{Binding AvailableUpdate.FileSizeFormatted}"/>
+                            </TextBlock>
+                            <TextBlock FontSize="12"
+                                       Foreground="{DynamicResource TextMutedBrush}">
+                                <Run Text="📅"/>
+                                <Run Text="{Binding AvailableUpdate.ReleaseDate, StringFormat='{}{0:MMM d, yyyy}'}"/>
+                            </TextBlock>
+                        </StackPanel>
+                    </StackPanel>
+
+                    <!-- Action Buttons -->
+                    <Grid ColumnDefinitions="*, *"
+                          ColumnSpacing="12">
+                        <Button Grid.Column="0"
+                                Content="Skip for Now"
+                                Command="{Binding SkipUpdateCommand}"
+                                HorizontalAlignment="Stretch"
+                                HorizontalContentAlignment="Center"
+                                Padding="0,14"
+                                Background="Transparent"
+                                Foreground="{DynamicResource TextPrimaryBrush}"
+                                BorderBrush="{DynamicResource BorderBrush}"
+                                BorderThickness="1"
+                                CornerRadius="6"
+                                FontSize="14"/>
+
+                        <Button Grid.Column="1"
+                                Content="Install Update"
+                                Command="{Binding InstallUpdateCommand}"
+                                HorizontalAlignment="Stretch"
+                                HorizontalContentAlignment="Center"
+                                Padding="0,14"
+                                Background="{DynamicResource PrimaryBrush}"
+                                Foreground="{DynamicResource TextOnPrimaryBrush}"
+                                BorderThickness="0"
+                                CornerRadius="6"
+                                FontSize="14"
+                                FontWeight="SemiBold"/>
+                    </Grid>
+                </StackPanel>
+            </Border>
+        </Border>
+
+        <!-- Layer 3: Game launch loading overlay -->
+        <Border Background="#B0000000"
+                IsVisible="{Binding IsLaunchingGame}">
+            <Border.Transitions>
+                <Transitions>
+                    <DoubleTransition Property="Opacity" Duration="0:0:0.3"/>
+                </Transitions>
+            </Border.Transitions>
+            <Grid HorizontalAlignment="Center"
+                  VerticalAlignment="Center">
+                <Border Background="{DynamicResource BackgroundPrimaryBrush}"
+                        BorderBrush="{DynamicResource PrimaryBrush}"
+                        BorderThickness="2"
+                        CornerRadius="12"
+                        Padding="48,32"
+                        MinWidth="300"
+                        BoxShadow="0 8 32 0 #40000000">
+                    <StackPanel Spacing="24"
+                                HorizontalAlignment="Center">
+                        <!-- Animated Spinner -->
+                        <Border Width="64"
+                                Height="64"
+                                CornerRadius="32"
+                                BorderBrush="{DynamicResource PrimaryBrush}"
+                                BorderThickness="4"
+                                HorizontalAlignment="Center">
+                            <Border.Styles>
+                                <Style Selector="Border">
+                                    <Style.Animations>
+                                        <Animation Duration="0:0:1.5" IterationCount="Infinite">
+                                            <KeyFrame Cue="0%">
+                                                <Setter Property="RotateTransform.Angle" Value="0"/>
+                                            </KeyFrame>
+                                            <KeyFrame Cue="100%">
+                                                <Setter Property="RotateTransform.Angle" Value="360"/>
+                                            </KeyFrame>
+                                        </Animation>
+                                    </Style.Animations>
+                                    <Setter Property="RenderTransform">
+                                        <RotateTransform/>
+                                    </Setter>
+                                    <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
+                                </Style>
+                            </Border.Styles>
+                            <Border Width="16"
+                                    Height="16"
+                                    CornerRadius="8"
+                                    Background="{DynamicResource PrimaryBrush}"
+                                    VerticalAlignment="Top"
+                                    HorizontalAlignment="Center"/>
+                        </Border>
+
+                        <!-- Launch Message -->
+                        <StackPanel Spacing="8">
+                            <TextBlock Text="{Binding LaunchingGameMessage}"
+                                       FontSize="18"
+                                       FontWeight="SemiBold"
+                                       Foreground="{DynamicResource TextPrimaryBrush}"
+                                       HorizontalAlignment="Center"
+                                       TextAlignment="Center"/>
+                            <TextBlock Text="Please wait while the game starts..."
+                                       FontSize="13"
+                                       Foreground="{DynamicResource TextSecondaryBrush}"
+                                       HorizontalAlignment="Center"
+                                       TextAlignment="Center"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>

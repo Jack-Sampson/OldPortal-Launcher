@@ -1,0 +1,44 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="OPLauncher.App"
+             xmlns:local="using:OPLauncher"
+             xmlns:converters="using:OPLauncher.Converters"
+             RequestedThemeVariant="Dark">
+    <!-- TODO: [LAUNCH-097] Phase 1 Week 1 - Updated App.axaml for New Design System -->
+    <!-- Component: Launcher -->
+    <!-- Module: UI Redesign - Design System -->
+    <!-- Description: Main application with new theme system (Dark default) -->
+
+    <Application.DataTemplates>
+        <local:ViewLocator/>
+    </Application.DataTemplates>
+
+    <Application.Resources>
+        <!-- Merge Theme Resources -->
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <!-- Dark Theme (Default) -->
+                <ResourceInclude Source="avares://OPLauncher/Themes/DarkTheme.axaml" />
+
+                <!-- Control Templates (Buttons, Cards, Badges, etc.) -->
+                <ResourceInclude Source="avares://OPLauncher/Themes/ControlTemplates.axaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <!-- Value Converters -->
+            <converters:NavItemBackgroundConverter x:Key="NavItemBackgroundConverter" />
+            <converters:FavoriteStarConverter x:Key="FavoriteStarConverter" />
+            <converters:OnlineStatusColorConverter x:Key="OnlineStatusColorConverter" />
+            <converters:PlayButtonTextConverter x:Key="PlayButtonTextConverter" />
+            <converters:EnumEqualityConverter x:Key="EnumEqualityConverter" />
+            <converters:EnumNotEqualConverter x:Key="EnumNotEqualConverter" />
+            <converters:PercentToWidthConverter x:Key="PercentToWidthConverter" />
+            <converters:ImageUriConverter x:Key="ImageUriConverter" />
+            <converters:DescriptionCleanupConverter x:Key="DescriptionCleanupConverter" />
+        </ResourceDictionary>
+    </Application.Resources>
+
+    <Application.Styles>
+        <!-- FluentTheme MUST be loaded first, then custom themes override it -->
+        <FluentTheme />
+    </Application.Styles>
+</Application>

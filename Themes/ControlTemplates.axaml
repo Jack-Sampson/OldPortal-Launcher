@@ -1,0 +1,267 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- TODO: [LAUNCH-093] Phase 1 Week 1 - Reusable Control Templates -->
+    <!-- Component: Launcher -->
+    <!-- Module: UI Redesign - Design System -->
+    <!-- Description: Reusable button, card, and badge styles for modern launcher UI -->
+
+    <!-- ============================================================ -->
+    <!-- BUTTON STYLES -->
+    <!-- ============================================================ -->
+
+    <!-- Primary Button Style -->
+    <Style x:Key="PrimaryButton" Selector="Button">
+        <Setter Property="Background" Value="{DynamicResource PrimaryBrush}" />
+        <Setter Property="Foreground" Value="{DynamicResource TextPrimaryBrush}" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="CornerRadius" Value="{DynamicResource RadiusMD}" />
+        <Setter Property="Padding" Value="16,10" />
+        <Setter Property="FontFamily" Value="{DynamicResource FontBody}" />
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeBody}" />
+        <Setter Property="FontWeight" Value="{DynamicResource FontWeightSemiBold}" />
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="Transitions">
+            <Transitions>
+                <DoubleTransition Property="Opacity" Duration="0:0:0.15" />
+                <BrushTransition Property="Background" Duration="0:0:0.15" />
+            </Transitions>
+        </Setter>
+    </Style>
+
+    <!-- Secondary Button Style -->
+    <Style x:Key="SecondaryButton" Selector="Button">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Foreground" Value="{DynamicResource PrimaryBrush}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource PrimaryBrush}" />
+        <Setter Property="BorderThickness" Value="2" />
+        <Setter Property="CornerRadius" Value="{DynamicResource RadiusMD}" />
+        <Setter Property="Padding" Value="16,10" />
+        <Setter Property="FontFamily" Value="{DynamicResource FontBody}" />
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeBody}" />
+        <Setter Property="FontWeight" Value="{DynamicResource FontWeightSemiBold}" />
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="Transitions">
+            <Transitions>
+                <BrushTransition Property="Background" Duration="0:0:0.15" />
+                <BrushTransition Property="BorderBrush" Duration="0:0:0.15" />
+            </Transitions>
+        </Setter>
+    </Style>
+
+    <!-- Danger Button Style -->
+    <Style x:Key="DangerButton" Selector="Button">
+        <Setter Property="Background" Value="{DynamicResource StatusErrorBrush}" />
+        <Setter Property="Foreground" Value="{DynamicResource TextPrimaryBrush}" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="CornerRadius" Value="{DynamicResource RadiusMD}" />
+        <Setter Property="Padding" Value="16,10" />
+        <Setter Property="FontFamily" Value="{DynamicResource FontBody}" />
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeBody}" />
+        <Setter Property="FontWeight" Value="{DynamicResource FontWeightSemiBold}" />
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="Transitions">
+            <Transitions>
+                <DoubleTransition Property="Opacity" Duration="0:0:0.15" />
+            </Transitions>
+        </Setter>
+    </Style>
+
+    <!-- Icon Button Style (Small, square buttons for actions) -->
+    <Style x:Key="IconButton" Selector="Button">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Foreground" Value="{DynamicResource TextSecondaryBrush}" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="CornerRadius" Value="{DynamicResource RadiusSM}" />
+        <Setter Property="Padding" Value="8" />
+        <Setter Property="Width" Value="36" />
+        <Setter Property="Height" Value="36" />
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="Transitions">
+            <Transitions>
+                <BrushTransition Property="Background" Duration="0:0:0.15" />
+                <BrushTransition Property="Foreground" Duration="0:0:0.15" />
+            </Transitions>
+        </Setter>
+    </Style>
+
+    <!-- ============================================================ -->
+    <!-- CARD STYLES -->
+    <!-- ============================================================ -->
+
+    <!-- Standard Card Border -->
+    <Style x:Key="Card" Selector="Border">
+        <Setter Property="Background" Value="{DynamicResource BackgroundSecondaryBrush}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource BorderPrimaryBrush}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="CornerRadius" Value="{DynamicResource RadiusLG}" />
+        <Setter Property="Padding" Value="16" />
+        <Setter Property="Transitions">
+            <Transitions>
+                <BrushTransition Property="Background" Duration="0:0:0.15" />
+                <BrushTransition Property="BorderBrush" Duration="0:0:0.15" />
+                <BoxShadowsTransition Property="BoxShadow" Duration="0:0:0.3" />
+            </Transitions>
+        </Setter>
+    </Style>
+
+    <!-- Elevated Card (with shadow) -->
+    <Style x:Key="ElevatedCard" Selector="Border">
+        <Setter Property="Background" Value="{DynamicResource BackgroundSecondaryBrush}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource BorderPrimaryBrush}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="CornerRadius" Value="{DynamicResource RadiusLG}" />
+        <Setter Property="Padding" Value="16" />
+        <Setter Property="BoxShadow" Value="0 4 12 0 #33000000" />
+        <Setter Property="Transitions">
+            <Transitions>
+                <BrushTransition Property="Background" Duration="0:0:0.15" />
+                <BrushTransition Property="BorderBrush" Duration="0:0:0.15" />
+                <BoxShadowsTransition Property="BoxShadow" Duration="0:0:0.3" />
+            </Transitions>
+        </Setter>
+    </Style>
+
+    <!-- Interactive Card (hover effects) -->
+    <Style x:Key="InteractiveCard" Selector="Border">
+        <Setter Property="Background" Value="{DynamicResource BackgroundSecondaryBrush}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource BorderPrimaryBrush}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="CornerRadius" Value="{DynamicResource RadiusLG}" />
+        <Setter Property="Padding" Value="16" />
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="Transitions">
+            <Transitions>
+                <BrushTransition Property="Background" Duration="0:0:0.15" />
+                <BrushTransition Property="BorderBrush" Duration="0:0:0.15" />
+                <BoxShadowsTransition Property="BoxShadow" Duration="0:0:0.3" />
+            </Transitions>
+        </Setter>
+    </Style>
+
+    <!-- ============================================================ -->
+    <!-- STATUS BADGE STYLES -->
+    <!-- ============================================================ -->
+
+    <!-- Online Status Badge -->
+    <Style x:Key="OnlineStatusBadge" Selector="Border">
+        <Setter Property="Background" Value="#1A10B981" />
+        <Setter Property="BorderBrush" Value="{DynamicResource StatusOnlineBrush}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="CornerRadius" Value="{DynamicResource RadiusFull}" />
+        <Setter Property="Padding" Value="8,4" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+    </Style>
+
+    <!-- Offline Status Badge -->
+    <Style x:Key="OfflineStatusBadge" Selector="Border">
+        <Setter Property="Background" Value="#1A6B7280" />
+        <Setter Property="BorderBrush" Value="{DynamicResource StatusOfflineBrush}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="CornerRadius" Value="{DynamicResource RadiusFull}" />
+        <Setter Property="Padding" Value="8,4" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+    </Style>
+
+    <!-- Warning Badge -->
+    <Style x:Key="WarningBadge" Selector="Border">
+        <Setter Property="Background" Value="#1AF59E0B" />
+        <Setter Property="BorderBrush" Value="{DynamicResource StatusWarningBrush}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="CornerRadius" Value="{DynamicResource RadiusFull}" />
+        <Setter Property="Padding" Value="8,4" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+    </Style>
+
+    <!-- Verified Badge -->
+    <Style x:Key="VerifiedBadge" Selector="Border">
+        <Setter Property="Background" Value="#1A10B981" />
+        <Setter Property="BorderBrush" Value="{DynamicResource AccentGreenBrush}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="CornerRadius" Value="{DynamicResource RadiusFull}" />
+        <Setter Property="Padding" Value="8,4" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+    </Style>
+
+    <!-- ============================================================ -->
+    <!-- TEXT BLOCK STYLES -->
+    <!-- ============================================================ -->
+
+    <!-- Heading 1 -->
+    <Style x:Key="Heading1" Selector="TextBlock">
+        <Setter Property="FontFamily" Value="{DynamicResource FontHeading}" />
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeH1}" />
+        <Setter Property="FontWeight" Value="{DynamicResource FontWeightBold}" />
+        <Setter Property="Foreground" Value="{DynamicResource TextPrimaryBrush}" />
+    </Style>
+
+    <!-- Heading 2 -->
+    <Style x:Key="Heading2" Selector="TextBlock">
+        <Setter Property="FontFamily" Value="{DynamicResource FontHeading}" />
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeH2}" />
+        <Setter Property="FontWeight" Value="{DynamicResource FontWeightBold}" />
+        <Setter Property="Foreground" Value="{DynamicResource TextPrimaryBrush}" />
+    </Style>
+
+    <!-- Heading 3 -->
+    <Style x:Key="Heading3" Selector="TextBlock">
+        <Setter Property="FontFamily" Value="{DynamicResource FontBody}" />
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeH3}" />
+        <Setter Property="FontWeight" Value="{DynamicResource FontWeightSemiBold}" />
+        <Setter Property="Foreground" Value="{DynamicResource TextPrimaryBrush}" />
+    </Style>
+
+    <!-- Body Text -->
+    <Style x:Key="BodyText" Selector="TextBlock">
+        <Setter Property="FontFamily" Value="{DynamicResource FontBody}" />
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeBody}" />
+        <Setter Property="FontWeight" Value="{DynamicResource FontWeightNormal}" />
+        <Setter Property="Foreground" Value="{DynamicResource TextSecondaryBrush}" />
+    </Style>
+
+    <!-- Muted Text -->
+    <Style x:Key="MutedText" Selector="TextBlock">
+        <Setter Property="FontFamily" Value="{DynamicResource FontBody}" />
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeSmall}" />
+        <Setter Property="FontWeight" Value="{DynamicResource FontWeightNormal}" />
+        <Setter Property="Foreground" Value="{DynamicResource TextMutedBrush}" />
+    </Style>
+
+    <!-- ============================================================ -->
+    <!-- INPUT STYLES -->
+    <!-- ============================================================ -->
+
+    <!-- Standard TextBox -->
+    <Style x:Key="StandardTextBox" Selector="TextBox">
+        <Setter Property="Background" Value="{DynamicResource BackgroundTertiaryBrush}" />
+        <Setter Property="Foreground" Value="{DynamicResource TextPrimaryBrush}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource BorderPrimaryBrush}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="CornerRadius" Value="{DynamicResource RadiusMD}" />
+        <Setter Property="Padding" Value="12,8" />
+        <Setter Property="FontFamily" Value="{DynamicResource FontBody}" />
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeBody}" />
+        <Setter Property="CaretBrush" Value="{DynamicResource PrimaryBrush}" />
+    </Style>
+
+    <!-- Standard ComboBox -->
+    <Style x:Key="StandardComboBox" Selector="ComboBox">
+        <Setter Property="Background" Value="{DynamicResource BackgroundTertiaryBrush}" />
+        <Setter Property="Foreground" Value="{DynamicResource TextPrimaryBrush}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource BorderPrimaryBrush}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="CornerRadius" Value="{DynamicResource RadiusMD}" />
+        <Setter Property="Padding" Value="12,8" />
+        <Setter Property="FontFamily" Value="{DynamicResource FontBody}" />
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeBody}" />
+    </Style>
+
+</ResourceDictionary>

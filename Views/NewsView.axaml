@@ -1,0 +1,153 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:OPLauncher.ViewModels"
+             xmlns:controls="using:OPLauncher.Controls"
+             xmlns:dto="using:OPLauncher.DTOs"
+             mc:Ignorable="d" d:DesignWidth="1024" d:DesignHeight="800"
+             x:Class="OPLauncher.Views.NewsView"
+             x:DataType="vm:NewsViewModel">
+
+    <!-- TODO: [LAUNCH-115] Phase 2 Week 5 - NewsView -->
+    <!-- Component: Launcher -->
+    <!-- Module: UI Redesign - Home View & News Feed -->
+    <!-- Description: Full news feed view with category filtering and pagination -->
+
+    <Design.DataContext>
+        <vm:NewsViewModel/>
+    </Design.DataContext>
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Spacing="32" Margin="24">
+
+            <!-- Header -->
+            <TextBlock Text="News &amp; Updates"
+                       FontFamily="{DynamicResource FontHeading}"
+                       FontSize="48"
+                       FontWeight="{DynamicResource FontWeightBold}"
+                       Foreground="{DynamicResource TextPrimaryBrush}" />
+
+            <!-- Category Filter Dropdown -->
+            <StackPanel Spacing="12">
+                <TextBlock Text="Filter by Category"
+                           FontFamily="{DynamicResource FontBody}"
+                           FontSize="16"
+                           FontWeight="{DynamicResource FontWeightSemiBold}"
+                           Foreground="{DynamicResource TextSecondaryBrush}" />
+
+                <ComboBox ItemsSource="{Binding CategoryFilters}"
+                          SelectedItem="{Binding SelectedCategoryFilter}"
+                          MinWidth="250"
+                          Height="48"
+                          Padding="14,12"
+                          FontSize="14"
+                          Background="{DynamicResource BackgroundSecondaryBrush}"
+                          Foreground="{DynamicResource TextPrimaryBrush}"
+                          BorderBrush="{DynamicResource PrimaryBrush}"
+                          BorderThickness="1"
+                          CornerRadius="{DynamicResource RadiusMD}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding DisplayName}"
+                                       FontFamily="{DynamicResource FontBody}"
+                                       FontSize="14" />
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+            </StackPanel>
+
+            <!-- News Count -->
+            <TextBlock FontFamily="{DynamicResource FontBody}"
+                       FontSize="14"
+                       Foreground="{DynamicResource TextMutedBrush}">
+                <Run Text="Showing" />
+                <Run Text="{Binding DisplayedNewsCount}" />
+                <Run Text="of" />
+                <Run Text="{Binding TotalNewsCount}" />
+                <Run Text="articles" />
+            </TextBlock>
+
+            <!-- Loading Indicator -->
+            <StackPanel Spacing="12"
+                        HorizontalAlignment="Center"
+                        Margin="0,40"
+                        IsVisible="{Binding IsLoading}">
+                <TextBlock Text="⏳"
+                           FontSize="32"
+                           HorizontalAlignment="Center" />
+                <TextBlock Text="Loading news..."
+                           FontFamily="{DynamicResource FontBody}"
+                           FontSize="16"
+                           Foreground="{DynamicResource TextSecondaryBrush}"
+                           HorizontalAlignment="Center" />
+            </StackPanel>
+
+            <!-- News Grid (3 columns) -->
+            <ItemsControl ItemsSource="{Binding NewsItems}"
+                          IsVisible="{Binding !IsLoading}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel Orientation="Horizontal" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Button Command="{Binding $parent[ItemsControl].((vm:NewsViewModel)DataContext).OpenNewsUrlCommand}"
+                                CommandParameter="{Binding}"
+                                Background="Transparent"
+                                BorderThickness="0"
+                                Padding="0"
+                                Margin="0,0,24,24"
+                                Cursor="Hand">
+                            <controls:NewsCard />
+                        </Button>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+            <!-- Load More Button -->
+            <Button Command="{Binding LoadMoreCommand}"
+                    IsVisible="{Binding HasMoreItems}"
+                    Padding="32,16"
+                    Background="{DynamicResource PrimaryBrush}"
+                    Foreground="{DynamicResource TextPrimaryBrush}"
+                    BorderThickness="0"
+                    CornerRadius="{DynamicResource RadiusMD}"
+                    HorizontalAlignment="Center"
+                    Margin="0,16,0,32">
+                <StackPanel Orientation="Horizontal" Spacing="8">
+                    <TextBlock Text="Load More Articles"
+                               FontFamily="{DynamicResource FontBody}"
+                               FontSize="16"
+                               FontWeight="{DynamicResource FontWeightSemiBold}"
+                               VerticalAlignment="Center" />
+                    <TextBlock Text="↓"
+                               FontSize="18"
+                               VerticalAlignment="Center" />
+                </StackPanel>
+            </Button>
+
+            <!-- Empty State -->
+            <StackPanel Spacing="16"
+                        HorizontalAlignment="Center"
+                        Margin="0,60"
+                        IsVisible="{Binding !NewsItems.Count}">
+                <TextBlock Text="📰"
+                           FontSize="64"
+                           HorizontalAlignment="Center"
+                           Foreground="{DynamicResource SystemBaseMediumColor}"/>
+                <TextBlock Text="No news articles available"
+                           FontSize="24"
+                           FontWeight="{DynamicResource FontWeightSemiBold}"
+                           Foreground="{DynamicResource TextPrimaryBrush}"
+                           HorizontalAlignment="Center"/>
+                <TextBlock Text="Check back later for updates or try a different category"
+                           FontSize="16"
+                           Foreground="{DynamicResource TextSecondaryBrush}"
+                           HorizontalAlignment="Center"/>
+            </StackPanel>
+
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

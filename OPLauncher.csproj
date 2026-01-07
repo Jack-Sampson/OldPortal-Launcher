@@ -1,0 +1,108 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net9.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <ApplicationIcon>Assets\oldportal-icon (256x256).ico</ApplicationIcon>
+    <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <PlatformTarget>x86</PlatformTarget>
+    <Version>1.0.91</Version>
+    <AssemblyVersion>1.0.91.0</AssemblyVersion>
+    <FileVersion>1.0.91.0</FileVersion>
+
+    <!-- Self-Contained Deployment Configuration -->
+    <RuntimeIdentifier>win-x86</RuntimeIdentifier>
+    <SelfContained>true</SelfContained>
+    <PublishSingleFile>false</PublishSingleFile>
+    <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+
+    <!-- Release Build Optimizations - Exclude debugging/diagnostic files -->
+    <DebugType>none</DebugType>
+    <DebugSymbols>false</DebugSymbols>
+    <CopyOutputSymbolsToPublishDirectory>false</CopyOutputSymbolsToPublishDirectory>
+    <PublishReadyToRun>false</PublishReadyToRun>
+
+    <!-- Exclude unnecessary runtime features -->
+    <InvariantGlobalization>false</InvariantGlobalization>
+    <EnableUnsafeBinaryFormatterSerialization>false</EnableUnsafeBinaryFormatterSerialization>
+
+    <!-- Suppress platform compatibility warnings - this is a Windows-only application -->
+    <NoWarn>CA1416</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Models\" />
+    <AvaloniaResource Include="Assets\**" />
+    <AvaloniaResource Include="Themes\**" />
+    <!-- Exclude OPLauncher.Hook from being compiled with main project -->
+    <Compile Remove="OPLauncher.Hook\**" />
+    <EmbeddedResource Remove="OPLauncher.Hook\**" />
+    <None Remove="OPLauncher.Hook\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="injector.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Avalonia" Version="11.3.8" />
+    <PackageReference Include="Avalonia.Desktop" Version="11.3.8" />
+    <PackageReference Include="Avalonia.ReactiveUI" Version="11.3.8" />
+    <PackageReference Include="Avalonia.Themes.Fluent" Version="11.3.8" />
+    <PackageReference Include="Avalonia.Fonts.Inter" Version="11.3.8" />
+    <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
+    <PackageReference Include="Avalonia.Diagnostics" Version="11.3.8">
+      <IncludeAssets Condition="'$(Configuration)' != 'Debug'">None</IncludeAssets>
+      <PrivateAssets Condition="'$(Configuration)' != 'Debug'">All</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1" />
+    <PackageReference Include="LiteDB" Version="5.0.21" />
+    <PackageReference Include="MegaApiClient" Version="1.10.5" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="9.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.10" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.10" />
+    <PackageReference Include="Serilog" Version="4.3.0" />
+    <PackageReference Include="Serilog.Extensions.Logging" Version="9.0.2" />
+    <PackageReference Include="Serilog.Sinks.Console" Version="6.0.0" />
+    <PackageReference Include="Serilog.Sinks.File" Version="7.0.0" />
+    <PackageReference Include="System.Net.Http.Json" Version="9.0.10" />
+    <PackageReference Include="System.Security.Cryptography.ProtectedData" Version="9.0.10" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Exclude debugging and diagnostic assemblies from publish output -->
+    <RuntimeHostConfigurationOption Include="System.Diagnostics.Debugger.IsSupported" Value="false" />
+  </ItemGroup>
+
+  <!-- Copy native OPLauncher.Hook.dll to publish output -->
+  <Target Name="CopyNativeHook" AfterTargets="Publish">
+    <Message Text="Copying native OPLauncher.Hook.dll..." Importance="high" />
+    <Copy SourceFiles="$(ProjectDir)OPLauncher.Hook.Native\bin\Release\Win32\OPLauncher.Hook.dll" DestinationFolder="$(PublishDir)" />
+    <Message Text="Native OPLauncher.Hook.dll copied to publish directory" Importance="high" />
+  </Target>
+
+  <!-- Post-build cleanup to remove unnecessary files -->
+  <Target Name="RemoveUnnecessaryFiles" AfterTargets="CopyNativeHook">
+    <ItemGroup>
+      <!-- Remove debugging/diagnostic DLLs -->
+      <FilesToDelete Include="$(PublishDir)Microsoft.DiaSymReader.Native.*.dll" />
+      <FilesToDelete Include="$(PublishDir)mscordaccore*.dll" />
+      <FilesToDelete Include="$(PublishDir)mscordbi.dll" />
+      <!-- Remove Visual Basic runtime (not used) -->
+      <FilesToDelete Include="$(PublishDir)Microsoft.VisualBasic*.dll" />
+      <!-- Remove PDB files -->
+      <FilesToDelete Include="$(PublishDir)*.pdb" />
+    </ItemGroup>
+    <Delete Files="@(FilesToDelete)" />
+    <Message Text="Removed unnecessary files: @(FilesToDelete)" Importance="high" />
+  </Target>
+</Project>

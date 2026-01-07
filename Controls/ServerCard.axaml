@@ -1,0 +1,204 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:OPLauncher.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="280" d:DesignHeight="360"
+             x:Class="OPLauncher.Controls.ServerCard"
+             x:DataType="vm:ServerCardViewModel"
+             Width="280" Height="360">
+
+    <!-- TODO: [LAUNCH-107] Phase 1 Week 3 - ServerCard Control -->
+    <!-- Component: Launcher -->
+    <!-- Module: UI Redesign - Card Grid Layout -->
+    <!-- Description: Server card with hover effects, status indicators, badges -->
+
+    <Border x:Name="CardBorder"
+            Background="{DynamicResource BackgroundSecondaryBrush}"
+            BorderBrush="{DynamicResource BorderPrimaryBrush}"
+            BorderThickness="1"
+            CornerRadius="{DynamicResource RadiusLG}"
+            ClipToBounds="True"
+            Cursor="Hand">
+
+        <Border.Styles>
+            <!-- Hover Effect: Border highlight on hover -->
+            <Style Selector="Border:pointerover">
+                <Setter Property="BorderBrush" Value="{DynamicResource PrimaryBrush}" />
+                <Setter Property="BorderThickness" Value="2" />
+            </Style>
+        </Border.Styles>
+
+        <Grid RowDefinitions="160,*">
+            <!-- Banner Image (16:9 aspect, 280x160) -->
+            <Border Grid.Row="0"
+                    Background="{DynamicResource BackgroundTertiaryBrush}"
+                    ClipToBounds="True">
+                <Grid>
+                    <Image x:Name="BannerImage"
+                           Source="{Binding BannerImagePath, Converter={StaticResource ImageUriConverter}}"
+                           Width="280"
+                           Height="160"
+                           Stretch="Uniform"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           RenderOptions.BitmapInterpolationMode="HighQuality" />
+
+                    <!-- Overlay gradient for text readability -->
+                    <Border VerticalAlignment="Bottom"
+                            Height="80">
+                        <Border.Background>
+                            <LinearGradientBrush StartPoint="0%,0%" EndPoint="0%,100%">
+                                <GradientStop Color="#00000000" Offset="0"/>
+                                <GradientStop Color="#99000000" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Border.Background>
+                    </Border>
+
+                    <!-- Favorite Star - Top Left -->
+                    <Button Command="{Binding ToggleFavoriteCommand}"
+                        Background="Transparent"
+                        BorderThickness="0"
+                        Width="40"
+                        Height="40"
+                        Padding="0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        Margin="8">
+                    <TextBlock Text="{Binding IsFavorite, Converter={StaticResource FavoriteStarConverter}}"
+                               FontSize="20"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Center" />
+                </Button>
+
+                <!-- Delete Button - Top Left (below favorite, for manual servers only) -->
+                <Button Command="{Binding DeleteCommand}"
+                        IsVisible="{Binding IsManualServer}"
+                        Background="{DynamicResource DangerRedBrush}"
+                        BorderThickness="0"
+                        Width="40"
+                        Height="40"
+                        Padding="0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        Margin="8,52,8,8"
+                        ToolTip.Tip="Delete server">
+                    <TextBlock Text="🗑️"
+                               FontSize="18"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Center" />
+                </Button>
+
+                <!-- Verified/Sponsor Badges - Top Right -->
+                <StackPanel Orientation="Horizontal"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Top"
+                            Margin="8"
+                            Spacing="4">
+                    <!-- Verified Badge -->
+                    <Border IsVisible="{Binding IsVerified}"
+                            Background="{DynamicResource TwilightPurpleBrush}"
+                            CornerRadius="12"
+                            Padding="8,4">
+                        <TextBlock Text="⭐"
+                                   FontSize="14"
+                                   Foreground="{DynamicResource TextPrimaryBrush}" />
+                    </Border>
+
+                    <!-- Sponsor Badge -->
+                    <Border IsVisible="{Binding IsSponsor}"
+                            Background="{DynamicResource SponsorGoldBrush}"
+                            CornerRadius="12"
+                            Padding="8,4">
+                        <TextBlock Text="🏆"
+                                   FontSize="14"
+                                   Foreground="{DynamicResource BackgroundSecondaryBrush}" />
+                    </Border>
+                </StackPanel>
+
+                <!-- Status Indicator - Bottom Left (on image) -->
+                <StackPanel Orientation="Horizontal"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Bottom"
+                            Margin="12,0,0,12"
+                            Spacing="8">
+                    <!-- Status Dot -->
+                    <Border Width="12"
+                            Height="12"
+                            CornerRadius="6"
+                            Background="{Binding IsOnline, Converter={StaticResource OnlineStatusColorConverter}}" />
+
+                    <!-- Player Count -->
+                    <TextBlock Text="{Binding PlayerCountText}"
+                               FontFamily="{DynamicResource FontBody}"
+                               FontSize="{DynamicResource FontSizeSmall}"
+                               FontWeight="{DynamicResource FontWeightSemiBold}"
+                               Foreground="{DynamicResource TextPrimaryBrush}"
+                               VerticalAlignment="Center" />
+                </StackPanel>
+                </Grid>
+            </Border>
+
+            <!-- Card Content (Below Image) -->
+            <Border Grid.Row="1" Padding="16">
+                <StackPanel Spacing="8">
+
+                <!-- Server Name -->
+                <TextBlock Text="{Binding Name}"
+                           FontFamily="{DynamicResource FontHeading}"
+                           FontSize="18"
+                           FontWeight="{DynamicResource FontWeightBold}"
+                           Foreground="{DynamicResource TextPrimaryBrush}"
+                           TextTrimming="CharacterEllipsis"
+                           MaxLines="2"
+                           TextWrapping="Wrap" />
+
+                <!-- Tags (Ruleset • ServerType) -->
+                <TextBlock Text="{Binding TagsText}"
+                           FontFamily="{DynamicResource FontBody}"
+                           FontSize="{DynamicResource FontSizeSmall}"
+                           Foreground="{DynamicResource TextMutedBrush}"
+                           TextTrimming="CharacterEllipsis" />
+
+                <!-- Spacer -->
+                <Border Height="8" />
+
+                <!-- Action Buttons -->
+                <Grid ColumnDefinitions="*,Auto">
+                    <!-- Play Button -->
+                    <Button Grid.Column="0"
+                            Command="{Binding PlayCommand}"
+                            HorizontalAlignment="Stretch"
+                            Padding="16,10"
+                            Background="{DynamicResource PrimaryBrush}"
+                            Foreground="{DynamicResource TextPrimaryBrush}"
+                            BorderThickness="0"
+                            CornerRadius="{DynamicResource RadiusMD}">
+                        <TextBlock Text="{Binding IsOnline, Converter={StaticResource PlayButtonTextConverter}}"
+                                   FontFamily="{DynamicResource FontBody}"
+                                   FontSize="{DynamicResource FontSizeBody}"
+                                   FontWeight="{DynamicResource FontWeightSemiBold}"
+                                   HorizontalAlignment="Center" />
+                    </Button>
+
+                    <!-- Details Button (Icon) -->
+                    <Button Grid.Column="1"
+                            Command="{Binding ViewDetailsCommand}"
+                            Margin="8,0,0,0"
+                            Width="44"
+                            Height="44"
+                            Padding="0"
+                            Background="{DynamicResource BackgroundTertiaryBrush}"
+                            BorderThickness="0"
+                            CornerRadius="{DynamicResource RadiusMD}">
+                        <TextBlock Text="ℹ️"
+                                   FontSize="18"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center" />
+                    </Button>
+                </Grid>
+                </StackPanel>
+            </Border>
+        </Grid>
+    </Border>
+</UserControl>

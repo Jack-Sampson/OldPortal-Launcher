@@ -1,0 +1,300 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:OPLauncher.ViewModels"
+             xmlns:controls="using:OPLauncher.Controls"
+             mc:Ignorable="d" d:DesignWidth="1024" d:DesignHeight="640"
+             x:Class="OPLauncher.Views.ManualServersView"
+             x:DataType="vm:ManualServersViewModel">
+
+    <Design.DataContext>
+        <vm:ManualServersViewModel/>
+    </Design.DataContext>
+
+    <Grid Background="{DynamicResource SystemAltHighColor}">
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <StackPanel Spacing="24" Margin="32">
+                <!-- Header -->
+                <Grid ColumnDefinitions="*, Auto">
+                    <TextBlock Grid.Column="0"
+                               Text="My Servers"
+                               FontSize="32"
+                               FontWeight="Bold"
+                               Foreground="{DynamicResource HighlightYellow}"/>
+
+                    <Button Grid.Column="1"
+                            Content="← Back to Browse"
+                            Command="{Binding BackCommand}"
+                            Padding="16,10"
+                            Background="{DynamicResource SystemAccentColor}"
+                            Foreground="{DynamicResource SystemBaseHighColor}"
+                            BorderThickness="0"
+                            CornerRadius="4"
+                            FontSize="14"/>
+                </Grid>
+
+                <!-- Info Banner -->
+                <Border Background="{DynamicResource SystemAccentColorDark1}"
+                        BorderBrush="{DynamicResource SystemAccentColor}"
+                        BorderThickness="2"
+                        CornerRadius="6"
+                        Padding="16,12">
+                    <StackPanel Spacing="8">
+                        <TextBlock Text="📌 Add Your Own Servers"
+                                   Foreground="{DynamicResource HighlightYellow}"
+                                   FontSize="16"
+                                   FontWeight="SemiBold"/>
+                        <TextBlock Foreground="{DynamicResource SystemBaseHighColor}"
+                                   FontSize="13"
+                                   TextWrapping="Wrap">
+                            <Run Text="Add localhost servers for development or private servers not listed on OldPortal.com."/>
+                            <Run Text="These servers are stored locally on your computer."/>
+                        </TextBlock>
+                    </StackPanel>
+                </Border>
+
+                <!-- Success/Error Messages -->
+                <Border Background="{DynamicResource SuccessGreen}"
+                        BorderBrush="#00FF7F"
+                        BorderThickness="2"
+                        CornerRadius="6"
+                        Padding="16,12"
+                        IsVisible="{Binding SuccessMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
+                    <TextBlock Text="{Binding SuccessMessage}"
+                               Foreground="{DynamicResource SystemBaseHighColor}"
+                               FontSize="14"
+                               TextWrapping="Wrap"/>
+                </Border>
+
+                <Border Background="#DC143C"
+                        BorderBrush="#FF6B6B"
+                        BorderThickness="2"
+                        CornerRadius="6"
+                        Padding="16,12"
+                        IsVisible="{Binding ErrorMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
+                    <TextBlock Text="{Binding ErrorMessage}"
+                               Foreground="{DynamicResource SystemBaseHighColor}"
+                               FontSize="14"
+                               TextWrapping="Wrap"/>
+                </Border>
+
+                <!-- Add Server Button -->
+                <Button Content="+ Add New Server"
+                        Command="{Binding ShowAddFormCommand}"
+                        HorizontalAlignment="Left"
+                        Padding="20,12"
+                        Background="{DynamicResource SuccessGreen}"
+                        Foreground="{DynamicResource SystemBaseHighColor}"
+                        BorderThickness="0"
+                        CornerRadius="4"
+                        FontSize="15"
+                        FontWeight="SemiBold"/>
+
+                <!-- Add/Edit Form -->
+                <Border Background="{DynamicResource SystemAltMediumColor}"
+                        BorderBrush="{DynamicResource SystemAccentColor}"
+                        BorderThickness="2"
+                        CornerRadius="8"
+                        Padding="24"
+                        MaxHeight="550"
+                        IsVisible="{Binding IsFormVisible}">
+                    <ScrollViewer VerticalScrollBarVisibility="Auto"
+                                  HorizontalScrollBarVisibility="Disabled">
+                        <StackPanel Spacing="16">
+                            <!-- Form Header - Edit Mode -->
+                            <TextBlock Text="Edit Server"
+                                       FontSize="20"
+                                       FontWeight="SemiBold"
+                                       Foreground="{DynamicResource HighlightYellow}"
+                                       IsVisible="{Binding IsEditing}"/>
+
+                            <!-- Form Header - Add Mode -->
+                            <TextBlock Text="Add New Server"
+                                       FontSize="20"
+                                       FontWeight="SemiBold"
+                                       Foreground="{DynamicResource HighlightYellow}"
+                                       IsVisible="{Binding !IsEditing}"/>
+
+                            <!-- Server Name -->
+                            <StackPanel Spacing="8">
+                                <TextBlock Text="Server Name *"
+                                           Foreground="{DynamicResource SystemBaseHighColor}"
+                                           FontSize="13"/>
+                                <TextBox Text="{Binding EditingServer.Name}"
+                                         Watermark="My Test Server"
+                                         MinHeight="40"
+                                         Padding="12,10"
+                                         FontSize="14"
+                                         Background="{DynamicResource SystemAltHighColor}"
+                                         Foreground="{DynamicResource SystemBaseHighColor}"
+                                         BorderBrush="{DynamicResource SystemAccentColor}"
+                                         BorderThickness="1"
+                                         CornerRadius="4"
+                                         VerticalContentAlignment="Center"/>
+                            </StackPanel>
+
+                            <!-- Host -->
+                            <StackPanel Spacing="8">
+                                <TextBlock Text="Host (IP or Hostname) *"
+                                           Foreground="{DynamicResource SystemBaseHighColor}"
+                                           FontSize="13"/>
+                                <TextBox Text="{Binding EditingServer.Host}"
+                                         Watermark="127.0.0.1 or localhost"
+                                         MinHeight="40"
+                                         Padding="12,10"
+                                         FontSize="14"
+                                         Background="{DynamicResource SystemAltHighColor}"
+                                         Foreground="{DynamicResource SystemBaseHighColor}"
+                                         BorderBrush="{DynamicResource SystemAccentColor}"
+                                         BorderThickness="1"
+                                         CornerRadius="4"
+                                         VerticalContentAlignment="Center"/>
+                            </StackPanel>
+
+                            <!-- Port -->
+                            <StackPanel Spacing="8">
+                                <TextBlock Text="Port *"
+                                           Foreground="{DynamicResource SystemBaseHighColor}"
+                                           FontSize="13"/>
+                                <TextBox Text="{Binding EditingServer.Port}"
+                                         Watermark="9000"
+                                         MinHeight="40"
+                                         Padding="12,10"
+                                         FontSize="14"
+                                         Background="{DynamicResource SystemAltHighColor}"
+                                         Foreground="{DynamicResource SystemBaseHighColor}"
+                                         BorderBrush="{DynamicResource SystemAccentColor}"
+                                         BorderThickness="1"
+                                         CornerRadius="4"
+                                         VerticalContentAlignment="Center"/>
+                            </StackPanel>
+
+                            <!-- Server Type -->
+                            <StackPanel Spacing="8">
+                                <TextBlock Text="Server Type"
+                                           Foreground="{DynamicResource SystemBaseHighColor}"
+                                           FontSize="13"/>
+                                <ComboBox ItemsSource="{Binding ServerTypes}"
+                                          SelectedItem="{Binding EditingServer.ServerType}"
+                                          MinHeight="40"
+                                          Padding="12,8"
+                                          FontSize="14"
+                                          Background="{DynamicResource SystemAltHighColor}"
+                                          Foreground="{DynamicResource SystemBaseHighColor}"
+                                          BorderBrush="{DynamicResource SystemAccentColor}"
+                                          BorderThickness="1"
+                                          CornerRadius="4"
+                                          VerticalContentAlignment="Center"/>
+                            </StackPanel>
+
+                            <!-- Description -->
+                            <StackPanel Spacing="8">
+                                <TextBlock Text="Description (Optional)"
+                                           Foreground="{DynamicResource SystemBaseHighColor}"
+                                           FontSize="13"/>
+                                <TextBox Text="{Binding EditingServer.Description}"
+                                         Watermark="Local development server"
+                                         MinHeight="80"
+                                         Padding="12,10"
+                                         FontSize="14"
+                                         Background="{DynamicResource SystemAltHighColor}"
+                                         Foreground="{DynamicResource SystemBaseHighColor}"
+                                         BorderBrush="{DynamicResource SystemAccentColor}"
+                                         BorderThickness="1"
+                                         CornerRadius="4"
+                                         AcceptsReturn="True"
+                                         TextWrapping="Wrap"
+                                         VerticalContentAlignment="Top"/>
+                            </StackPanel>
+
+                            <!-- Form Buttons -->
+                            <Grid ColumnDefinitions="*, *" ColumnSpacing="12" Margin="0,8,0,0">
+                                <Button Grid.Column="0"
+                                        Content="Cancel"
+                                        Command="{Binding CancelFormCommand}"
+                                        HorizontalAlignment="Stretch"
+                                        HorizontalContentAlignment="Center"
+                                        Padding="0,12"
+                                        Background="Transparent"
+                                        Foreground="{DynamicResource SystemBaseHighColor}"
+                                        BorderBrush="{DynamicResource SystemAccentColor}"
+                                        BorderThickness="1"
+                                        CornerRadius="4"
+                                        FontSize="14"/>
+
+                                <Button Grid.Column="1"
+                                        Content="Save Server"
+                                        Command="{Binding SaveServerCommand}"
+                                        HorizontalAlignment="Stretch"
+                                        HorizontalContentAlignment="Center"
+                                        Padding="0,12"
+                                        Background="{DynamicResource SuccessGreen}"
+                                        Foreground="{DynamicResource SystemBaseHighColor}"
+                                        BorderThickness="0"
+                                        CornerRadius="4"
+                                        FontSize="14"
+                                        FontWeight="SemiBold"/>
+                            </Grid>
+                        </StackPanel>
+                    </ScrollViewer>
+                </Border>
+
+                <!-- Servers List -->
+                <StackPanel Spacing="12">
+                    <TextBlock Text="Your Servers"
+                               FontSize="22"
+                               FontWeight="SemiBold"
+                               Foreground="{DynamicResource HighlightYellow}"
+                               IsVisible="{Binding Servers.Count}"/>
+
+                    <!-- Loading Indicator -->
+                    <StackPanel Orientation="Horizontal"
+                                Spacing="12"
+                                HorizontalAlignment="Center"
+                                Margin="0,40"
+                                IsVisible="{Binding IsLoading}">
+                        <TextBlock Text="⏳" FontSize="24"/>
+                        <TextBlock Text="Loading servers..."
+                                   Foreground="{DynamicResource HighlightYellow}"
+                                   FontSize="16"/>
+                    </StackPanel>
+
+                    <!-- Servers Card Grid -->
+                    <ItemsControl ItemsSource="{Binding ServerCards}"
+                                  IsVisible="{Binding !IsLoading}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel Orientation="Horizontal" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <controls:ServerCard Margin="0,0,16,16" />
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+
+                    <!-- Empty State -->
+                    <StackPanel Spacing="16"
+                                HorizontalAlignment="Center"
+                                Margin="0,60"
+                                IsVisible="{Binding !ServerCards.Count}">
+                        <TextBlock Text="📋"
+                                   FontSize="48"
+                                   HorizontalAlignment="Center"
+                                   Foreground="{DynamicResource SystemBaseMediumColor}"/>
+                        <TextBlock Text="No servers added yet"
+                                   FontSize="18"
+                                   Foreground="{DynamicResource SystemBaseMediumColor}"
+                                   HorizontalAlignment="Center"/>
+                        <TextBlock Text="Click 'Add New Server' to get started"
+                                   FontSize="14"
+                                   Foreground="#707070"
+                                   HorizontalAlignment="Center"/>
+                    </StackPanel>
+                </StackPanel>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

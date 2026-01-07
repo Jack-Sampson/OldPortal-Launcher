@@ -1,0 +1,318 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:OPLauncher.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="1024" d:DesignHeight="640"
+             x:Class="OPLauncher.Views.ManualServerDetailView"
+             x:DataType="vm:ManualServerDetailViewModel">
+
+    <Design.DataContext>
+        <vm:ManualServerDetailViewModel/>
+    </Design.DataContext>
+
+    <Grid Background="{DynamicResource SystemAltHighColor}">
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <StackPanel Spacing="24" Margin="32" MaxWidth="900">
+                <!-- Back Button -->
+                <Button Content="← Back to My Servers"
+                        Command="{Binding BackCommand}"
+                        Padding="12,8"
+                        Background="Transparent"
+                        Foreground="#4361EE"
+                        BorderBrush="{DynamicResource SystemAccentColor}"
+                        BorderThickness="1"
+                        CornerRadius="4"
+                        FontSize="14"
+                        HorizontalAlignment="Left"/>
+
+                <!-- Server Header -->
+                <Border Background="{DynamicResource SystemAltMediumColor}"
+                        BorderBrush="{DynamicResource SystemAccentColor}"
+                        BorderThickness="2"
+                        CornerRadius="8"
+                        Padding="32">
+                    <StackPanel Spacing="16">
+                        <!-- Server Name -->
+                        <StackPanel Orientation="Horizontal" Spacing="12">
+                            <TextBlock Text="{Binding Server.Name}"
+                                       FontSize="32"
+                                       FontWeight="Bold"
+                                       Foreground="{DynamicResource SystemBaseHighColor}"/>
+                            <TextBlock Text="🖥️"
+                                       FontSize="28"
+                                       VerticalAlignment="Center"/>
+                        </StackPanel>
+
+                        <!-- Connection Info -->
+                        <StackPanel Spacing="8">
+                            <TextBlock Foreground="{DynamicResource SystemBaseHighColor}" FontSize="16">
+                                <Run Text="Host:"/>
+                                <Run Text="{Binding Server.Host}" Foreground="{DynamicResource HighlightYellow}"/>
+                            </TextBlock>
+                            <TextBlock Foreground="{DynamicResource SystemBaseHighColor}" FontSize="16">
+                                <Run Text="Port:"/>
+                                <Run Text="{Binding Server.Port}" Foreground="{DynamicResource HighlightYellow}"/>
+                            </TextBlock>
+                            <TextBlock Foreground="{DynamicResource SystemBaseHighColor}" FontSize="16">
+                                <Run Text="Server Type:"/>
+                                <Run Text="{Binding Server.ServerType}" Foreground="{DynamicResource HighlightYellow}"/>
+                            </TextBlock>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+
+                <!-- Description Section (if exists) -->
+                <StackPanel Spacing="12" IsVisible="{Binding Server.Description, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
+                    <TextBlock Text="📖 Description"
+                               FontSize="20"
+                               FontWeight="SemiBold"
+                               Foreground="{DynamicResource SystemBaseHighColor}"/>
+                    <Border Background="{DynamicResource SystemAltMediumColor}"
+                            BorderBrush="{DynamicResource SystemAccentColor}"
+                            BorderThickness="1"
+                            CornerRadius="6"
+                            Padding="20">
+                        <TextBlock Text="{Binding Server.Description, Converter={StaticResource DescriptionCleanupConverter}}"
+                                   Foreground="#E0E0E0"
+                                   FontSize="14"
+                                   TextWrapping="Wrap"
+                                   LineHeight="22"/>
+                    </Border>
+                </StackPanel>
+
+                <!-- Saved Credentials Section -->
+                <StackPanel Spacing="12">
+                    <Grid ColumnDefinitions="*, Auto">
+                        <TextBlock Grid.Column="0"
+                                   Text="🔑 Saved Credentials"
+                                   FontSize="20"
+                                   FontWeight="SemiBold"
+                                   Foreground="{DynamicResource SystemBaseHighColor}"
+                                   VerticalAlignment="Center"/>
+
+                        <Button Grid.Column="1"
+                                Content="+ Add Credential"
+                                Command="{Binding AddCredentialCommand}"
+                                Padding="12,8"
+                                Background="{DynamicResource SystemAccentColorDark1}"
+                                Foreground="{DynamicResource SystemBaseHighColor}"
+                                BorderThickness="0"
+                                CornerRadius="4"
+                                FontSize="13"/>
+                    </Grid>
+
+                    <!-- Add Credential Form -->
+                    <Border Background="{DynamicResource SystemAltMediumColor}"
+                            BorderBrush="{DynamicResource SystemAccentColor}"
+                            BorderThickness="2"
+                            CornerRadius="6"
+                            Padding="24"
+                            Margin="0,12,0,12"
+                            IsVisible="{Binding ShowAddCredential}">
+                        <StackPanel Spacing="16">
+                            <TextBlock Text="Add New Credential"
+                                       FontSize="18"
+                                       FontWeight="SemiBold"
+                                       Foreground="{DynamicResource SystemBaseHighColor}"/>
+
+                            <!-- Username Field -->
+                            <StackPanel Spacing="8">
+                                <TextBlock Text="Username *"
+                                           Foreground="{DynamicResource SystemBaseHighColor}"
+                                           FontSize="13"/>
+                                <TextBox Text="{Binding NewUsername}"
+                                         Watermark="Enter username"
+                                         MinHeight="40"
+                                         Padding="12,10"
+                                         FontSize="14"
+                                         Background="{DynamicResource SystemAltHighColor}"
+                                         Foreground="{DynamicResource SystemBaseHighColor}"
+                                         BorderBrush="{DynamicResource SystemAccentColor}"
+                                         BorderThickness="1"
+                                         CornerRadius="4"
+                                         VerticalContentAlignment="Center"/>
+                            </StackPanel>
+
+                            <!-- Password Field -->
+                            <StackPanel Spacing="8">
+                                <TextBlock Text="Password *"
+                                           Foreground="{DynamicResource SystemBaseHighColor}"
+                                           FontSize="13"/>
+                                <TextBox Text="{Binding NewPassword}"
+                                         Watermark="Enter password"
+                                         PasswordChar="●"
+                                         MinHeight="40"
+                                         Padding="12,10"
+                                         FontSize="14"
+                                         Background="{DynamicResource SystemAltHighColor}"
+                                         Foreground="{DynamicResource SystemBaseHighColor}"
+                                         BorderBrush="{DynamicResource SystemAccentColor}"
+                                         BorderThickness="1"
+                                         CornerRadius="4"
+                                         VerticalContentAlignment="Center"/>
+                            </StackPanel>
+
+                            <!-- Display Name Field (Optional) -->
+                            <StackPanel Spacing="8">
+                                <TextBlock Text="Display Name (Optional)"
+                                           Foreground="{DynamicResource SystemBaseHighColor}"
+                                           FontSize="13"/>
+                                <TextBox Text="{Binding NewDisplayName}"
+                                         Watermark="Friendly name for this character"
+                                         MinHeight="40"
+                                         Padding="12,10"
+                                         FontSize="14"
+                                         Background="{DynamicResource SystemAltHighColor}"
+                                         Foreground="{DynamicResource SystemBaseHighColor}"
+                                         BorderBrush="{DynamicResource SystemAccentColor}"
+                                         BorderThickness="1"
+                                         CornerRadius="4"
+                                         VerticalContentAlignment="Center"/>
+                            </StackPanel>
+
+                            <!-- Form Buttons -->
+                            <Grid ColumnDefinitions="*, *" ColumnSpacing="12" Margin="0,8,0,0">
+                                <Button Grid.Column="0"
+                                        Content="Cancel"
+                                        Command="{Binding CancelAddCredentialCommand}"
+                                        HorizontalAlignment="Stretch"
+                                        HorizontalContentAlignment="Center"
+                                        Padding="0,12"
+                                        Background="Transparent"
+                                        Foreground="{DynamicResource SystemBaseHighColor}"
+                                        BorderBrush="{DynamicResource SystemAccentColor}"
+                                        BorderThickness="1"
+                                        CornerRadius="4"
+                                        FontSize="14"/>
+
+                                <Button Grid.Column="1"
+                                        Content="Save Credential"
+                                        Command="{Binding SaveCredentialCommand}"
+                                        IsEnabled="{Binding !IsSavingCredential}"
+                                        HorizontalAlignment="Stretch"
+                                        HorizontalContentAlignment="Center"
+                                        Padding="0,12"
+                                        Background="{DynamicResource SuccessGreen}"
+                                        Foreground="{DynamicResource SystemBaseHighColor}"
+                                        BorderThickness="0"
+                                        CornerRadius="4"
+                                        FontSize="14"
+                                        FontWeight="SemiBold"/>
+                            </Grid>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Credentials List -->
+                    <ItemsControl ItemsSource="{Binding SavedCredentials}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border Background="{DynamicResource SystemAltMediumColor}"
+                                        BorderBrush="{DynamicResource SystemAccentColor}"
+                                        BorderThickness="1"
+                                        CornerRadius="6"
+                                        Padding="16"
+                                        Margin="0,0,0,12">
+                                    <Grid ColumnDefinitions="Auto, *, Auto, Auto">
+                                        <TextBlock Grid.Column="0"
+                                                   Text="👤"
+                                                   FontSize="20"
+                                                   VerticalAlignment="Center"
+                                                   Margin="0,0,12,0"/>
+
+                                        <StackPanel Grid.Column="1" Spacing="4">
+                                            <TextBlock Text="{Binding DisplayName}"
+                                                       Foreground="{DynamicResource SystemBaseHighColor}"
+                                                       FontSize="15"
+                                                       FontWeight="SemiBold"
+                                                       IsVisible="{Binding DisplayName, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+                                            <TextBlock Text="{Binding Username}"
+                                                       Foreground="#E0E0E0"
+                                                       FontSize="13"/>
+                                            <TextBlock Foreground="{DynamicResource SystemBaseMediumColor}" FontSize="11">
+                                                <Run Text="Last used:"/>
+                                                <Run Text="{Binding LastUsed}"/>
+                                            </TextBlock>
+                                        </StackPanel>
+
+                                        <Button Grid.Column="2"
+                                                Content="▶ Play"
+                                                Command="{Binding $parent[ItemsControl].((vm:ManualServerDetailViewModel)DataContext).PlayCommand}"
+                                                CommandParameter="{Binding}"
+                                                Padding="14,8"
+                                                Background="{DynamicResource SuccessGreen}"
+                                                Foreground="{DynamicResource SystemBaseHighColor}"
+                                                BorderThickness="0"
+                                                CornerRadius="4"
+                                                FontSize="13"
+                                                FontWeight="SemiBold"
+                                                Margin="0,0,8,0"/>
+
+                                        <Button Grid.Column="3"
+                                                Content="Delete"
+                                                Command="{Binding $parent[ItemsControl].((vm:ManualServerDetailViewModel)DataContext).DeleteCredentialCommand}"
+                                                CommandParameter="{Binding}"
+                                                Padding="10,6"
+                                                Background="Transparent"
+                                                Foreground="#FF4444"
+                                                BorderBrush="#FF4444"
+                                                BorderThickness="1"
+                                                CornerRadius="4"
+                                                FontSize="12"/>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+
+                    <!-- No Credentials Message -->
+                    <Border Background="{DynamicResource SystemAltMediumColor}"
+                            BorderBrush="{DynamicResource SystemAccentColor}"
+                            BorderThickness="1"
+                            CornerRadius="6"
+                            Padding="32"
+                            IsVisible="{Binding !SavedCredentials.Count}">
+                        <StackPanel Spacing="12" HorizontalAlignment="Center">
+                            <TextBlock Text="🔐"
+                                       FontSize="32"
+                                       HorizontalAlignment="Center"
+                                       Foreground="{DynamicResource SystemBaseMediumColor}"/>
+                            <TextBlock Text="No saved credentials yet"
+                                       FontSize="16"
+                                       Foreground="{DynamicResource SystemBaseMediumColor}"
+                                       HorizontalAlignment="Center"/>
+                            <TextBlock Text="Add a credential to quickly launch this server"
+                                       FontSize="13"
+                                       Foreground="#707070"
+                                       HorizontalAlignment="Center"/>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+
+                <!-- Error/Success Messages -->
+                <TextBlock Text="{Binding ErrorMessage}"
+                           Foreground="#FF4444"
+                           TextWrapping="Wrap"
+                           FontSize="14"
+                           IsVisible="{Binding ErrorMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+
+                <TextBlock Text="{Binding SuccessMessage}"
+                           Foreground="{DynamicResource SuccessGreen}"
+                           TextWrapping="Wrap"
+                           FontSize="14"
+                           IsVisible="{Binding SuccessMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+
+                <!-- Launching Indicator -->
+                <StackPanel Orientation="Horizontal"
+                            Spacing="12"
+                            HorizontalAlignment="Center"
+                            IsVisible="{Binding IsLaunching}">
+                    <TextBlock Text="⏳" FontSize="20"/>
+                    <TextBlock Text="Launching game..."
+                               Foreground="{DynamicResource SystemBaseHighColor}"
+                               FontSize="16"/>
+                </StackPanel>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

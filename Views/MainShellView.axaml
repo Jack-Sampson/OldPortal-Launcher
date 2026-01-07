@@ -1,0 +1,217 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:OPLauncher.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="1200" d:DesignHeight="800"
+             x:Class="OPLauncher.Views.MainShellView"
+             x:DataType="vm:MainShellViewModel">
+
+    <!-- TODO: [LAUNCH-102] Phase 1 Week 2 - MainShellView Layout -->
+    <!-- Component: Launcher -->
+    <!-- Module: UI Redesign - Navigation Architecture -->
+    <!-- Description: Main shell with sidebar navigation (240px) + content area -->
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <!-- Sidebar: 240px fixed width -->
+            <ColumnDefinition Width="240" />
+            <!-- Content Area: Remaining space -->
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <!-- ========================================== -->
+        <!-- SIDEBAR NAVIGATION -->
+        <!-- ========================================== -->
+        <Border Grid.Column="0"
+                Background="{DynamicResource BackgroundSecondaryBrush}"
+                BorderBrush="{DynamicResource BorderPrimaryBrush}"
+                BorderThickness="0,0,1,0">
+
+            <ScrollViewer VerticalScrollBarVisibility="Auto"
+                          HorizontalScrollBarVisibility="Disabled">
+                <StackPanel Spacing="{DynamicResource SpacingSM}">
+
+                    <!-- Logo / Header Area -->
+                    <Border Background="{DynamicResource BackgroundTertiaryBrush}"
+                            Padding="{DynamicResource ThicknessLG}"
+                            Margin="0,0,0,16">
+                        <StackPanel>
+                            <TextBlock Text="OldPortal"
+                                       FontFamily="{DynamicResource FontHeading}"
+                                       FontSize="{DynamicResource FontSizeH2}"
+                                       FontWeight="{DynamicResource FontWeightBold}"
+                                       Foreground="{DynamicResource PrimaryBrush}"
+                                       HorizontalAlignment="Center" />
+                            <TextBlock Text="Launcher"
+                                       FontFamily="{DynamicResource FontBody}"
+                                       FontSize="{DynamicResource FontSizeSmall}"
+                                       Foreground="{DynamicResource TextMutedBrush}"
+                                       HorizontalAlignment="Center" />
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Navigation Buttons -->
+                    <StackPanel Spacing="{DynamicResource SpacingXS}"
+                                Margin="{DynamicResource ThicknessSM}">
+
+                        <!-- Navigation Button Styles -->
+                        <StackPanel.Styles>
+                            <Style Selector="Button">
+                                <Setter Property="Transitions">
+                                    <Transitions>
+                                        <TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.15"/>
+                                        <DoubleTransition Property="Opacity" Duration="0:0:0.15"/>
+                                    </Transitions>
+                                </Setter>
+                            </Style>
+                            <Style Selector="Button:pointerover">
+                                <Setter Property="RenderTransform" Value="scale(1.02)"/>
+                            </Style>
+                        </StackPanel.Styles>
+
+                        <!-- Home -->
+                        <Button Command="{Binding NavigateToHomeCommand}"
+                                HorizontalAlignment="Stretch"
+                                HorizontalContentAlignment="Left"
+                                Padding="16,12"
+                                Background="{Binding ActiveNavigationItem, Converter={StaticResource NavItemBackgroundConverter}, ConverterParameter=Home, FallbackValue=Transparent}"
+                                BorderThickness="0"
+                                CornerRadius="8">
+                            <StackPanel Orientation="Horizontal" Spacing="12">
+                                <TextBlock Text="🏠" FontSize="18" />
+                                <TextBlock Text="Home"
+                                           FontFamily="{DynamicResource FontBody}"
+                                           FontSize="{DynamicResource FontSizeBody}"
+                                           FontWeight="{DynamicResource FontWeightMedium}"
+                                           Foreground="{DynamicResource TextPrimaryBrush}" />
+                            </StackPanel>
+                        </Button>
+
+                        <!-- News -->
+                        <Button Command="{Binding NavigateToNewsCommand}"
+                                HorizontalAlignment="Stretch"
+                                HorizontalContentAlignment="Left"
+                                Padding="16,12"
+                                Background="{Binding ActiveNavigationItem, Converter={StaticResource NavItemBackgroundConverter}, ConverterParameter=News, FallbackValue=Transparent}"
+                                BorderThickness="0"
+                                CornerRadius="8">
+                            <StackPanel Orientation="Horizontal" Spacing="12">
+                                <TextBlock Text="📰" FontSize="18" />
+                                <TextBlock Text="News"
+                                           FontFamily="{DynamicResource FontBody}"
+                                           FontSize="{DynamicResource FontSizeBody}"
+                                           FontWeight="{DynamicResource FontWeightMedium}"
+                                           Foreground="{DynamicResource TextPrimaryBrush}" />
+                            </StackPanel>
+                        </Button>
+
+                        <!-- Separator -->
+                        <Border Height="1"
+                                Background="{DynamicResource BorderPrimaryBrush}"
+                                Margin="0,8" />
+
+                        <!-- Browse Worlds -->
+                        <Button Command="{Binding NavigateToBrowseCommand}"
+                                HorizontalAlignment="Stretch"
+                                HorizontalContentAlignment="Left"
+                                Padding="16,12"
+                                Background="{Binding ActiveNavigationItem, Converter={StaticResource NavItemBackgroundConverter}, ConverterParameter=Browse, FallbackValue=Transparent}"
+                                BorderThickness="0"
+                                CornerRadius="8">
+                            <StackPanel Orientation="Horizontal" Spacing="12">
+                                <TextBlock Text="🌐" FontSize="18" />
+                                <TextBlock Text="Browse Worlds"
+                                           FontFamily="{DynamicResource FontBody}"
+                                           FontSize="{DynamicResource FontSizeBody}"
+                                           FontWeight="{DynamicResource FontWeightMedium}"
+                                           Foreground="{DynamicResource TextPrimaryBrush}" />
+                            </StackPanel>
+                        </Button>
+
+                        <!-- My Servers -->
+                        <Button Command="{Binding NavigateToManualServersCommand}"
+                                HorizontalAlignment="Stretch"
+                                HorizontalContentAlignment="Left"
+                                Padding="16,12"
+                                Background="{Binding ActiveNavigationItem, Converter={StaticResource NavItemBackgroundConverter}, ConverterParameter=My Servers, FallbackValue=Transparent}"
+                                BorderThickness="0"
+                                CornerRadius="8">
+                            <StackPanel Orientation="Horizontal" Spacing="12">
+                                <TextBlock Text="🖥️" FontSize="18" />
+                                <TextBlock Text="My Servers"
+                                           FontFamily="{DynamicResource FontBody}"
+                                           FontSize="{DynamicResource FontSizeBody}"
+                                           FontWeight="{DynamicResource FontWeightMedium}"
+                                           Foreground="{DynamicResource TextPrimaryBrush}" />
+                            </StackPanel>
+                        </Button>
+
+                        <!-- Separator -->
+                        <Border Height="1"
+                                Background="{DynamicResource BorderPrimaryBrush}"
+                                Margin="0,8" />
+
+                        <!-- Help -->
+                        <Button Command="{Binding NavigateToHelpCommand}"
+                                HorizontalAlignment="Stretch"
+                                HorizontalContentAlignment="Left"
+                                Padding="16,12"
+                                Background="{Binding ActiveNavigationItem, Converter={StaticResource NavItemBackgroundConverter}, ConverterParameter=Help, FallbackValue=Transparent}"
+                                BorderThickness="0"
+                                CornerRadius="8">
+                            <StackPanel Orientation="Horizontal" Spacing="12">
+                                <TextBlock Text="❓" FontSize="18" />
+                                <TextBlock Text="Help"
+                                           FontFamily="{DynamicResource FontBody}"
+                                           FontSize="{DynamicResource FontSizeBody}"
+                                           FontWeight="{DynamicResource FontWeightMedium}"
+                                           Foreground="{DynamicResource TextPrimaryBrush}" />
+                            </StackPanel>
+                        </Button>
+
+                        <!-- Settings -->
+                        <Button Command="{Binding NavigateToSettingsCommand}"
+                                HorizontalAlignment="Stretch"
+                                HorizontalContentAlignment="Left"
+                                Padding="16,12"
+                                Background="{Binding ActiveNavigationItem, Converter={StaticResource NavItemBackgroundConverter}, ConverterParameter=Settings, FallbackValue=Transparent}"
+                                BorderThickness="0"
+                                CornerRadius="8">
+                            <StackPanel Orientation="Horizontal" Spacing="12">
+                                <TextBlock Text="⚙️" FontSize="18" />
+                                <TextBlock Text="Settings"
+                                           FontFamily="{DynamicResource FontBody}"
+                                           FontSize="{DynamicResource FontSizeBody}"
+                                           FontWeight="{DynamicResource FontWeightMedium}"
+                                           Foreground="{DynamicResource TextPrimaryBrush}" />
+                            </StackPanel>
+                        </Button>
+
+                    </StackPanel>
+
+                </StackPanel>
+            </ScrollViewer>
+        </Border>
+
+        <!-- ========================================== -->
+        <!-- CONTENT AREA -->
+        <!-- ========================================== -->
+        <Border Grid.Column="1"
+                Background="{DynamicResource BackgroundPrimaryBrush}">
+
+            <!-- ContentControl to display the current view with smooth transitions -->
+            <ContentControl Content="{Binding CurrentContent}"
+                            HorizontalContentAlignment="Stretch"
+                            VerticalContentAlignment="Stretch">
+                <ContentControl.Transitions>
+                    <Transitions>
+                        <DoubleTransition Property="Opacity" Duration="0:0:0.25"/>
+                    </Transitions>
+                </ContentControl.Transitions>
+            </ContentControl>
+
+        </Border>
+    </Grid>
+
+</UserControl>

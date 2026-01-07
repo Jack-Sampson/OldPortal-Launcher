@@ -1,0 +1,60 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- ==================== COLOR RESOURCES ==================== -->
+
+    <!-- Brand Colors -->
+    <Color x:Key="TwilightPurple">#3A0CA3</Color>
+    <Color x:Key="PortalBlue">#4361EE</Color>
+    <Color x:Key="MidnightGradientStart">#240046</Color>
+    <Color x:Key="MidnightGradientEnd">#10002B</Color>
+    <Color x:Key="VioletGlow">#B5179E</Color>
+    <Color x:Key="EmeraldVerified">#00C46B</Color>
+
+    <!-- Additional UI Colors -->
+    <Color x:Key="DarkBackground">#10002B</Color>
+    <Color x:Key="CardBackground">#240046</Color>
+    <Color x:Key="BorderColor">#4361EE</Color>
+    <Color x:Key="TextPrimary">#FFFFFF</Color>
+    <Color x:Key="TextSecondary">#A0A0A0</Color>
+    <Color x:Key="TextMuted">#707070</Color>
+    <Color x:Key="ErrorRed">#FF4444</Color>
+    <Color x:Key="WarningOrange">#FF8C00</Color>
+    <Color x:Key="SuccessGreen">#00C46B</Color>
+
+    <!-- Solid Color Brushes -->
+    <SolidColorBrush x:Key="TwilightPurpleBrush" Color="{StaticResource TwilightPurple}"/>
+    <SolidColorBrush x:Key="PortalBlueBrush" Color="{StaticResource PortalBlue}"/>
+    <SolidColorBrush x:Key="VioletGlowBrush" Color="{StaticResource VioletGlow}"/>
+    <SolidColorBrush x:Key="EmeraldVerifiedBrush" Color="{StaticResource EmeraldVerified}"/>
+    <SolidColorBrush x:Key="DarkBackgroundBrush" Color="{StaticResource DarkBackground}"/>
+    <SolidColorBrush x:Key="CardBackgroundBrush" Color="{StaticResource CardBackground}"/>
+    <SolidColorBrush x:Key="BorderColorBrush" Color="{StaticResource BorderColor}"/>
+    <SolidColorBrush x:Key="TextPrimaryBrush" Color="{StaticResource TextPrimary}"/>
+    <SolidColorBrush x:Key="TextSecondaryBrush" Color="{StaticResource TextSecondary}"/>
+    <SolidColorBrush x:Key="TextMutedBrush" Color="{StaticResource TextMuted}"/>
+    <SolidColorBrush x:Key="ErrorBrush" Color="{StaticResource ErrorRed}"/>
+    <SolidColorBrush x:Key="WarningBrush" Color="{StaticResource WarningOrange}"/>
+    <SolidColorBrush x:Key="SuccessBrush" Color="{StaticResource SuccessGreen}"/>
+
+    <!-- ==================== GRADIENT BRUSHES ==================== -->
+
+    <!-- Midnight Gradient (Background) -->
+    <LinearGradientBrush x:Key="MidnightGradient" StartPoint="0%,0%" EndPoint="0%,100%">
+        <GradientStop Color="{StaticResource MidnightGradientStart}" Offset="0"/>
+        <GradientStop Color="{StaticResource MidnightGradientEnd}" Offset="1"/>
+    </LinearGradientBrush>
+
+    <!-- Portal Gradient (Primary Accent) -->
+    <LinearGradientBrush x:Key="PortalGradient" StartPoint="0%,0%" EndPoint="100%,100%">
+        <GradientStop Color="{StaticResource TwilightPurple}" Offset="0"/>
+        <GradientStop Color="{StaticResource PortalBlue}" Offset="1"/>
+    </LinearGradientBrush>
+
+    <!-- Glow Gradient (Hover Effects) -->
+    <LinearGradientBrush x:Key="GlowGradient" StartPoint="0%,50%" EndPoint="100%,50%">
+        <GradientStop Color="{StaticResource VioletGlow}" Offset="0"/>
+        <GradientStop Color="{StaticResource PortalBlue}" Offset="1"/>
+    </LinearGradientBrush>
+
+</ResourceDictionary>

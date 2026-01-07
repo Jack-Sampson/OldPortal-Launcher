@@ -1,0 +1,116 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:dto="using:OPLauncher.DTOs"
+             mc:Ignorable="d" d:DesignWidth="280" d:DesignHeight="380"
+             x:Class="OPLauncher.Controls.NewsCard"
+             x:DataType="dto:NewsDto"
+             Width="280" Height="380">
+
+    <!-- TODO: [LAUNCH-111] Phase 2 Week 4 - NewsCard Control -->
+    <!-- Component: Launcher -->
+    <!-- Module: UI Redesign - Home View & News Feed -->
+    <!-- Description: News card with image, title, excerpt, date, category -->
+
+    <Border x:Name="CardBorder"
+            Background="{DynamicResource BackgroundSecondaryBrush}"
+            BorderBrush="{DynamicResource BorderPrimaryBrush}"
+            BorderThickness="1"
+            CornerRadius="{DynamicResource RadiusLG}"
+            ClipToBounds="True"
+            Cursor="Hand"
+            PointerPressed="OnCardClicked">
+
+        <Border.Styles>
+            <!-- Hover Effect: Border highlight on hover -->
+            <Style Selector="Border:pointerover">
+                <Setter Property="BorderBrush" Value="{DynamicResource PrimaryBrush}" />
+                <Setter Property="BorderThickness" Value="2" />
+            </Style>
+        </Border.Styles>
+
+        <Grid RowDefinitions="174,*">
+            <!-- News Image (16:9 aspect, 310x174) -->
+            <Border Grid.Row="0"
+                    Background="{DynamicResource BackgroundTertiaryBrush}"
+                    ClipToBounds="True">
+                <Grid>
+                    <!-- News Image (with automatic URL resolution for API images) -->
+                    <Image x:Name="NewsImage"
+                           Source="{Binding FullImageUrl, Converter={StaticResource ImageUriConverter}}"
+                           Width="280"
+                           Height="174"
+                           Stretch="Uniform"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           RenderOptions.BitmapInterpolationMode="HighQuality" />
+
+                    <!-- Category Badge - Top Right -->
+                    <Border HorizontalAlignment="Right"
+                            VerticalAlignment="Top"
+                            Margin="12"
+                            Background="{DynamicResource PrimaryBrush}"
+                            CornerRadius="12"
+                            Padding="12,6">
+                        <TextBlock Text="{Binding CategoryDisplay}"
+                                   FontFamily="{DynamicResource FontBody}"
+                                   FontSize="{DynamicResource FontSizeSmall}"
+                                   FontWeight="{DynamicResource FontWeightSemiBold}"
+                                   Foreground="{DynamicResource TextPrimaryBrush}" />
+                    </Border>
+                </Grid>
+            </Border>
+
+            <!-- Card Content (Below Image) -->
+            <Border Grid.Row="1" Padding="20">
+                <StackPanel Spacing="12">
+
+                    <!-- News Title -->
+                    <TextBlock Text="{Binding Title}"
+                               FontFamily="{DynamicResource FontHeading}"
+                               FontSize="20"
+                               FontWeight="{DynamicResource FontWeightBold}"
+                               Foreground="{DynamicResource TextPrimaryBrush}"
+                               TextTrimming="CharacterEllipsis"
+                               MaxLines="2"
+                               TextWrapping="Wrap" />
+
+                    <!-- News Excerpt -->
+                    <TextBlock Text="{Binding Excerpt}"
+                               FontFamily="{DynamicResource FontBody}"
+                               FontSize="{DynamicResource FontSizeBody}"
+                               Foreground="{DynamicResource TextSecondaryBrush}"
+                               TextTrimming="CharacterEllipsis"
+                               MaxLines="3"
+                               TextWrapping="Wrap"
+                               LineHeight="20" />
+
+                    <!-- Spacer -->
+                    <Border Height="8" />
+
+                    <!-- Meta Info (Date & Author) -->
+                    <Grid ColumnDefinitions="*,Auto">
+                        <!-- Date -->
+                        <TextBlock Grid.Column="0"
+                                   Text="{Binding FormattedDate}"
+                                   FontFamily="{DynamicResource FontBody}"
+                                   FontSize="{DynamicResource FontSizeSmall}"
+                                   Foreground="{DynamicResource TextMutedBrush}"
+                                   VerticalAlignment="Center" />
+
+                        <!-- Read More Indicator -->
+                        <TextBlock Grid.Column="1"
+                                   Text="Read More →"
+                                   FontFamily="{DynamicResource FontBody}"
+                                   FontSize="{DynamicResource FontSizeSmall}"
+                                   FontWeight="{DynamicResource FontWeightSemiBold}"
+                                   Foreground="{DynamicResource PrimaryBrush}"
+                                   VerticalAlignment="Center" />
+                    </Grid>
+
+                </StackPanel>
+            </Border>
+        </Grid>
+    </Border>
+</UserControl>

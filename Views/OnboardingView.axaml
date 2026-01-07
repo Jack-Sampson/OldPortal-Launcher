@@ -1,0 +1,826 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:OPLauncher.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="600"
+             x:Class="OPLauncher.Views.OnboardingView"
+             x:DataType="vm:OnboardingViewModel">
+
+    <Design.DataContext>
+        <vm:OnboardingViewModel/>
+    </Design.DataContext>
+
+    <!-- Modal Overlay Container -->
+    <Grid Background="#99000000">
+        <!-- Modal Content -->
+        <Border Width="800"
+                Height="600"
+                Background="{DynamicResource SystemAltHighColor}"
+                BorderBrush="{DynamicResource HighlightYellow}"
+                BorderThickness="2"
+                CornerRadius="12"
+                BoxShadow="0 10 40 10 #40000000"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center">
+
+            <Grid RowDefinitions="Auto,*,Auto">
+                <!-- Header with Progress -->
+                <StackPanel Grid.Row="0" Spacing="16" Margin="40,40,40,24">
+                    <Grid ColumnDefinitions="*,Auto">
+                        <TextBlock Grid.Column="0"
+                                   Text="Welcome to OldPortal"
+                                   FontSize="28"
+                                   FontWeight="Bold"
+                                   Foreground="{DynamicResource HighlightYellow}"/>
+
+                        <TextBlock Grid.Column="1"
+                                   FontSize="16"
+                                   Foreground="{DynamicResource SystemBaseMediumColor}">
+                            <Run Text="Step "/>
+                            <Run Text="{Binding CurrentStepNumber}"/>
+                            <Run Text="/"/>
+                            <Run Text="{Binding TotalSteps}"/>
+                        </TextBlock>
+                    </Grid>
+
+                    <!-- Progress Bar -->
+                    <Border Height="6"
+                            Background="{DynamicResource SystemAltMediumColor}"
+                            CornerRadius="3">
+                        <Border Background="{DynamicResource HighlightYellow}"
+                                CornerRadius="3"
+                                HorizontalAlignment="Left"
+                                Width="{Binding ProgressPercentage, Converter={StaticResource PercentToWidthConverter}, ConverterParameter=720}">
+                        </Border>
+                    </Border>
+                </StackPanel>
+
+                <!-- Step Content Area -->
+                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                    <Panel>
+                        <!-- Step 1: Welcome -->
+                        <StackPanel Spacing="24"
+                                    Margin="40,0"
+                                    IsVisible="{Binding CurrentStep, Converter={StaticResource EnumEqualityConverter}, ConverterParameter=Welcome}">
+                            <TextBlock Text="🎮 Let's Get You Started"
+                                       FontSize="24"
+                                       FontWeight="SemiBold"
+                                       Foreground="{DynamicResource SystemBaseHighColor}"/>
+
+                            <TextBlock FontSize="15"
+                                       Foreground="{DynamicResource SystemBaseMediumHighColor}"
+                                       TextWrapping="Wrap"
+                                       LineHeight="24">
+                                <Run Text="Welcome to OldPortal! We'll help you set up everything you need to play Asheron's Call."/>
+                                <LineBreak/><LineBreak/>
+                                <Run Text="This wizard will guide you through:"/>
+                            </TextBlock>
+
+                            <ItemsControl>
+                                <ItemsControl.Items>
+                                    <StackPanel Orientation="Horizontal" Spacing="12" Margin="0,8">
+                                        <TextBlock Text="1️⃣" FontSize="20"/>
+                                        <StackPanel>
+                                            <TextBlock Text="Game Client"
+                                                       FontWeight="SemiBold"
+                                                       Foreground="{DynamicResource SystemBaseHighColor}"/>
+                                            <TextBlock Text="Detect or download Asheron's Call client"
+                                                       Foreground="{DynamicResource SystemBaseMediumColor}"
+                                                       FontSize="13"/>
+                                        </StackPanel>
+                                    </StackPanel>
+
+                                    <StackPanel Orientation="Horizontal" Spacing="12" Margin="0,8">
+                                        <TextBlock Text="2️⃣" FontSize="20"/>
+                                        <StackPanel>
+                                            <TextBlock Text="End of Retail Patch"
+                                                       FontWeight="SemiBold"
+                                                       Foreground="{DynamicResource SystemBaseHighColor}"/>
+                                            <TextBlock Text="Apply the latest game patch"
+                                                       Foreground="{DynamicResource SystemBaseMediumColor}"
+                                                       FontSize="13"/>
+                                        </StackPanel>
+                                    </StackPanel>
+
+                                    <StackPanel Orientation="Horizontal" Spacing="12" Margin="0,8">
+                                        <TextBlock Text="3️⃣" FontSize="20"/>
+                                        <StackPanel>
+                                            <TextBlock FontWeight="SemiBold"
+                                                       Foreground="{DynamicResource SystemBaseHighColor}">
+                                                <Run Text="Decal"/>
+                                                <Run Text=" (Optional)" Foreground="{DynamicResource SystemBaseMediumColor}" FontWeight="Normal"/>
+                                            </TextBlock>
+                                            <TextBlock Text="Install plugin framework for addons"
+                                                       Foreground="{DynamicResource SystemBaseMediumColor}"
+                                                       FontSize="13"/>
+                                        </StackPanel>
+                                    </StackPanel>
+
+                                    <StackPanel Orientation="Horizontal" Spacing="12" Margin="0,8">
+                                        <TextBlock Text="4️⃣" FontSize="20"/>
+                                        <StackPanel>
+                                            <TextBlock FontWeight="SemiBold"
+                                                       Foreground="{DynamicResource SystemBaseHighColor}">
+                                                <Run Text="Old Portal Addons"/>
+                                                <Run Text=" (Optional)" Foreground="{DynamicResource SystemBaseMediumColor}" FontWeight="Normal"/>
+                                            </TextBlock>
+                                            <TextBlock Text="Learn about available community addons"
+                                                       Foreground="{DynamicResource SystemBaseMediumColor}"
+                                                       FontSize="13"/>
+                                        </StackPanel>
+                                    </StackPanel>
+                                </ItemsControl.Items>
+                            </ItemsControl>
+
+                            <Border Background="{DynamicResource SystemAltMediumColor}"
+                                    BorderBrush="{DynamicResource SystemAccentColor}"
+                                    BorderThickness="1"
+                                    CornerRadius="6"
+                                    Padding="16"
+                                    Margin="0,16,0,0">
+                                <StackPanel Spacing="8">
+                                    <TextBlock Text="⏱️ Estimated time: 10-15 minutes"
+                                               Foreground="{DynamicResource SystemBaseHighColor}"
+                                               FontSize="14"/>
+                                    <TextBlock Text="💾 Downloads required: ~500 MB (game client and patch)"
+                                               Foreground="{DynamicResource SystemBaseHighColor}"
+                                               FontSize="14"/>
+                                    <TextBlock Text="🔒 All downloads from trusted sources (Archive.org, Mega.nz, DecalDev.com)"
+                                               Foreground="{DynamicResource SystemBaseMediumColor}"
+                                               FontSize="13"
+                                               TextWrapping="Wrap"/>
+                                    <TextBlock Text="✨ Decal and addons are optional - you can skip them if you prefer"
+                                               Foreground="{DynamicResource SystemBaseMediumColor}"
+                                               FontSize="13"
+                                               FontStyle="Italic"
+                                               TextWrapping="Wrap"/>
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+
+                        <!-- Step 2: Game Client -->
+                        <StackPanel Spacing="20"
+                                    Margin="40,0"
+                                    IsVisible="{Binding CurrentStep, Converter={StaticResource EnumEqualityConverter}, ConverterParameter=GameClient}">
+                            <TextBlock Text="🎮 Asheron's Call Client"
+                                       FontSize="22"
+                                       FontWeight="SemiBold"
+                                       Foreground="{DynamicResource SystemBaseHighColor}"/>
+
+                            <!-- Compact Status Box with Dynamic Instructions -->
+                            <Border Background="{DynamicResource SystemAltMediumColor}"
+                                    BorderBrush="{DynamicResource SystemAccentColor}"
+                                    BorderThickness="1"
+                                    CornerRadius="6"
+                                    Padding="20"
+                                    MinHeight="100">
+                                <StackPanel Spacing="12" VerticalAlignment="Center">
+                                    <!-- Progress Spinner (shown while detecting) -->
+                                    <Border Width="40" Height="40"
+                                            HorizontalAlignment="Center"
+                                            IsVisible="{Binding IsStepInProgress}">
+                                        <PathIcon Data="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"
+                                                  Foreground="{DynamicResource SystemAccentColor}"
+                                                  Width="40" Height="40">
+                                            <PathIcon.Styles>
+                                                <Style Selector="PathIcon">
+                                                    <Style.Animations>
+                                                        <Animation Duration="0:0:1.5" IterationCount="Infinite">
+                                                            <KeyFrame Cue="0%">
+                                                                <Setter Property="Opacity" Value="0.3"/>
+                                                            </KeyFrame>
+                                                            <KeyFrame Cue="50%">
+                                                                <Setter Property="Opacity" Value="1.0"/>
+                                                            </KeyFrame>
+                                                            <KeyFrame Cue="100%">
+                                                                <Setter Property="Opacity" Value="0.3"/>
+                                                            </KeyFrame>
+                                                        </Animation>
+                                                    </Style.Animations>
+                                                </Style>
+                                            </PathIcon.Styles>
+                                        </PathIcon>
+                                    </Border>
+
+                                    <!-- Status Message (dynamic instructions) -->
+                                    <TextBlock Text="{Binding StatusMessage}"
+                                               FontSize="15"
+                                               HorizontalAlignment="Center"
+                                               TextAlignment="Center"
+                                               Foreground="{DynamicResource SystemBaseHighColor}"
+                                               TextWrapping="Wrap"
+                                               MaxWidth="600"
+                                               LineHeight="20"/>
+                                </StackPanel>
+                            </Border>
+
+                            <!-- Compact Action Buttons (shown when not in progress) -->
+                            <Grid ColumnDefinitions="*,Auto,*"
+                                  RowDefinitions="Auto,Auto,Auto"
+                                  HorizontalAlignment="Center"
+                                  IsVisible="{Binding !IsStepInProgress}">
+
+                                <!-- Row 0: Auto-detect Button (center) -->
+                                <Button Grid.Column="1" Grid.Row="0"
+                                        Content="🔍 Auto-Detect Game Client"
+                                        Command="{Binding DetectClientCommand}"
+                                        Background="{DynamicResource SystemAccentColor}"
+                                        Foreground="White"
+                                        Padding="28,12"
+                                        FontSize="15"
+                                        FontWeight="SemiBold"
+                                        CornerRadius="6"
+                                        MinWidth="280"
+                                        IsVisible="{Binding !IsAcClientInstalled}"/>
+
+                                <!-- Row 1: Divider -->
+                                <TextBlock Grid.Column="1" Grid.Row="1"
+                                           Text="or"
+                                           HorizontalAlignment="Center"
+                                           Foreground="{DynamicResource SystemBaseMediumColor}"
+                                           FontSize="13"
+                                           Margin="0,8"
+                                           IsVisible="{Binding !IsAcClientInstalled}"/>
+
+                                <!-- Row 2: Download and Browse (side by side) -->
+                                <Button Grid.Column="0" Grid.Row="2"
+                                        Command="{Binding DownloadAcClientCommand}"
+                                        Background="{DynamicResource SuccessGreen}"
+                                        Foreground="White"
+                                        Padding="20,10"
+                                        FontSize="14"
+                                        FontWeight="SemiBold"
+                                        CornerRadius="6"
+                                        Margin="0,0,6,0"
+                                        IsVisible="{Binding !IsAcClientInstalled}">
+                                    <StackPanel Orientation="Horizontal" Spacing="6">
+                                        <TextBlock Text="📥" FontSize="16"/>
+                                        <TextBlock Text="Download Client" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </Button>
+
+                                <Button Grid.Column="2" Grid.Row="2"
+                                        Content="📁 Browse"
+                                        Command="{Binding BrowseForClientCommand}"
+                                        Background="Transparent"
+                                        Foreground="{DynamicResource SystemBaseHighColor}"
+                                        BorderBrush="{DynamicResource SystemAccentColor}"
+                                        BorderThickness="1.5"
+                                        Padding="20,10"
+                                        FontSize="14"
+                                        FontWeight="SemiBold"
+                                        CornerRadius="6"
+                                        Margin="6,0,0,0"
+                                        IsVisible="{Binding !IsAcClientInstalled}"/>
+
+                                <!-- Success hint when detected (spans all columns) -->
+                                <TextBlock Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0"
+                                           Text="✅ Client detected! Click 'Next' to continue"
+                                           FontSize="15"
+                                           HorizontalAlignment="Center"
+                                           Foreground="{DynamicResource SuccessGreen}"
+                                           FontWeight="SemiBold"
+                                           IsVisible="{Binding IsAcClientInstalled}"/>
+                            </Grid>
+                        </StackPanel>
+
+                        <!-- Step 3: Patch -->
+                        <StackPanel Spacing="24"
+                                    Margin="40,0"
+                                    IsVisible="{Binding CurrentStep, Converter={StaticResource EnumEqualityConverter}, ConverterParameter=Patch}">
+                            <TextBlock Text="📦 End of Retail Patch"
+                                       FontSize="24"
+                                       FontWeight="SemiBold"
+                                       Foreground="{DynamicResource SystemBaseHighColor}"/>
+
+                            <TextBlock Text="Applying the latest game patch from Mega.nz..."
+                                       FontSize="15"
+                                       Foreground="{DynamicResource SystemBaseMediumHighColor}"
+                                       TextWrapping="Wrap"/>
+
+                            <Border Background="{DynamicResource SystemAltMediumColor}"
+                                    BorderBrush="{DynamicResource SystemAccentColor}"
+                                    BorderThickness="1"
+                                    CornerRadius="6"
+                                    Padding="24"
+                                    MinHeight="200">
+                                <StackPanel Spacing="16" VerticalAlignment="Center">
+                                    <!-- Progress Spinner (shown while downloading) -->
+                                    <Border Width="48" Height="48"
+                                            HorizontalAlignment="Center"
+                                            IsVisible="{Binding IsStepInProgress}">
+                                        <PathIcon Data="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"
+                                                  Foreground="{DynamicResource SystemAccentColor}"
+                                                  Width="48" Height="48">
+                                            <PathIcon.Styles>
+                                                <Style Selector="PathIcon">
+                                                    <Style.Animations>
+                                                        <Animation Duration="0:0:1.5" IterationCount="Infinite">
+                                                            <KeyFrame Cue="0%">
+                                                                <Setter Property="Opacity" Value="0.3"/>
+                                                            </KeyFrame>
+                                                            <KeyFrame Cue="50%">
+                                                                <Setter Property="Opacity" Value="1.0"/>
+                                                            </KeyFrame>
+                                                            <KeyFrame Cue="100%">
+                                                                <Setter Property="Opacity" Value="0.3"/>
+                                                            </KeyFrame>
+                                                        </Animation>
+                                                    </Style.Animations>
+                                                </Style>
+                                            </PathIcon.Styles>
+                                        </PathIcon>
+                                    </Border>
+
+                                    <!-- Download Progress Bar -->
+                                    <Border Width="400" Height="8"
+                                            Background="{DynamicResource SystemBaseLowColor}"
+                                            CornerRadius="4"
+                                            HorizontalAlignment="Center"
+                                            IsVisible="{Binding IsStepInProgress}">
+                                        <Border Background="{DynamicResource SystemAccentColor}"
+                                                CornerRadius="4"
+                                                HorizontalAlignment="Left"
+                                                Width="{Binding DownloadProgressPercentage, Converter={StaticResource PercentToWidthConverter}, ConverterParameter=400}"/>
+                                    </Border>
+
+                                    <!-- Status Message (dynamic updates) -->
+                                    <TextBlock Text="{Binding StatusMessage}"
+                                               FontSize="16"
+                                               HorizontalAlignment="Center"
+                                               TextAlignment="Center"
+                                               Foreground="{DynamicResource SystemBaseHighColor}"
+                                               TextWrapping="Wrap"
+                                               MaxWidth="600"/>
+
+                                    <!-- Action Buttons (shown when not in progress) -->
+                                    <StackPanel Spacing="12" HorizontalAlignment="Center"
+                                                IsVisible="{Binding !IsStepInProgress}">
+                                        <!-- Download/Re-Apply Patch Button (ALWAYS VISIBLE per spec) -->
+                                        <Button Command="{Binding ApplyPatchCommand}"
+                                                HorizontalAlignment="Center"
+                                                Background="{DynamicResource SystemAccentColor}"
+                                                Foreground="White"
+                                                Padding="24,12"
+                                                FontSize="15"
+                                                FontWeight="SemiBold"
+                                                CornerRadius="6">
+                                            <Button.Content>
+                                                <Panel>
+                                                    <!-- Show "Download and Apply Patch" when not patched -->
+                                                    <TextBlock Text="📥 Download and Apply Patch"
+                                                               IsVisible="{Binding !IsPatchApplied}"/>
+                                                    <!-- Show "Re-Apply Patch" when already patched -->
+                                                    <TextBlock Text="🔄 Re-Apply Patch Automatically"
+                                                               IsVisible="{Binding IsPatchApplied}"/>
+                                                </Panel>
+                                            </Button.Content>
+                                        </Button>
+
+                                        <!-- Manual Validation Checkbox (only when not patched) -->
+                                        <CheckBox Content="✅ I have manually validated the patch files are correct"
+                                                  IsChecked="{Binding PatchValidatedManually}"
+                                                  HorizontalAlignment="Center"
+                                                  Foreground="{DynamicResource SystemBaseHighColor}"
+                                                  FontSize="14"
+                                                  IsVisible="{Binding !IsPatchApplied}"/>
+
+                                        <!-- Next Step Hint -->
+                                        <TextBlock Text="✅ Click 'Next' to continue"
+                                                   FontSize="14"
+                                                   HorizontalAlignment="Center"
+                                                   Foreground="{DynamicResource SystemAccentColor}"
+                                                   FontWeight="SemiBold"
+                                                   Margin="0,8,0,0"/>
+                                    </StackPanel>
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+
+                        <!-- Step 4: Decal -->
+                        <StackPanel Spacing="18"
+                                    Margin="40,0"
+                                    IsVisible="{Binding CurrentStep, Converter={StaticResource EnumEqualityConverter}, ConverterParameter=Decal}">
+                            <StackPanel Spacing="8">
+                                <TextBlock Text="🔧 Decal Installation (Optional)"
+                                           FontSize="22"
+                                           FontWeight="SemiBold"
+                                           Foreground="{DynamicResource SystemBaseHighColor}"/>
+                                <TextBlock Text="You can skip this step if you don't want to use plugins"
+                                           FontSize="13"
+                                           Foreground="{DynamicResource SystemBaseMediumColor}"
+                                           FontStyle="Italic"/>
+                            </StackPanel>
+
+                            <TextBlock Text="Decal is a plugin framework that enables community addons for Asheron's Call"
+                                       FontSize="14"
+                                       Foreground="{DynamicResource SystemBaseMediumHighColor}"
+                                       TextWrapping="Wrap"/>
+
+                            <Border Background="{DynamicResource SystemAltMediumColor}"
+                                    BorderBrush="{DynamicResource SystemAccentColor}"
+                                    BorderThickness="1"
+                                    CornerRadius="6"
+                                    Padding="20"
+                                    MinHeight="100">
+                                <StackPanel Spacing="16" VerticalAlignment="Center">
+                                    <!-- Progress Spinner (shown while checking) -->
+                                    <Border Width="48" Height="48"
+                                            HorizontalAlignment="Center"
+                                            IsVisible="{Binding IsStepInProgress}">
+                                        <PathIcon Data="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"
+                                                  Foreground="{DynamicResource SystemAccentColor}"
+                                                  Width="48" Height="48">
+                                            <PathIcon.Styles>
+                                                <Style Selector="PathIcon">
+                                                    <Style.Animations>
+                                                        <Animation Duration="0:0:1.5" IterationCount="Infinite">
+                                                            <KeyFrame Cue="0%">
+                                                                <Setter Property="Opacity" Value="0.3"/>
+                                                            </KeyFrame>
+                                                            <KeyFrame Cue="50%">
+                                                                <Setter Property="Opacity" Value="1.0"/>
+                                                            </KeyFrame>
+                                                            <KeyFrame Cue="100%">
+                                                                <Setter Property="Opacity" Value="0.3"/>
+                                                            </KeyFrame>
+                                                        </Animation>
+                                                    </Style.Animations>
+                                                </Style>
+                                            </PathIcon.Styles>
+                                        </PathIcon>
+                                    </Border>
+
+                                    <!-- Status Message (dynamic updates) -->
+                                    <TextBlock Text="{Binding StatusMessage}"
+                                               FontSize="16"
+                                               HorizontalAlignment="Center"
+                                               TextAlignment="Center"
+                                               Foreground="{DynamicResource SystemBaseHighColor}"
+                                               TextWrapping="Wrap"
+                                               MaxWidth="600"/>
+
+                                    <!-- Next Step Hint (shown when step is complete) -->
+                                    <TextBlock Text="✅ Click 'Next' to continue"
+                                               FontSize="14"
+                                               HorizontalAlignment="Center"
+                                               Foreground="{DynamicResource SystemAccentColor}"
+                                               FontWeight="SemiBold"
+                                               IsVisible="{Binding IsDecalInstalled}"/>
+                                </StackPanel>
+                            </Border>
+
+                            <!-- Action Buttons (shown when not in progress and Decal not installed) -->
+                            <StackPanel Spacing="12" HorizontalAlignment="Center"
+                                        IsVisible="{Binding !IsStepInProgress}">
+                                <StackPanel Spacing="10" IsVisible="{Binding !IsDecalInstalled}">
+                                    <!-- Detect Decal Button -->
+                                    <Button Content="🔍 Auto-Detect Decal"
+                                            Command="{Binding DetectDecalCommand}"
+                                            HorizontalAlignment="Center"
+                                            Background="{DynamicResource SystemAccentColor}"
+                                            Foreground="White"
+                                            Padding="24,12"
+                                            FontSize="14"
+                                            FontWeight="Bold"
+                                            CornerRadius="8"
+                                            MinWidth="300"/>
+
+                                    <TextBlock Text="or"
+                                               HorizontalAlignment="Center"
+                                               Foreground="{DynamicResource SystemBaseMediumColor}"
+                                               FontSize="13"
+                                               Margin="0,2"/>
+
+                                    <!-- Download Decal Button (prominent) -->
+                                    <Button Command="{Binding OpenDecalDownloadCommand}"
+                                            HorizontalAlignment="Center"
+                                            Background="{DynamicResource SuccessGreen}"
+                                            Foreground="White"
+                                            Padding="24,12"
+                                            FontSize="14"
+                                            FontWeight="Bold"
+                                            CornerRadius="8"
+                                            MinWidth="300">
+                                        <StackPanel Orientation="Horizontal" Spacing="8">
+                                            <TextBlock Text="📥" FontSize="18"/>
+                                            <TextBlock Text="Download &amp; Install Decal" VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                    </Button>
+
+                                    <TextBlock HorizontalAlignment="Center"
+                                               Foreground="{DynamicResource SystemBaseMediumColor}"
+                                               FontSize="12"
+                                               TextWrapping="Wrap"
+                                               MaxWidth="350"
+                                               TextAlignment="Center"
+                                               Margin="0,4,0,0">
+                                        <Run Text="~20 MB from decaldev.com - After installing, click 'Auto-Detect Decal' above"/>
+                                    </TextBlock>
+                                </StackPanel>
+                            </StackPanel>
+                        </StackPanel>
+
+                        <!-- Step 5: Old Portal Addons (Marketing) -->
+                        <StackPanel Spacing="24"
+                                    Margin="40,0"
+                                    IsVisible="{Binding CurrentStep, Converter={StaticResource EnumEqualityConverter}, ConverterParameter=Addons}">
+                            <TextBlock Text="📦 Old Portal Addons"
+                                       FontSize="24"
+                                       FontWeight="SemiBold"
+                                       Foreground="{DynamicResource SystemBaseHighColor}"/>
+
+                            <TextBlock Text="Enhance your Asheron's Call experience with official Old Portal addons"
+                                       FontSize="15"
+                                       Foreground="{DynamicResource SystemBaseMediumHighColor}"
+                                       TextWrapping="Wrap"/>
+
+                            <Border Background="{DynamicResource SystemAltMediumColor}"
+                                    BorderBrush="{DynamicResource SystemAccentColor}"
+                                    BorderThickness="1"
+                                    CornerRadius="6"
+                                    Padding="32"
+                                    MinHeight="200">
+                                <StackPanel Spacing="20" VerticalAlignment="Center">
+                                    <!-- Addons Icon -->
+                                    <TextBlock Text="🎁"
+                                               FontSize="64"
+                                               HorizontalAlignment="Center"/>
+
+                                    <!-- Description -->
+                                    <TextBlock FontSize="15"
+                                               HorizontalAlignment="Center"
+                                               TextAlignment="Center"
+                                               Foreground="{DynamicResource SystemBaseHighColor}"
+                                               TextWrapping="Wrap"
+                                               MaxWidth="550"
+                                               LineHeight="22">
+                                        <Run Text="Browse our collection of community addons including character tracking, server tools, and quality-of-life improvements."/>
+                                    </TextBlock>
+
+                                    <!-- Download Button -->
+                                    <Button Command="{Binding OpenAddonsDownloadPageCommand}"
+                                            HorizontalAlignment="Center"
+                                            Background="{DynamicResource SystemAccentColor}"
+                                            Foreground="White"
+                                            Padding="32,14"
+                                            FontSize="16"
+                                            FontWeight="Bold"
+                                            CornerRadius="8"
+                                            MinWidth="300"
+                                            Margin="0,8,0,0">
+                                        <StackPanel Orientation="Horizontal" Spacing="8">
+                                            <TextBlock Text="📥" FontSize="20"/>
+                                            <TextBlock Text="Browse Available Addons" VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                    </Button>
+
+                                    <!-- Optional Notice -->
+                                    <TextBlock FontSize="13"
+                                               HorizontalAlignment="Center"
+                                               TextAlignment="Center"
+                                               Foreground="{DynamicResource SystemBaseMediumColor}"
+                                               FontStyle="Italic"
+                                               TextWrapping="Wrap"
+                                               MaxWidth="450"
+                                               Margin="0,8,0,0">
+                                        <Run Text="These addons are completely optional and can be installed anytime from the OldPortal website."/>
+                                    </TextBlock>
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+
+                        <!-- Step 6: Complete (with celebration animations) -->
+                        <StackPanel Spacing="24"
+                                    Margin="40,0"
+                                    IsVisible="{Binding CurrentStep, Converter={StaticResource EnumEqualityConverter}, ConverterParameter=Complete}">
+
+                            <!-- Animated title with fade-in -->
+                            <TextBlock Text="🎉 You're All Set!"
+                                       FontSize="32"
+                                       FontWeight="Bold"
+                                       HorizontalAlignment="Center"
+                                       Foreground="{DynamicResource HighlightYellow}"
+                                       Name="CompletionTitle"
+                                       Opacity="0">
+                                <TextBlock.Styles>
+                                    <Style Selector="TextBlock">
+                                        <Style.Animations>
+                                            <Animation Duration="0:0:0.6" FillMode="Forward">
+                                                <KeyFrame Cue="0%">
+                                                    <Setter Property="Opacity" Value="0"/>
+                                                </KeyFrame>
+                                                <KeyFrame Cue="100%">
+                                                    <Setter Property="Opacity" Value="1"/>
+                                                </KeyFrame>
+                                            </Animation>
+                                        </Style.Animations>
+                                    </Style>
+                                </TextBlock.Styles>
+                            </TextBlock>
+
+                            <TextBlock Text="Your Asheron's Call setup is complete!"
+                                       FontSize="16"
+                                       HorizontalAlignment="Center"
+                                       Foreground="{DynamicResource SystemBaseHighColor}"
+                                       Opacity="0">
+                                <TextBlock.Styles>
+                                    <Style Selector="TextBlock">
+                                        <Style.Animations>
+                                            <Animation Duration="0:0:0.4" Delay="0:0:0.3" FillMode="Forward">
+                                                <KeyFrame Cue="0%">
+                                                    <Setter Property="Opacity" Value="0"/>
+                                                </KeyFrame>
+                                                <KeyFrame Cue="100%">
+                                                    <Setter Property="Opacity" Value="1"/>
+                                                </KeyFrame>
+                                            </Animation>
+                                        </Style.Animations>
+                                    </Style>
+                                </TextBlock.Styles>
+                            </TextBlock>
+
+                            <Border Background="{DynamicResource SystemAltMediumColor}"
+                                    BorderBrush="{DynamicResource SuccessGreen}"
+                                    BorderThickness="2"
+                                    CornerRadius="8"
+                                    Padding="32"
+                                    Margin="0,32">
+                                <StackPanel Spacing="20">
+                                    <!-- Checkmark 1: Game Client (animated) -->
+                                    <StackPanel Orientation="Horizontal" Spacing="16" Opacity="0">
+                                        <TextBlock Text="✅" FontSize="24"/>
+                                        <StackPanel>
+                                            <TextBlock Text="Game Client Installed"
+                                                       FontWeight="SemiBold"
+                                                       Foreground="{DynamicResource SuccessGreen}"/>
+                                            <TextBlock Text="Asheron's Call is ready to launch"
+                                                       FontSize="13"
+                                                       Foreground="{DynamicResource SystemBaseMediumColor}"/>
+                                        </StackPanel>
+                                        <StackPanel.Styles>
+                                            <Style Selector="StackPanel">
+                                                <Style.Animations>
+                                                    <Animation Duration="0:0:0.4" Delay="0:0:0.5" FillMode="Forward">
+                                                        <KeyFrame Cue="0%">
+                                                            <Setter Property="Opacity" Value="0"/>
+                                                        </KeyFrame>
+                                                        <KeyFrame Cue="100%">
+                                                            <Setter Property="Opacity" Value="1"/>
+                                                        </KeyFrame>
+                                                    </Animation>
+                                                </Style.Animations>
+                                            </Style>
+                                        </StackPanel.Styles>
+                                    </StackPanel>
+
+                                    <!-- Checkmark 2: Patch (animated with delay) -->
+                                    <StackPanel Orientation="Horizontal" Spacing="16" Opacity="0">
+                                        <TextBlock Text="✅" FontSize="24"/>
+                                        <StackPanel>
+                                            <TextBlock Text="End of Retail Patch Applied"
+                                                       FontWeight="SemiBold"
+                                                       Foreground="{DynamicResource SuccessGreen}"/>
+                                            <TextBlock Text="Game is up to date"
+                                                       FontSize="13"
+                                                       Foreground="{DynamicResource SystemBaseMediumColor}"/>
+                                        </StackPanel>
+                                        <StackPanel.Styles>
+                                            <Style Selector="StackPanel">
+                                                <Style.Animations>
+                                                    <Animation Duration="0:0:0.4" Delay="0:0:0.7" FillMode="Forward">
+                                                        <KeyFrame Cue="0%">
+                                                            <Setter Property="Opacity" Value="0"/>
+                                                        </KeyFrame>
+                                                        <KeyFrame Cue="100%">
+                                                            <Setter Property="Opacity" Value="1"/>
+                                                        </KeyFrame>
+                                                    </Animation>
+                                                </Style.Animations>
+                                            </Style>
+                                        </StackPanel.Styles>
+                                    </StackPanel>
+
+                                    <!-- Checkmark 3: Decal (animated with delay) -->
+                                    <StackPanel Orientation="Horizontal" Spacing="16" Opacity="0">
+                                        <TextBlock Text="✅" FontSize="24"/>
+                                        <StackPanel>
+                                            <TextBlock Text="Setup Complete"
+                                                       FontWeight="SemiBold"
+                                                       Foreground="{DynamicResource SuccessGreen}"/>
+                                            <TextBlock Text="Ready to explore servers"
+                                                       FontSize="13"
+                                                       Foreground="{DynamicResource SystemBaseMediumColor}"/>
+                                        </StackPanel>
+                                        <StackPanel.Styles>
+                                            <Style Selector="StackPanel">
+                                                <Style.Animations>
+                                                    <Animation Duration="0:0:0.4" Delay="0:0:0.9" FillMode="Forward">
+                                                        <KeyFrame Cue="0%">
+                                                            <Setter Property="Opacity" Value="0"/>
+                                                        </KeyFrame>
+                                                        <KeyFrame Cue="100%">
+                                                            <Setter Property="Opacity" Value="1"/>
+                                                        </KeyFrame>
+                                                    </Animation>
+                                                </Style.Animations>
+                                            </Style>
+                                        </StackPanel.Styles>
+                                    </StackPanel>
+                                </StackPanel>
+                            </Border>
+
+                            <TextBlock Text="Click 'Launch Launcher' to start exploring servers!"
+                                       FontSize="14"
+                                       HorizontalAlignment="Center"
+                                       Foreground="{DynamicResource SystemBaseMediumHighColor}"
+                                       Opacity="0">
+                                <TextBlock.Styles>
+                                    <Style Selector="TextBlock">
+                                        <Style.Animations>
+                                            <Animation Duration="0:0:0.4" Delay="0:0:1.3" FillMode="Forward">
+                                                <KeyFrame Cue="0%">
+                                                    <Setter Property="Opacity" Value="0"/>
+                                                </KeyFrame>
+                                                <KeyFrame Cue="100%">
+                                                    <Setter Property="Opacity" Value="1"/>
+                                                </KeyFrame>
+                                            </Animation>
+                                        </Style.Animations>
+                                    </Style>
+                                </TextBlock.Styles>
+                            </TextBlock>
+                        </StackPanel>
+                    </Panel>
+                </ScrollViewer>
+
+                <!-- Footer with Navigation Buttons -->
+                <Grid Grid.Row="2"
+                      ColumnDefinitions="Auto,*,Auto,Auto"
+                      Margin="40,24,40,40">
+
+                    <!-- Skip Button -->
+                    <Button Grid.Column="0"
+                            Content="Skip Setup"
+                            Command="{Binding SkipCommand}"
+                            IsVisible="{Binding CanSkip}"
+                            Padding="20,12"
+                            Background="Transparent"
+                            Foreground="{DynamicResource SystemBaseMediumColor}"
+                            BorderBrush="{DynamicResource SystemAccentColor}"
+                            BorderThickness="1"
+                            CornerRadius="4"
+                            FontSize="14"/>
+
+                    <!-- Back Button -->
+                    <Button Grid.Column="2"
+                            Content="← Back"
+                            Command="{Binding BackCommand}"
+                            IsEnabled="{Binding CanGoBack}"
+                            Padding="24,12"
+                            Background="{DynamicResource ButtonSecondary}"
+                            Foreground="{DynamicResource SystemBaseHighColor}"
+                            BorderThickness="0"
+                            CornerRadius="4"
+                            FontSize="14"
+                            Margin="0,0,12,0"/>
+
+                    <!-- Next/Complete Button -->
+                    <Button Grid.Column="3"
+                            Command="{Binding NextCommand}"
+                            IsEnabled="{Binding CanGoNext}"
+                            Padding="24,12"
+                            Background="{DynamicResource SuccessGreen}"
+                            Foreground="{DynamicResource SystemBaseHighColor}"
+                            BorderThickness="0"
+                            CornerRadius="4"
+                            FontSize="14"
+                            FontWeight="SemiBold">
+                        <Button.Content>
+                            <Panel>
+                                <TextBlock Text="Next →"
+                                           IsVisible="{Binding CurrentStep, Converter={StaticResource EnumNotEqualConverter}, ConverterParameter=Complete}"/>
+                                <TextBlock Text="Launch Launcher 🚀"
+                                           IsVisible="{Binding CurrentStep, Converter={StaticResource EnumEqualityConverter}, ConverterParameter=Complete}"/>
+                            </Panel>
+                        </Button.Content>
+                    </Button>
+                </Grid>
+
+                <!-- Error Message -->
+                <Border Grid.Row="2"
+                        Background="#FFCC0000"
+                        Padding="16,12"
+                        Margin="40,0,40,16"
+                        CornerRadius="4"
+                        IsVisible="{Binding ErrorMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
+                    <TextBlock Text="{Binding ErrorMessage}"
+                               Foreground="White"
+                               FontWeight="SemiBold"
+                               TextWrapping="Wrap"/>
+                </Border>
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>

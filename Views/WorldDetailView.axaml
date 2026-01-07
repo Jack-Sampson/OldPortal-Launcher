@@ -1,0 +1,720 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:OPLauncher.ViewModels"
+             xmlns:models="using:OPLauncher.Models"
+             mc:Ignorable="d" d:DesignWidth="1024" d:DesignHeight="640"
+             x:Class="OPLauncher.Views.WorldDetailView"
+             x:DataType="vm:WorldDetailViewModel">
+
+    <Design.DataContext>
+        <vm:WorldDetailViewModel/>
+    </Design.DataContext>
+
+    <Grid Background="{DynamicResource SystemAltHighColor}">
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <StackPanel Spacing="24" Margin="32" MaxWidth="900">
+                <!-- Back Button and Share Button -->
+                <Grid ColumnDefinitions="Auto,*,Auto">
+                    <Button Grid.Column="0"
+                            Content="← Back to Browse"
+                            Command="{Binding BackCommand}"
+                            Padding="12,8"
+                            Background="Transparent"
+                            Foreground="#4361EE"
+                            BorderBrush="{DynamicResource SystemAccentColor}"
+                            BorderThickness="1"
+                            CornerRadius="4"
+                            FontSize="14"
+                            HorizontalAlignment="Left"/>
+
+                    <Button Grid.Column="2"
+                            Content="🔗 Share Server"
+                            Command="{Binding ShareServerCommand}"
+                            Padding="12,8"
+                            Background="{DynamicResource ButtonSecondary}"
+                            Foreground="{DynamicResource SystemBaseHighColor}"
+                            BorderThickness="0"
+                            CornerRadius="4"
+                            FontSize="14"
+                            HorizontalAlignment="Right"/>
+                </Grid>
+
+                <!-- World Header -->
+                <Border Background="{DynamicResource SystemAltMediumColor}"
+                        BorderBrush="{DynamicResource SystemAccentColor}"
+                        BorderThickness="2"
+                        CornerRadius="8"
+                        Padding="32">
+                    <StackPanel Spacing="16">
+                        <!-- World Name and Badge -->
+                        <StackPanel Orientation="Horizontal" Spacing="12">
+                            <TextBlock Text="{Binding World.Name}"
+                                       FontSize="32"
+                                       FontWeight="Bold"
+                                       Foreground="{DynamicResource SystemBaseHighColor}"/>
+                            <TextBlock Text="✓"
+                                       Foreground="{DynamicResource SuccessGreen}"
+                                       FontSize="28"
+                                       IsVisible="{Binding World.IsVerified}"
+                                       VerticalAlignment="Center"/>
+                        </StackPanel>
+
+                        <!-- Status and Player Count -->
+                        <StackPanel Orientation="Horizontal" Spacing="24">
+                            <StackPanel Orientation="Horizontal" Spacing="8">
+                                <TextBlock Text="🟢"
+                                           FontSize="16"
+                                           VerticalAlignment="Center"/>
+                                <TextBlock Text="{Binding World.Status}"
+                                           Foreground="{DynamicResource SystemBaseHighColor}"
+                                           FontSize="16"
+                                           VerticalAlignment="Center"/>
+                            </StackPanel>
+
+                            <TextBlock Foreground="{DynamicResource SystemBaseHighColor}" FontSize="16">
+                                <Run Text="{Binding World.PlayerCount}"/>
+                                <Run Text="/"/>
+                                <Run Text="{Binding World.MaxPlayers}"/>
+                                <Run Text="Players Online"/>
+                            </TextBlock>
+
+                            <TextBlock Foreground="{DynamicResource SuccessGreen}"
+                                       FontSize="14"
+                                       VerticalAlignment="Center">
+                                <Run Text="{Binding World.UptimePercentage}"/>
+                                <Run Text="% uptime"/>
+                            </TextBlock>
+                        </StackPanel>
+
+                        <!-- Tags -->
+                        <ItemsControl ItemsSource="{Binding World.Tags}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Background="{DynamicResource SystemAccentColorDark1}"
+                                            CornerRadius="4"
+                                            Padding="10,6"
+                                            Margin="0,0,8,8">
+                                        <TextBlock Text="{Binding}"
+                                                   Foreground="{DynamicResource SystemBaseHighColor}"
+                                                   FontSize="13"/>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </Border>
+
+                <!-- Tabbed Content -->
+                <TabControl Background="Transparent"
+                            BorderThickness="0">
+                    <TabControl.Styles>
+                        <Style Selector="TabItem">
+                            <Setter Property="FontSize" Value="16"/>
+                            <Setter Property="FontWeight" Value="SemiBold"/>
+                            <Setter Property="Foreground" Value="{DynamicResource SystemBaseMediumColor}"/>
+                            <Setter Property="Padding" Value="20,12"/>
+                        </Style>
+                        <Style Selector="TabItem:selected">
+                            <Setter Property="Foreground" Value="{DynamicResource HighlightYellow}"/>
+                        </Style>
+                        <Style Selector="TabItem:pointerover">
+                            <Setter Property="Foreground" Value="{DynamicResource SystemBaseHighColor}"/>
+                        </Style>
+                    </TabControl.Styles>
+
+                    <!-- Overview Tab -->
+                    <TabItem Header="📖 Overview">
+                        <ScrollViewer VerticalScrollBarVisibility="Auto">
+                            <StackPanel Spacing="24" Margin="0,16,0,0">
+                                <!-- Description Section -->
+                                <StackPanel Spacing="12">
+                                    <TextBlock Text="📖 Description"
+                                               FontSize="20"
+                                               FontWeight="SemiBold"
+                                               Foreground="{DynamicResource SystemBaseHighColor}"/>
+                                    <Border Background="{DynamicResource SystemAltMediumColor}"
+                                            BorderBrush="{DynamicResource SystemAccentColor}"
+                                            BorderThickness="1"
+                                            CornerRadius="6"
+                                            Padding="20">
+                                        <TextBlock Text="{Binding World.Description, Converter={StaticResource DescriptionCleanupConverter}}"
+                                                   Foreground="#E0E0E0"
+                                                   FontSize="14"
+                                                   TextWrapping="Wrap"
+                                                   LineHeight="22"/>
+                                    </Border>
+                                </StackPanel>
+
+                                <!-- Connection Info -->
+                                <StackPanel Spacing="12">
+                                    <TextBlock Text="🔌 Connection Info"
+                                               FontSize="20"
+                                               FontWeight="SemiBold"
+                                               Foreground="{DynamicResource SystemBaseHighColor}"/>
+                                    <Border Background="{DynamicResource SystemAltMediumColor}"
+                                            BorderBrush="{DynamicResource SystemAccentColor}"
+                                            BorderThickness="1"
+                                            CornerRadius="6"
+                                            Padding="20">
+                                        <Grid>
+                                            <StackPanel Spacing="8" IsVisible="{Binding HasConnectionInfo}">
+                                                <TextBlock Foreground="{DynamicResource SystemBaseHighColor}" FontSize="16">
+                                                    <Run Text="Host:"/>
+                                                    <Run Text="{Binding ConnectionInfo.Host}" Foreground="{DynamicResource HighlightYellow}"/>
+                                                </TextBlock>
+                                                <TextBlock Foreground="{DynamicResource SystemBaseHighColor}" FontSize="16">
+                                                    <Run Text="Port:"/>
+                                                    <Run Text="{Binding ConnectionInfo.Port}" Foreground="{DynamicResource HighlightYellow}"/>
+                                                </TextBlock>
+                                                <TextBlock Foreground="{DynamicResource SystemBaseHighColor}" FontSize="16">
+                                                    <Run Text="Server Type:"/>
+                                                    <Run Text="{Binding ConnectionInfo.ServerType}" Foreground="{DynamicResource HighlightYellow}"/>
+                                                </TextBlock>
+                                            </StackPanel>
+                                            <TextBlock Text="Server connection details not yet configured for this world"
+                                                       Foreground="{DynamicResource SystemBaseMediumColor}"
+                                                       FontSize="13"
+                                                       TextAlignment="Center"
+                                                       IsVisible="{Binding !HasConnectionInfo}"/>
+                                        </Grid>
+                                    </Border>
+                                </StackPanel>
+
+                                <!-- Saved Credentials Section -->
+                                <StackPanel Spacing="12">
+                                    <Grid ColumnDefinitions="*, Auto, Auto">
+                                        <TextBlock Grid.Column="0"
+                                                   Text="🔑 Saved Credentials"
+                                                   FontSize="20"
+                                                   FontWeight="SemiBold"
+                                                   Foreground="{DynamicResource SystemBaseHighColor}"
+                                                   VerticalAlignment="Center"/>
+
+                                        <!-- Multi-Launch Button -->
+                                        <Button Grid.Column="1"
+                                                Content="🚀 Multi-Client Launch"
+                                                Command="{Binding OpenMultiLaunchDialogCommand}"
+                                                IsVisible="{Binding ShowMultiLaunchButton}"
+                                                Padding="12,8"
+                                                Background="Transparent"
+                                                Foreground="#4361EE"
+                                                BorderBrush="{DynamicResource SystemAccentColor}"
+                                                BorderThickness="1"
+                                                CornerRadius="4"
+                                                FontSize="13"
+                                                Margin="0,0,8,0"
+                                                ToolTip.Tip="{Binding SavedCredentials.Count, StringFormat='Launch multiple accounts ({0} available)'}">
+                                            <Button.Styles>
+                                                <Style Selector="Button:pointerover">
+                                                    <Setter Property="Background" Value="#240046"/>
+                                                    <Setter Property="BorderBrush" Value="#B5179E"/>
+                                                </Style>
+                                            </Button.Styles>
+                                        </Button>
+
+                                        <Button Grid.Column="2"
+                                                Content="+ Add Credential"
+                                                Command="{Binding AddCredentialCommand}"
+                                                Padding="12,8"
+                                                Background="{DynamicResource SystemAccentColorDark1}"
+                                                Foreground="{DynamicResource SystemBaseHighColor}"
+                                                BorderThickness="0"
+                                                CornerRadius="4"
+                                                FontSize="13"/>
+                                    </Grid>
+
+                                    <!-- Add/Edit Credential Form -->
+                                    <Border Background="{DynamicResource SystemAltMediumColor}"
+                                            BorderBrush="{DynamicResource SystemAccentColor}"
+                                            BorderThickness="2"
+                                            CornerRadius="6"
+                                            Padding="24"
+                                            Margin="0,12,0,12"
+                                            IsVisible="{Binding ShowAddCredential}">
+                                        <StackPanel Spacing="16">
+                                            <TextBlock Text="Add New Credential"
+                                                       FontSize="18"
+                                                       FontWeight="SemiBold"
+                                                       Foreground="{DynamicResource SystemBaseHighColor}"
+                                                       IsVisible="{Binding !IsEditingMode}"/>
+                                            <TextBlock Text="Edit Credential"
+                                                       FontSize="18"
+                                                       FontWeight="SemiBold"
+                                                       Foreground="{DynamicResource SystemBaseHighColor}"
+                                                       IsVisible="{Binding IsEditingMode}"/>
+
+                                            <!-- Username Field -->
+                                            <StackPanel Spacing="8">
+                                                <TextBlock Text="Username *"
+                                                           Foreground="{DynamicResource SystemBaseHighColor}"
+                                                           FontSize="13"/>
+                                                <TextBox Text="{Binding NewUsername}"
+                                                         Watermark="Enter username"
+                                                         MinHeight="40"
+                                                         Padding="12,10"
+                                                         FontSize="14"
+                                                         Background="{DynamicResource SystemAltHighColor}"
+                                                         Foreground="{DynamicResource SystemBaseHighColor}"
+                                                         BorderBrush="{DynamicResource SystemAccentColor}"
+                                                         BorderThickness="1"
+                                                         CornerRadius="4"
+                                                         VerticalContentAlignment="Center"/>
+                                            </StackPanel>
+
+                                            <!-- Password Field -->
+                                            <StackPanel Spacing="8">
+                                                <Grid ColumnDefinitions="*, Auto">
+                                                    <TextBlock Grid.Column="0"
+                                                               Text="Password *"
+                                                               Foreground="{DynamicResource SystemBaseHighColor}"
+                                                               FontSize="13"/>
+                                                    <!-- Show Password Button -->
+                                                    <Button Grid.Column="1"
+                                                            Content="👁️ Show"
+                                                            Command="{Binding TogglePasswordVisibilityCommand}"
+                                                            Background="Transparent"
+                                                            Foreground="{DynamicResource SystemAccentColor}"
+                                                            BorderThickness="0"
+                                                            Padding="8,0"
+                                                            FontSize="11"
+                                                            Cursor="Hand"
+                                                            IsVisible="{Binding !IsPasswordVisible}"/>
+                                                    <!-- Hide Password Button -->
+                                                    <Button Grid.Column="1"
+                                                            Content="👁️ Hide"
+                                                            Command="{Binding TogglePasswordVisibilityCommand}"
+                                                            Background="Transparent"
+                                                            Foreground="{DynamicResource SystemAccentColor}"
+                                                            BorderThickness="0"
+                                                            Padding="8,0"
+                                                            FontSize="11"
+                                                            Cursor="Hand"
+                                                            IsVisible="{Binding IsPasswordVisible}"/>
+                                                </Grid>
+                                                <Grid>
+                                                    <!-- Password hidden with bullets -->
+                                                    <TextBox Text="{Binding NewPassword}"
+                                                             Watermark="Enter password"
+                                                             PasswordChar="●"
+                                                             MinHeight="40"
+                                                             Padding="12,10"
+                                                             FontSize="14"
+                                                             Background="{DynamicResource SystemAltHighColor}"
+                                                             Foreground="{DynamicResource SystemBaseHighColor}"
+                                                             BorderBrush="{DynamicResource SystemAccentColor}"
+                                                             BorderThickness="1"
+                                                             CornerRadius="4"
+                                                             VerticalContentAlignment="Center"
+                                                             IsVisible="{Binding !IsPasswordVisible}"/>
+                                                    <!-- Password visible as plain text -->
+                                                    <TextBox Text="{Binding NewPassword}"
+                                                             Watermark="Enter password"
+                                                             MinHeight="40"
+                                                             Padding="12,10"
+                                                             FontSize="14"
+                                                             Background="{DynamicResource SystemAltHighColor}"
+                                                             Foreground="{DynamicResource SystemBaseHighColor}"
+                                                             BorderBrush="{DynamicResource SystemAccentColor}"
+                                                             BorderThickness="1"
+                                                             CornerRadius="4"
+                                                             VerticalContentAlignment="Center"
+                                                             IsVisible="{Binding IsPasswordVisible}"/>
+                                                </Grid>
+                                            </StackPanel>
+
+                                            <!-- Display Name Field (Optional) -->
+                                            <StackPanel Spacing="8">
+                                                <TextBlock Text="Display Name (Optional)"
+                                                           Foreground="{DynamicResource SystemBaseHighColor}"
+                                                           FontSize="13"/>
+                                                <TextBox Text="{Binding NewDisplayName}"
+                                                         Watermark="Friendly name for this character"
+                                                         MinHeight="40"
+                                                         Padding="12,10"
+                                                         FontSize="14"
+                                                         Background="{DynamicResource SystemAltHighColor}"
+                                                         Foreground="{DynamicResource SystemBaseHighColor}"
+                                                         BorderBrush="{DynamicResource SystemAccentColor}"
+                                                         BorderThickness="1"
+                                                         CornerRadius="4"
+                                                         VerticalContentAlignment="Center"/>
+                                            </StackPanel>
+
+                                            <!-- Form Buttons -->
+                                            <Grid ColumnDefinitions="*, *" ColumnSpacing="12" Margin="0,8,0,0">
+                                                <Button Grid.Column="0"
+                                                        Content="Cancel"
+                                                        Command="{Binding CancelAddCredentialCommand}"
+                                                        HorizontalAlignment="Stretch"
+                                                        HorizontalContentAlignment="Center"
+                                                        Padding="0,12"
+                                                        Background="Transparent"
+                                                        Foreground="{DynamicResource SystemBaseHighColor}"
+                                                        BorderBrush="{DynamicResource SystemAccentColor}"
+                                                        BorderThickness="1"
+                                                        CornerRadius="4"
+                                                        FontSize="14"/>
+
+                                                <!-- Save button for Add mode -->
+                                                <Button Grid.Column="1"
+                                                        Content="Save Credential"
+                                                        Command="{Binding SaveCredentialCommand}"
+                                                        IsEnabled="{Binding !IsSavingCredential}"
+                                                        HorizontalAlignment="Stretch"
+                                                        HorizontalContentAlignment="Center"
+                                                        Padding="0,12"
+                                                        Background="{DynamicResource SuccessGreen}"
+                                                        Foreground="{DynamicResource SystemBaseHighColor}"
+                                                        BorderThickness="0"
+                                                        CornerRadius="4"
+                                                        FontSize="14"
+                                                        FontWeight="SemiBold"
+                                                        IsVisible="{Binding !IsEditingMode}"/>
+                                                <!-- Update button for Edit mode -->
+                                                <Button Grid.Column="1"
+                                                        Content="Update Credential"
+                                                        Command="{Binding SaveCredentialCommand}"
+                                                        IsEnabled="{Binding !IsSavingCredential}"
+                                                        HorizontalAlignment="Stretch"
+                                                        HorizontalContentAlignment="Center"
+                                                        Padding="0,12"
+                                                        Background="{DynamicResource SuccessGreen}"
+                                                        Foreground="{DynamicResource SystemBaseHighColor}"
+                                                        BorderThickness="0"
+                                                        CornerRadius="4"
+                                                        FontSize="14"
+                                                        FontWeight="SemiBold"
+                                                        IsVisible="{Binding IsEditingMode}"/>
+                                            </Grid>
+                                        </StackPanel>
+                                    </Border>
+
+                                    <!-- Credentials List -->
+                                    <ItemsControl ItemsSource="{Binding SavedCredentials}">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <Border Background="{DynamicResource SystemAltMediumColor}"
+                                                        BorderBrush="{DynamicResource SystemAccentColor}"
+                                                        BorderThickness="1"
+                                                        CornerRadius="6"
+                                                        Padding="16"
+                                                        Margin="0,0,0,12">
+                                                    <Grid ColumnDefinitions="Auto, *, Auto, Auto, Auto, Auto">
+                                                        <TextBlock Grid.Column="0"
+                                                                   Text="👤"
+                                                                   FontSize="20"
+                                                                   VerticalAlignment="Center"
+                                                                   Margin="0,0,12,0"/>
+
+                                                        <StackPanel Grid.Column="1" Spacing="4">
+                                                            <TextBlock Text="{Binding DisplayName}"
+                                                                       Foreground="{DynamicResource SystemBaseHighColor}"
+                                                                       FontSize="15"
+                                                                       FontWeight="SemiBold"
+                                                                       IsVisible="{Binding DisplayName, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+                                                            <TextBlock Text="{Binding Username}"
+                                                                       Foreground="#E0E0E0"
+                                                                       FontSize="13"/>
+                                                            <TextBlock Foreground="{DynamicResource SystemBaseMediumColor}" FontSize="11">
+                                                                <Run Text="Last used:"/>
+                                                                <Run Text="{Binding LastUsed}"/>
+                                                            </TextBlock>
+                                                        </StackPanel>
+
+                                                        <Button Grid.Column="2"
+                                                                Content="▶ Play"
+                                                                Command="{Binding $parent[ItemsControl].((vm:WorldDetailViewModel)DataContext).PlayCommand}"
+                                                                CommandParameter="{Binding}"
+                                                                Padding="14,8"
+                                                                Background="{DynamicResource SuccessGreen}"
+                                                                Foreground="{DynamicResource SystemBaseHighColor}"
+                                                                BorderThickness="0"
+                                                                CornerRadius="4"
+                                                                FontSize="13"
+                                                                FontWeight="SemiBold"
+                                                                Margin="0,0,8,0"/>
+
+                                                        <Button Grid.Column="3"
+                                                                Content="Edit"
+                                                                Command="{Binding $parent[ItemsControl].((vm:WorldDetailViewModel)DataContext).EditCredentialCommand}"
+                                                                CommandParameter="{Binding}"
+                                                                Padding="10,6"
+                                                                Background="Transparent"
+                                                                Foreground="#4361EE"
+                                                                BorderBrush="{DynamicResource SystemAccentColor}"
+                                                                BorderThickness="1"
+                                                                CornerRadius="4"
+                                                                FontSize="12"
+                                                                Margin="0,0,8,0"/>
+
+                                                        <Button Grid.Column="4"
+                                                                Content="Delete"
+                                                                Command="{Binding $parent[ItemsControl].((vm:WorldDetailViewModel)DataContext).DeleteCredentialCommand}"
+                                                                CommandParameter="{Binding}"
+                                                                Padding="10,6"
+                                                                Background="Transparent"
+                                                                Foreground="#FF4444"
+                                                                BorderBrush="#FF4444"
+                                                                BorderThickness="1"
+                                                                CornerRadius="4"
+                                                                FontSize="12"/>
+                                                    </Grid>
+                                                </Border>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+
+                                    <!-- No Credentials Message -->
+                                    <Border Background="{DynamicResource SystemAltMediumColor}"
+                                            BorderBrush="{DynamicResource SystemAccentColor}"
+                                            BorderThickness="1"
+                                            CornerRadius="6"
+                                            Padding="32"
+                                            IsVisible="{Binding !SavedCredentials.Count}">
+                                        <StackPanel Spacing="12" HorizontalAlignment="Center">
+                                            <TextBlock Text="🔐"
+                                                       FontSize="32"
+                                                       HorizontalAlignment="Center"
+                                                       Foreground="{DynamicResource SystemBaseMediumColor}"/>
+                                            <TextBlock Text="No saved credentials yet"
+                                                       FontSize="16"
+                                                       Foreground="{DynamicResource SystemBaseMediumColor}"
+                                                       HorizontalAlignment="Center"/>
+                                            <TextBlock Text="Add a credential to quickly launch this world"
+                                                       FontSize="13"
+                                                       Foreground="#707070"
+                                                       HorizontalAlignment="Center"/>
+                                        </StackPanel>
+                                    </Border>
+                                </StackPanel>
+
+                                <!-- Batch Groups Section -->
+                                <StackPanel Spacing="12"
+                                            IsVisible="{Binding ShowBatchSection}"
+                                            Margin="0,24,0,0">
+                                    <Grid ColumnDefinitions="*, Auto, Auto">
+                                        <TextBlock Grid.Column="0"
+                                                   Text="🚀 Batch Groups"
+                                                   FontSize="20"
+                                                   FontWeight="SemiBold"
+                                                   Foreground="{DynamicResource HighlightYellow}"
+                                                   VerticalAlignment="Center"/>
+
+                                        <Button Grid.Column="1"
+                                                Content="❓"
+                                                Command="{Binding OpenMultiClientHelpCommand}"
+                                                ToolTip.Tip="Open batch groups help"
+                                                Background="Transparent"
+                                                BorderThickness="0"
+                                                FontSize="16"
+                                                Margin="0,0,8,0"
+                                                Foreground="{DynamicResource SystemAccentColor}"/>
+
+                                        <Button Grid.Column="2"
+                                                Content="Toggle Batches"
+                                                Command="{Binding ToggleBatchManagementCommand}"
+                                                Padding="12,8"
+                                                Background="Transparent"
+                                                Foreground="{DynamicResource SystemBaseHighColor}"
+                                                BorderBrush="{DynamicResource SystemAccentColor}"
+                                                BorderThickness="1"
+                                                CornerRadius="4"
+                                                FontSize="13"/>
+                                    </Grid>
+
+                                    <!-- Quick Launch Favorite Button (when section is collapsed) -->
+                                    <Button Content="{Binding FavoriteBatch.Name, StringFormat='⭐ Quick Launch: {0}'}"
+                                            Command="{Binding QuickLaunchFavoriteCommand}"
+                                            IsVisible="{Binding ShowQuickLaunchFavorite}"
+                                            Padding="16,10"
+                                            Background="{DynamicResource SystemAccentColor}"
+                                            Foreground="White"
+                                            BorderThickness="0"
+                                            CornerRadius="6"
+                                            FontSize="14"
+                                            FontWeight="SemiBold"
+                                            HorizontalAlignment="Stretch"
+                                            ToolTip.Tip="Launch your favorite batch with one click"/>
+
+                                    <!-- Batch Management UI (when expanded) -->
+                                    <Border Background="{DynamicResource SystemAltMediumColor}"
+                                            BorderBrush="{DynamicResource SystemAccentColor}"
+                                            BorderThickness="1"
+                                            CornerRadius="8"
+                                            Padding="20"
+                                            IsVisible="{Binding ShowBatchManagement}">
+                                        <StackPanel Spacing="16">
+                                            <!-- Batch List -->
+                                            <Grid ColumnDefinitions="*, Auto">
+                                                <TextBlock Grid.Column="0"
+                                                           Text="Saved Batches"
+                                                           FontSize="16"
+                                                           FontWeight="SemiBold"
+                                                           Foreground="{DynamicResource SystemBaseHighColor}"/>
+
+                                                <Button Grid.Column="1"
+                                                        Content="+ New Batch"
+                                                        Command="{Binding NewBatchCommand}"
+                                                        IsEnabled="{Binding !IsLaunching}"
+                                                        Padding="10,6"
+                                                        Background="{DynamicResource SystemAccentColorDark1}"
+                                                        Foreground="{DynamicResource SystemBaseHighColor}"
+                                                        BorderThickness="0"
+                                                        CornerRadius="4"
+                                                        FontSize="12"/>
+                                            </Grid>
+
+                                            <!-- Batch Items -->
+                                            <ItemsControl ItemsSource="{Binding BatchGroups}">
+                                                <ItemsControl.ItemTemplate>
+                                                    <DataTemplate DataType="models:BatchGroup">
+                                                        <Border Background="{DynamicResource SystemAltHighColor}"
+                                                                BorderBrush="{DynamicResource SystemAccentColor}"
+                                                                BorderThickness="1"
+                                                                CornerRadius="6"
+                                                                Padding="12"
+                                                                Margin="0,0,0,8"
+                                                                Cursor="Hand">
+                                                            <Grid ColumnDefinitions="Auto,*,Auto,Auto">
+                                                                <!-- Favorite Star -->
+                                                                <TextBlock Grid.Column="0"
+                                                                           Text="⭐"
+                                                                           FontSize="16"
+                                                                           VerticalAlignment="Center"
+                                                                           Margin="0,0,8,0"
+                                                                           IsVisible="{Binding IsFavorite}"/>
+
+                                                                <!-- Batch Info -->
+                                                                <StackPanel Grid.Column="1"
+                                                                            VerticalAlignment="Center">
+                                                                    <TextBlock Text="{Binding Name}"
+                                                                               FontSize="14"
+                                                                               FontWeight="SemiBold"
+                                                                               Foreground="{DynamicResource SystemBaseHighColor}"/>
+                                                                    <TextBlock FontSize="11"
+                                                                               Foreground="{DynamicResource SystemBaseMediumColor}">
+                                                                        <Run Text="{Binding EntryCount}"/>
+                                                                        <Run Text="accounts"/>
+                                                                    </TextBlock>
+                                                                </StackPanel>
+
+                                                                <!-- Select Button -->
+                                                                <Button Grid.Column="2"
+                                                                        Content="Select"
+                                                                        Command="{Binding $parent[ItemsControl].((vm:WorldDetailViewModel)DataContext).SelectBatchCommand}"
+                                                                        CommandParameter="{Binding}"
+                                                                        Padding="8,4"
+                                                                        Margin="8,0"
+                                                                        Background="Transparent"
+                                                                        Foreground="#4361EE"
+                                                                        BorderBrush="{DynamicResource SystemAccentColor}"
+                                                                        BorderThickness="1"
+                                                                        CornerRadius="4"
+                                                                        FontSize="11"/>
+
+                                                                <!-- Launch Button -->
+                                                                <Button Grid.Column="3"
+                                                                        Content="🚀 Launch"
+                                                                        Command="{Binding $parent[ItemsControl].((vm:WorldDetailViewModel)DataContext).LaunchBatchCommand}"
+                                                                        IsEnabled="{Binding $parent[ItemsControl].((vm:WorldDetailViewModel)DataContext).IsLaunching, Converter={x:Static BoolConverters.Not}}"
+                                                                        Padding="10,4"
+                                                                        Background="{DynamicResource SystemAccentColorDark1}"
+                                                                        Foreground="{DynamicResource SystemBaseHighColor}"
+                                                                        BorderThickness="0"
+                                                                        CornerRadius="4"
+                                                                        FontSize="11"/>
+                                                            </Grid>
+                                                        </Border>
+                                                    </DataTemplate>
+                                                </ItemsControl.ItemTemplate>
+                                            </ItemsControl>
+
+                                            <!-- Empty State -->
+                                            <Border Background="{DynamicResource SystemAltHighColor}"
+                                                    BorderBrush="{DynamicResource SystemAccentColor}"
+                                                    BorderThickness="1"
+                                                    CornerRadius="8"
+                                                    Padding="24"
+                                                    IsVisible="{Binding !BatchGroups.Count}">
+                                                <StackPanel Spacing="8" HorizontalAlignment="Center">
+                                                    <TextBlock Text="📦"
+                                                               FontSize="28"
+                                                               HorizontalAlignment="Center"/>
+                                                    <TextBlock Text="No batch groups yet"
+                                                               FontSize="14"
+                                                               FontWeight="SemiBold"
+                                                               Foreground="{DynamicResource SystemBaseHighColor}"
+                                                               HorizontalAlignment="Center"/>
+                                                    <TextBlock Text="Create a batch to launch multiple accounts at once"
+                                                               FontSize="12"
+                                                               Foreground="{DynamicResource SystemBaseMediumColor}"
+                                                               HorizontalAlignment="Center"/>
+                                                </StackPanel>
+                                            </Border>
+
+                                            <!-- Status Message -->
+                                            <TextBlock Text="{Binding BatchStatusMessage}"
+                                                       TextWrapping="Wrap"
+                                                       FontSize="12"
+                                                       Foreground="{DynamicResource SystemBaseHighColor}"
+                                                       IsVisible="{Binding BatchStatusMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+                                        </StackPanel>
+                                    </Border>
+                                </StackPanel>
+
+                                <!-- Error/Success Messages -->
+                                <TextBlock Text="{Binding ErrorMessage}"
+                                           Foreground="#FF4444"
+                                           TextWrapping="Wrap"
+                                           FontSize="14"
+                                           IsVisible="{Binding ErrorMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+
+                                <TextBlock Text="{Binding SuccessMessage}"
+                                           Foreground="{DynamicResource SuccessGreen}"
+                                           TextWrapping="Wrap"
+                                           FontSize="14"
+                                           IsVisible="{Binding SuccessMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+
+                                <!-- Launching Indicator -->
+                                <StackPanel Orientation="Horizontal"
+                                            Spacing="12"
+                                            HorizontalAlignment="Center"
+                                            IsVisible="{Binding IsLaunching}">
+                                    <TextBlock Text="⏳" FontSize="20"/>
+                                    <TextBlock Text="Launching game..."
+                                               Foreground="{DynamicResource SystemBaseHighColor}"
+                                               FontSize="16"/>
+                                </StackPanel>
+
+                                <!-- View on Website Link -->
+                                <Button Content="🌐 View on OldPortal.com"
+                                        Command="{Binding ViewOnWebCommand}"
+                                        HorizontalAlignment="Center"
+                                        Padding="16,10"
+                                        Background="Transparent"
+                                        Foreground="#4361EE"
+                                        BorderThickness="0"
+                                        FontSize="14"
+                                        Cursor="Hand">
+                                    <Button.Styles>
+                                        <Style Selector="Button:pointerover">
+                                            <Setter Property="Foreground" Value="#B5179E"/>
+                                        </Style>
+                                    </Button.Styles>
+                                </Button>
+                            </StackPanel>
+                        </ScrollViewer>
+                    </TabItem>
+                </TabControl>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</UserControl>
