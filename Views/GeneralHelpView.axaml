@@ -64,7 +64,7 @@
           <Run Text="1. "/><Run FontWeight="Bold" Text="Install the Launcher"/><Run Text=" - Run the OPLauncher-Setup.exe installer. The launcher will install to your chosen directory and can run without administrator privileges."/><LineBreak/><LineBreak/>
           <Run Text="2. "/><Run FontWeight="Bold" Text="Configure Your AC Install"/><Run Text=" - Go to Settings and set your 'Asheron's Call Install Path' to the folder containing acclient.exe (example: C:\Games\Asheron's Call)."/><LineBreak/><LineBreak/>
           <Run Text="3. "/><Run FontWeight="Bold" Text="Browse Worlds"/><Run Text=" - Click 'Browse Worlds' to see all available servers. The launcher will cache server data for faster loading."/><LineBreak/><LineBreak/>
-          <Run Text="4. "/><Run FontWeight="Bold" Text="Launch Your First Server"/><Run Text=" - Click on any server to see details, then click the play button to launch!"/>
+          <Run Text="4. "/><Run FontWeight="Bold" Text="Launch Your First Server"/><Run Text=" - Click on any server to see details, create credentials and then click the play button to launch!"/>
         </TextBlock>
       </StackPanel>
 
@@ -84,8 +84,8 @@
           <Run Text="• "/><Run FontWeight="Bold" Text="Search"/><Run Text=" - Use the search box to filter servers by name or description."/><LineBreak/><LineBreak/>
           <Run Text="• "/><Run FontWeight="Bold" Text="Filter by Category"/><Run Text=" - Click category buttons (All, Favorites, PVE, PVP, Custom, etc.) to narrow results."/><LineBreak/><LineBreak/>
           <Run Text="• "/><Run FontWeight="Bold" Text="Server Status"/><Run Text=" - Green 'Online' badge = server is running. Offline servers show in gray."/><LineBreak/><LineBreak/>
-          <Run Text="• "/><Run FontWeight="Bold" Text="Favorites"/><Run Text=" - Click the heart icon on any server to add it to your favorites for quick access."/><LineBreak/><LineBreak/>
-          <Run Text="• "/><Run FontWeight="Bold" Text="Refresh"/><Run Text=" - Click the refresh button (🔄) or press F5 to manually reload the server list."/><LineBreak/><LineBreak/>
+          <Run Text="• "/><Run FontWeight="Bold" Text="Favorites"/><Run Text=" - Click the star icon on any server to add it to your favorites for quick access."/><LineBreak/><LineBreak/>
+          <Run Text="• "/><Run FontWeight="Bold" Text="Refresh"/><Run Text=" - Click the refresh button (🔄) manually reload the server list."/><LineBreak/><LineBreak/>
           <Run Text="• "/><Run FontWeight="Bold" Text="Performance"/><Run Text=" - Server data is cached in memory for instant navigation. The cache only refreshes when you restart the launcher or click the refresh button."/>
         </TextBlock>
 
@@ -108,8 +108,8 @@
 
         <TextBlock Text="Launch Options:" FontWeight="Bold" Margin="0,10,0,0"/>
         <TextBlock TextWrapping="Wrap">
-          <Run Text="• "/><Run FontWeight="Bold" Text="Quick Launch"/><Run Text=" - Click the '▶️ Play' button to launch with default settings (no saved credentials)."/><LineBreak/><LineBreak/>
-          <Run Text="• "/><Run FontWeight="Bold" Text="Launch with Saved Credentials"/><Run Text=" - If you have saved credentials, select one from the dropdown and click '▶️ Launch with [Username]'."/><LineBreak/><LineBreak/>
+          <Run Text="• "/><Run FontWeight="Bold" Text="Credential Setup"/><Run Text=" - Click the '▶️ Play' button to see details and setup credentials for that server."/><LineBreak/><LineBreak/>
+          <Run Text="• "/><Run FontWeight="Bold" Text="Launch with Saved Credentials"/><Run Text=" - If you have saved credentials, click '▶️ Play'."/><LineBreak/><LineBreak/>
           <Run Text="• "/><Run FontWeight="Bold" Text="Multi-Client Launch"/><Run Text=" - If multi-client is enabled and you have 2+ credentials saved, a '🚀 Multi-Client Launch' button will appear. See the dedicated Multi-Client Help for details."/>
         </TextBlock>
 
@@ -117,7 +117,6 @@
         <TextBlock TextWrapping="Wrap">
           <Run Text="The detail page shows:"/><LineBreak/>
           <Run Text="• Server description and rules"/><LineBreak/>
-          <Run Text="• Recent news updates"/><LineBreak/>
           <Run Text="• Connection information (host, port, EMU version)"/><LineBreak/>
           <Run Text="• Links to view the server on OldPortal.com or share with friends"/>
         </TextBlock>
@@ -139,12 +138,12 @@
                    Foreground="{DynamicResource SystemAccentColor}"/>
 
         <TextBlock TextWrapping="Wrap">
-          <Run Text="You can save account credentials for each server to enable quick launching and multi-client support."/>
+          <Run Text="You can save account credentials for each server to enable launching and multi-client support."/>
         </TextBlock>
 
         <TextBlock Text="Adding Credentials:" FontWeight="Bold" Margin="0,10,0,0"/>
         <TextBlock TextWrapping="Wrap">
-          <Run Text="1. Navigate to any server's detail page."/><LineBreak/>
+          <Run Text="1. Navigate to any server's detail page. and click '+ Add Credentials'"/><LineBreak/>
           <Run Text="2. Enter your account username and password in the form."/><LineBreak/>
           <Run Text="3. Click '💾 Save Credential' to store it."/><LineBreak/>
           <Run Text="4. Your credentials are encrypted using Windows Data Protection API (DPAPI) and stored locally - they are never sent to OldPortal.com."/>
@@ -152,9 +151,8 @@
 
         <TextBlock Text="Managing Saved Credentials:" FontWeight="Bold" Margin="0,10,0,0"/>
         <TextBlock TextWrapping="Wrap">
-          <Run Text="• "/><Run FontWeight="Bold" Text="Edit"/><Run Text=" - Click the edit icon (✏️) next to a credential to modify the password."/><LineBreak/><LineBreak/>
+          <Run Text="• "/><Run FontWeight="Bold" Text="Edit"/><Run Text=" - Click the edit icon (✏️) next to a credential to modify."/><LineBreak/><LineBreak/>
           <Run Text="• "/><Run FontWeight="Bold" Text="Delete"/><Run Text=" - Click the trash icon (🗑️) to permanently remove a credential."/><LineBreak/><LineBreak/>
-          <Run Text="• "/><Run FontWeight="Bold" Text="Set Primary"/><Run Text=" - Your most recently saved credential becomes the default for quick launching."/>
         </TextBlock>
 
         <TextBlock Text="Security:" FontWeight="Bold" Margin="0,10,0,0"/>
@@ -241,7 +239,7 @@
           <StackPanel Spacing="5">
             <TextBlock Text="Close Launcher After Starting Game" FontWeight="Bold"/>
             <TextBlock TextWrapping="Wrap" Foreground="{DynamicResource SystemBaseMediumColor}">
-              When enabled, the launcher will automatically close after successfully launching the game client. Useful if you want to minimize system resources while playing.
+              You can close the launcher after successfully launching the game client. Useful if you want to minimize system resources while playing.
             </TextBlock>
           </StackPanel>
 
@@ -249,7 +247,7 @@
           <StackPanel Spacing="5">
             <TextBlock Text="Enable Decal Support" FontWeight="Bold"/>
             <TextBlock TextWrapping="Wrap" Foreground="{DynamicResource SystemBaseMediumColor}">
-              Launches the Asheron's Call client with Decal plugin support enabled. If Decal is configured to inject automatically, it will load when the client starts. Note: Decal requires the launcher to run as administrator.
+              Launches the Asheron's Call client with Decal plugin support enabled. If Decal is configured to inject automatically, it will load when the client starts.
             </TextBlock>
           </StackPanel>
         </StackPanel>
@@ -311,7 +309,7 @@
             <TextBlock TextWrapping="Wrap">
               <Run Text="Solution:"/><LineBreak/>
               <Run Text="1. Make sure 'Enable Decal Support' is checked in Settings"/><LineBreak/>
-              <Run Text="2. Right-click the launcher and select 'Run as administrator' - Decal requires admin privileges"/><LineBreak/>
+              <Run Text="2. Right-click the launcher and select 'Run as administrator'"/><LineBreak/>
               <Run Text="3. Verify Decal is installed and configured to inject automatically"/><LineBreak/>
               <Run Text="4. Check Decal's own documentation for injection troubleshooting"/>
             </TextBlock>
@@ -374,7 +372,7 @@
 
         <TextBlock Text="Log Retention:" FontWeight="Bold" Margin="0,10,0,0"/>
         <TextBlock TextWrapping="Wrap">
-          <Run Text="Log files are kept for 30 days, then automatically deleted. Each log file is named with a date stamp (e.g., "/>
+          <Run Text="7 Log files, oldest automatically deleted. Each log file is named with a date stamp (e.g., "/>
           <Run FontFamily="Consolas" Text="launcher-20260104.log"/>
           <Run Text=")."/>
         </TextBlock>
@@ -417,7 +415,7 @@
               Join our Discord server for:
             </TextBlock>
             <TextBlock TextWrapping="Wrap" Margin="10,0,0,0">
-              <Run Text="• Live support and troubleshooting"/><LineBreak/>
+              <Run Text="• Support and troubleshooting"/><LineBreak/>
               <Run Text="• Server announcements and updates"/><LineBreak/>
               <Run Text="• Community discussion"/><LineBreak/>
               <Run Text="• Feature requests and feedback"/>

@@ -6,6 +6,7 @@
 - [How It Works](#how-it-works)
 - [Requirements](#requirements)
 - [Setup Guide](#setup-guide)
+- [Using Decal with Multi-Client](#using-decal-with-multi-client)
 - [Using Multi-Client Launch](#using-multi-client-launch)
 - [Troubleshooting](#troubleshooting)
 - [FAQ](#faq)
@@ -24,7 +25,8 @@ Multi-client support allows you to launch multiple Asheron's Call game clients s
 - **Allegiance management**: Coordinating multiple accounts across your allegiance
 
 **Key Features:**
-- ✅ Native hook DLL using Reloaded.Hooks library (no Decal required)
+- ✅ Two launch methods: Native hook (no Decal) OR Decal's Dual Log feature
+- ✅ Seamless Decal integration for users who want plugins + multi-client
 - ✅ Works with vanilla AC client - no modifications needed
 - ✅ Multi-client dialog for managing account launches
 - ✅ Automatic configuration persistence per-world
@@ -33,6 +35,7 @@ Multi-client support allows you to launch multiple Asheron's Call game clients s
 - ✅ Automatic UserPreferences.ini configuration
 - ✅ Smart merging of new/deleted credentials
 - ✅ Comprehensive validation and safety checks
+- ✅ Clear in-app guidance for Decal + Multi-Client setup
 
 ---
 
@@ -136,6 +139,63 @@ When enabled, each AC client automatically computes and uses a unique port based
    - Enter username and password
    - Click **"Save Credential"**
 3. Repeat for each account you want to multi-box
+
+---
+
+## Using Decal with Multi-Client
+
+If you want to use Decal plugins AND multi-client functionality simultaneously, the OldPortal Launcher makes this easy by leveraging Decal's built-in "Dual Log" feature.
+
+### How It Works
+
+When both Decal and Multi-Client are enabled in Settings:
+- The launcher uses Decal's injection method instead of the native OPLauncher.Hook.dll
+- Decal's "Dual Log" feature handles the multi-client mutex bypass
+- You get full Decal plugin support across all clients
+- UserPreferences.ini is still auto-configured for proper file sharing
+
+### Setup Steps
+
+1. **Enable Decal in Settings**
+   - Navigate to Settings in OldPortal Launcher
+   - Check "Use Decal when launching game"
+
+2. **Enable Multi-Client in Settings**
+   - Check "Enable multi-client support"
+   - A warning panel will appear (orange-bordered)
+
+3. **Enable Dual Log in Decal** (REQUIRED)
+   - Open Decal (the standalone app)
+   - Click the **"Options"** button
+   - Check the **"Dual Log"** checkbox
+   - Click **"OK"** to save
+
+4. **Launch Multiple Clients**
+   - Use the Multi-Client Launch dialog as normal
+   - All clients will launch with Decal injection
+   - Decal plugins will be available in each client
+
+### Important Notes
+
+- **Dual Log is Required**: Without enabling "Dual Log" in Decal Options, only ONE client will launch successfully
+- **One-Time Setup**: You only need to enable Dual Log once - Decal remembers this setting
+- **Warning Panel**: The launcher shows a clear warning with step-by-step instructions when both features are enabled
+- **Launch Priority**: When both are enabled, Decal takes priority over the native hook
+
+### Troubleshooting Decal + Multi-Client
+
+**Problem**: Only one client launches when both Decal and Multi-Client are enabled
+
+**Solution**:
+1. Open Decal (not the launcher)
+2. Click "Options"
+3. Verify "Dual Log" checkbox is checked
+4. Click "OK"
+5. Try launching again
+
+**Problem**: I don't want to use Decal for multi-client
+
+**Solution**: Simply disable "Use Decal when launching game" in Settings. The launcher will use the native OPLauncher.Hook.dll instead.
 
 ---
 
@@ -261,7 +321,11 @@ Your configuration is **saved automatically** when you close the dialog:
 ## FAQ
 
 ### Q: Do I need Decal to use multi-client?
-**A**: NO! Multi-client uses a native hook DLL (OPLauncher.Hook.dll) that works without Decal. Decal is completely optional.
+**A**: NO! Multi-client has two methods:
+1. **Native Hook** (default): Uses OPLauncher.Hook.dll - no Decal required
+2. **Decal's Dual Log**: If you enable both Decal and Multi-Client in settings, the launcher uses Decal's built-in Dual Log feature instead
+
+Choose whichever method suits your needs!
 
 ### Q: Do I need multiple AC installations?
 **A**: NO! You only need your single AC installation. The launcher injects a hook DLL that bypasses the single-instance mutex restriction.
@@ -285,7 +349,11 @@ Your configuration is **saved automatically** when you close the dialog:
 **A**: YES! Multi-client is commonly used with VTank for bot armies (20+ clients). Check server policies regarding automation.
 
 ### Q: Does multi-client work with Decal?
-**A**: YES! Multi-client works with or without Decal. The hook DLL is separate from Decal and they can coexist without issues.
+**A**: YES! When you enable both Decal and Multi-Client in settings:
+- The launcher automatically uses Decal's injection with Dual Log support
+- You'll see a warning panel in Settings with instructions to enable "Dual Log" in Decal Options
+- Once Dual Log is enabled in Decal, you get both Decal plugins AND multi-client functionality
+- If you only enable Multi-Client (no Decal), the native OPLauncher.Hook.dll is used instead
 
 ### Q: Where is UserPreferences.ini located?
 **A**: Click "Open UserPreferences.ini Location" in Settings → Multi-Client Settings. It's typically in your AC installation directory.

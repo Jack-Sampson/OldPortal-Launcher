@@ -91,24 +91,77 @@ public class GameLaunchService
                         connection.WorldName);
                 }
 
-                // PRIORITY 1: Check if multi-client is enabled (takes precedence over all other launch methods)
+                // Launch method priority:
+                // PRIORITY 1: Decal (if enabled, it can handle multi-client via its "Dual Log" feature)
+                // PRIORITY 2: OPLauncher multi-client hook (if multi-client enabled but Decal disabled)
+                // PRIORITY 3: Standard launch (no injection)
                 var enableMultiClient = _configService.Current.EnableMultiClient;
                 var useDecal = _configService.Current.UseDecal;
                 bool useDirectInjection = false;
                 bool useMultiClientLaunch = false;
+                bool useDecalInjection = false;
                 string? executablePath = acClientPath;
 
                 _logger.Information("Launch method decision:");
-                _logger.Information("  - EnableMultiClient: {EnableMultiClient}", enableMultiClient);
                 _logger.Information("  - UseDecal: {UseDecal}", useDecal);
+                _logger.Information("  - EnableMultiClient: {EnableMultiClient}", enableMultiClient);
 
-                // Multi-client has HIGHEST priority - requires DLL injection to bypass AC mutex
-                if (enableMultiClient)
+                // PRIORITY 1: Check if we should use Decal (takes precedence - can handle multi-client via Dual Log)
+                if (useDecal)
                 {
-                    _logger.Information("Multi-client is ENABLED - checking for injector.dll and OPLauncher.Hook.dll");
+                    if (enableMultiClient)
+                    {
+                        _logger.Information("Decal ENABLED + Multi-client ENABLED - Decal will handle multi-client via Dual Log feature");
+                        _logger.Information("Note: Users should enable 'Dual Log' in Decal Options if not already enabled");
+                    }
+                    else
+                    {
+                        _logger.Information("Decal ENABLED, Multi-client DISABLED - using standard Decal injection");
+                    }
+
+                    // Validate Decal installation using DecalService
+                    if (!_decalService.IsDecalInstalled())
+                    {
+                        _logger.Error("Decal is not installed (checked via registry)");
+                        return LaunchResult.CreateFailure(
+                            "Decal is not installed. Please install Decal or disable 'Use Decal' in settings.",
+                            connection.WorldId,
+                            connection.WorldName);
+                    }
+
+                    // Check if injector.dll is available for direct injection (ThwargLauncher method)
+                    if (_decalService.IsInjectorDllAvailable())
+                    {
+                        _logger.Information("Using direct Decal injection (ThwargLauncher method)");
+                        useDirectInjection = true;
+                        useDecalInjection = true;
+                        // Keep executablePath as acClientPath - we'll use direct injection
+                    }
+                    else
+                    {
+                        // Fall back to wrapper method (launching Decal.exe)
+                        _logger.Information("injector.dll not found - using Decal.exe wrapper method");
+
+                        var decalPath = _decalService.GetDecalLauncherPath();
+                        if (decalPath == null || !File.Exists(decalPath))
+                        {
+                            _logger.Error("Decal.exe not found");
+                            return LaunchResult.CreateFailure(
+                                "Decal.exe not found. Please reinstall Decal or disable 'Use Decal' in settings.",
+                                connection.WorldId,
+                                connection.WorldName);
+                        }
+
+                        executablePath = decalPath;
+                        _logger.Information("Using Decal wrapper to launch game from: {DecalPath}", decalPath);
+                    }
+                }
+                // PRIORITY 2: Check if multi-client is enabled (only if Decal is NOT enabled)
+                else if (enableMultiClient)
+                {
+                    _logger.Information("Decal DISABLED, Multi-client ENABLED - using OPLauncher.Hook.dll for multi-client");
 
                     // Multi-client requires injector.dll + OPLauncher.Hook.dll for mutex bypass
-                    // We use Reloaded.Hooks to hook the AC client's IsAlreadyRunning function
                     if (!_decalService.IsInjectorDllAvailable())
                     {
                         _logger.Error("Multi-client requires injector.dll which was not found");
@@ -132,50 +185,9 @@ public class GameLaunchService
                     useDirectInjection = true;
                     useMultiClientLaunch = true;
                 }
-                // PRIORITY 2: Check if we should use Decal (only if multi-client is NOT enabled)
-                else if (useDecal)
-                {
-                    _logger.Information("Multi-client DISABLED, Decal ENABLED - checking Decal configuration");
-
-                    // Validate Decal installation using DecalService
-                    if (!_decalService.IsDecalInstalled())
-                    {
-                        _logger.Error("Decal is not installed (checked via registry)");
-                        return LaunchResult.CreateFailure(
-                            "Decal is not installed. Please install Decal or disable 'Use Decal' in settings.",
-                            connection.WorldId,
-                            connection.WorldName);
-                    }
-
-                    // Check if injector.dll is available for direct injection (ThwargLauncher method)
-                    if (_decalService.IsInjectorDllAvailable())
-                    {
-                        _logger.Information("Using direct Decal injection (ThwargLauncher method)");
-                        useDirectInjection = true;
-                        // Keep executablePath as acClientPath - we'll use direct injection
-                    }
-                    else
-                    {
-                        // Fall back to wrapper method (launching Decal.exe)
-                        _logger.Information("injector.dll not found - using Decal.exe wrapper method");
-
-                        var decalPath = _decalService.GetDecalLauncherPath();
-                        if (decalPath == null || !File.Exists(decalPath))
-                        {
-                            _logger.Error("Decal.exe not found");
-                            return LaunchResult.CreateFailure(
-                                "Decal.exe not found. Please reinstall Decal or disable 'Use Decal' in settings.",
-                                connection.WorldId,
-                                connection.WorldName);
-                        }
-
-                        executablePath = decalPath;
-                        _logger.Information("Using Decal wrapper to launch game from: {DecalPath}", decalPath);
-                    }
-                }
                 else
                 {
-                    _logger.Information("Multi-client DISABLED, Decal DISABLED - using standard launch");
+                    _logger.Information("Decal DISABLED, Multi-client DISABLED - using standard launch");
                 }
 
                 // Validate connection information
@@ -206,19 +218,27 @@ public class GameLaunchService
                 }
                 else
                 {
-                    // Direct launch, direct injection, or multi-client: build args for acclient.exe
+                    // Direct launch, Decal injection, or multi-client hook: build args for acclient.exe
                     arguments = BuildCommandLineArguments(connection, credential);
                 }
 
                 // Log launch details (without sensitive data)
                 _logger.Information("Launch details:");
                 _logger.Information("  - Executable Path: {ExecutablePath}", executablePath);
-                _logger.Information("  - Multi-Client Launch: {MultiClient}", useMultiClientLaunch);
-                _logger.Information("  - Using Decal Injection: {UseDecal}", useDirectInjection);
-                _logger.Information("  - Direct Injection (for multi-client or Decal): {DirectInjection}", useDirectInjection);
+                _logger.Information("  - Using Decal Injection: {UseDecalInjection}", useDecalInjection);
+                _logger.Information("  - Using Multi-Client Hook: {UseMultiClientHook}", useMultiClientLaunch);
+                _logger.Information("  - Direct Injection: {DirectInjection}", useDirectInjection);
                 if (useDirectInjection)
                 {
                     _logger.Information("  - AC Client Path: {ClientPath}", acClientPath);
+                    if (useDecalInjection)
+                    {
+                        _logger.Information("  - Injection DLL: Decal Inject.dll");
+                    }
+                    else if (useMultiClientLaunch)
+                    {
+                        _logger.Information("  - Injection DLL: OPLauncher.Hook.dll");
+                    }
                 }
                 _logger.Information("  - Server Type: {ServerType}", connection.ServerType);
                 _logger.Information("  - Host: {Host}", connection.Host);
@@ -230,22 +250,28 @@ public class GameLaunchService
                 }
 
                 // Launch the process
-                // Priority: Multi-client + Decal injection > Decal injection > Standard launch
+                // Priority: Decal injection > Multi-client hook > Standard launch
                 LaunchResult result;
                 if (useDirectInjection)
                 {
-                    // Direct injection (for multi-client OR Decal)
-                    if (useMultiClientLaunch)
+                    // Direct injection (for Decal OR multi-client hook)
+                    if (useDecalInjection)
                     {
-                        // Multi-client: Use our hook DLL
+                        // Decal injection: Use Decal's Inject.dll (handles multi-client via Dual Log if enabled)
+                        _logger.Information("Using Decal injection (injector.dll + Decal Inject.dll)");
+                        result = LaunchProcessWithDirectInjection(acClientPath!, arguments, connection, credential, cancellationToken);
+                    }
+                    else if (useMultiClientLaunch)
+                    {
+                        // Multi-client only: Use our hook DLL
                         _logger.Information("Using multi-client hook injection (injector.dll + OPLauncher.Hook.dll)");
                         result = LaunchProcessWithMultiClientHook(acClientPath!, arguments, connection, credential, cancellationToken);
                     }
                     else
                     {
-                        // Decal only: Use Decal's injection
-                        _logger.Information("Using Decal injection (injector.dll + Decal Inject.dll)");
-                        result = LaunchProcessWithDirectInjection(acClientPath!, arguments, connection, credential, cancellationToken);
+                        // Shouldn't reach here, but fallback to standard launch
+                        _logger.Warning("Direct injection flag set but no specific injection method - falling back to standard launch");
+                        result = LaunchProcess(executablePath, arguments, connection, credential, cancellationToken);
                     }
                 }
                 else
