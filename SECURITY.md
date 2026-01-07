@@ -84,7 +84,7 @@ The launcher executable is **not code-signed**:
 
 **Please DO NOT report security vulnerabilities through public GitHub issues.**
 
-Instead, please report them via email to: **security@oldportal.com**
+Instead, please report them via direct message in discord: **[Discord](https://discord.gg/UKdy2b9zBe)**
 
 You should receive a response within 48 hours. If the issue is confirmed, we will:
 
@@ -173,16 +173,11 @@ If using Decal:
 Future security improvements:
 
 - [ ] Code signing certificate for releases
-- [ ] Optional 2FA support for OldPortal accounts
-- [ ] Encrypted local database (opt-in)
-- [ ] Security audit by external firm
-- [ ] Vulnerability disclosure program
-- [ ] Automated security scanning (Dependabot, CodeQL)
 
 ## Contact
 
-- **Security Email**: security@oldportal.com
-- **General Support**: support@oldportal.com
+- **Security**: [Discord](https://discord.gg/UKdy2b9zBe)
+- **General Support**: [Support](https://oldportal.com/community/category/help-support)
 - **Website**: https://oldportal.com
 
 ## Acknowledgments
